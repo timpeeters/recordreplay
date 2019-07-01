@@ -4,7 +4,7 @@ jdk: openjdk11
 jobs:
     include:
         - stage: build
-          script: ./gradlew clean build
+          script: ./gradlew clean assemble
         - stage: test
           script: ./gradlew test
           
