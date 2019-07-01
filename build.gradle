@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'pmd'
 }
 
 group 'be.xplore'
@@ -13,4 +14,11 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+pmd {
+    consoleOutput = true
+    ruleSetFiles = files("${rootProject.projectDir}/config/pmd/ruleset.xml")
+    ruleSets = []
+    toolVersion = '6.15.0'
 }
