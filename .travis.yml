@@ -1,5 +1,15 @@
 language: java
 jdk: openjdk11
 
-script:
-    - ./gradlew clean build
+jobs:
+    include:
+        - stage: build
+          script: ./gradlew clean build
+        - stage: test
+          script: ./gradlew test
+          
+
+stages:
+    - build
+    - test
+
