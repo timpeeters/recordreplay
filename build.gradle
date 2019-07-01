@@ -1,25 +1,35 @@
-plugins {
-    id 'java'
-    id 'pmd'
-    id 'checkstyle'
+
+allprojects {
+    group 'be.xplore'
+
+    apply plugin: 'checkstyle'
+    apply plugin: 'pmd'
+
+    repositories {
+        mavenCentral()
+    }
+
+    pmd {
+        consoleOutput = true
+        ruleSetFiles = files("${rootProject.projectDir}/config/pmd/ruleset.xml")
+        ruleSets = []
+        toolVersion = '6.15.0'
+    }
+
+    checkstyle {
+        configFile = file("${rootProject.projectDir}/config/checkstyle/checkstyle.xml")
+    }
 }
 
-group 'be.xplore'
-version '1.0-SNAPSHOT'
+subprojects {
+    project.plugins.withType(JavaBasePlugin) {
+        project.with {
+            sourceCompatibility = JavaVersion.VERSION_11
+            targetCompatibility = JavaVersion.VERSION_11
+        }
+    }
 
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-}
-
-pmd {
-    consoleOutput = true
-    ruleSetFiles = files("${rootProject.projectDir}/config/pmd/ruleset.xml")
-    ruleSets = []
-    toolVersion = '6.15.0'
+    dependencies {
+        testCompile group: 'junit', name: 'junit', version: '4.12'
+    }
 }
