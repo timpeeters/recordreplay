@@ -7,7 +7,6 @@ plugins {
 
 apply plugin: 'io.spring.dependency-management'
 
-
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web-services'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
