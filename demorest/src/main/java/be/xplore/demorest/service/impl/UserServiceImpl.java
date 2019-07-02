@@ -27,7 +27,9 @@ public class UserServiceImpl implements UserService {
     public List<User> searchUsers(Map<String, String> filters) {
         if (filters == null || filters.isEmpty()) {
             return userRepo.findAll();
-        } else return userRepo.findAll(buildExample(filters));
+        } else {
+            return userRepo.findAll(buildExample(filters));
+        }
     }
 
     @Override
@@ -60,7 +62,6 @@ public class UserServiceImpl implements UserService {
         userRepo.deleteById(id);
     }
 
-
     private void validateUser(User user, boolean isNew) throws UserValidationException {
         if (user == null) {
             throw new UserValidationException("User passed can not be null");
@@ -77,6 +78,16 @@ public class UserServiceImpl implements UserService {
     }
 
     private Example<User> buildExample(Map<String, String> filters) {
+        User example = exampleBuilder(filters);
+        ExampleMatcher matcher = ExampleMatcher
+                .matchingAll()
+                .withIgnoreNullValues()
+                .withIgnoreCase(true)
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+        return Example.of(example, matcher);
+    }
+
+    private User exampleBuilder(Map<String, String> filters) {
         User example = new User();
         if (filters.containsKey("firstname")) {
             example.setFirstName(filters.get("firstname"));
@@ -87,12 +98,6 @@ public class UserServiceImpl implements UserService {
         if (filters.containsKey("role")) {
             example.setRole(filters.get("role"));
         }
-
-        ExampleMatcher matcher = ExampleMatcher
-                .matchingAll()
-                .withIgnoreNullValues()
-                .withIgnoreCase(true)
-                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
-        return Example.of(example, matcher);
+        return example;
     }
 }
