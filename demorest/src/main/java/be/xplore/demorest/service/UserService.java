@@ -4,11 +4,10 @@ import be.xplore.demorest.model.User;
 import be.xplore.demorest.service.exceptions.UserValidationException;
 
 import java.util.List;
-import java.util.Map;
 
 public interface UserService {
 
-    List<User> searchUsers(Map<String, String> filters);
+    List<User> searchUsers();
 
     User searchUserById(Long id) throws UserValidationException;
 
@@ -17,6 +16,5 @@ public interface UserService {
     User updateUser(User user) throws UserValidationException;
 
     void deleteUserById(Long id) throws UserValidationException;
-
 
 }

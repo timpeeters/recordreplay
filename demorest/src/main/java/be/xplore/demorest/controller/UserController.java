@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("user")
@@ -28,30 +28,14 @@ public class UserController {
         this.userService = userService;
     }
 
-    /*
-     * Gets all the groups from the database.
-     * Filters can be passed via JSON
-     *
-     * {
-     * "key1": "value",
-     * "key2": "value"
-     * }
-     *
-     * Possible key values:
-     * - firstname
-     * - lastname
-     * - role
-     *
-     */
-
     @GetMapping("/list")
-    public ResponseEntity findAllUsers(@RequestBody(required = false) Map<String, String> filters) {
-        List<User> users = userService.searchUsers(filters);
+    public ResponseEntity findAllUsers() {
+        List<User> users = userService.searchUsers();
         return ResponseEntity.ok().body(users);
     }
 
     @GetMapping("/")
-    public ResponseEntity findUserById(@RequestParam Long id){
+    public ResponseEntity findUserById(@RequestParam Long id) {
         User foundUser;
         try {
             foundUser = userService.searchUserById(id);
@@ -62,7 +46,7 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity createUser(@RequestBody User user) {
+    public ResponseEntity createUser(@Valid @RequestBody User user) {
         User createdUser;
         try {
             createdUser = userService.createUser(user);
@@ -73,7 +57,7 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity updateUser(@RequestBody(required = true) User user) {
+    public ResponseEntity updateUser(@Valid @RequestBody(required = true) User user) {
         User updatedUser;
         try {
             updatedUser = userService.updateUser(user);

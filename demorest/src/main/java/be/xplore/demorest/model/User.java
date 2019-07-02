@@ -3,16 +3,21 @@ package be.xplore.demorest.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class User {
 
     @Id
     @GeneratedValue
-
     private Long id;
 
+    @NotBlank
+    @NotNull
     private String firstName;
+    @NotBlank
+    @NotNull
     private String lastName;
     private String role;
 
@@ -51,5 +56,4 @@ public class User {
         this.role = role;
         return this;
     }
-
 }
