@@ -6,7 +6,7 @@ plugins {
 
 allprojects {
     apply plugin: 'idea'
-    
+
     group 'be.xplore'
 
     repositories {
