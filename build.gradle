@@ -5,6 +5,8 @@ plugins {
 }
 
 allprojects {
+    apply plugin: 'idea'
+    
     group 'be.xplore'
 
     repositories {
@@ -21,6 +23,12 @@ allprojects {
     checkstyle {
         configFile = file("${rootProject.rootDir}/config/checkstyle/checkstyle.xml")
         toolVersion = '8.22'
+    }
+
+    idea {
+        module {
+            downloadJavadoc = true
+        }
     }
 }
 
