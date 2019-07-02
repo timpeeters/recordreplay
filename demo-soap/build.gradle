@@ -1,6 +1,8 @@
 plugins {
     id 'org.springframework.boot' version '2.1.6.RELEASE'
     id 'java'
+    id 'checkstyle'
+    id 'pmd'
 }
 
 apply plugin: 'io.spring.dependency-management'

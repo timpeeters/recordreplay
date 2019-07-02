@@ -19,7 +19,8 @@ allprojects {
     }
 
     checkstyle {
-        configFile = file("${rootProject.projectDir}/config/checkstyle/checkstyle.xml")
+        configFile = file("${rootProject.rootDir}/config/checkstyle/checkstyle.xml")
+        toolVersion = '8.22'
     }
 }
 
