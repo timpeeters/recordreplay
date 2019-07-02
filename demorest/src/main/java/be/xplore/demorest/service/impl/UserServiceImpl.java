@@ -16,7 +16,7 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private UserRepo userRepo;
+    private final UserRepo userRepo;
 
     @Autowired
     public UserServiceImpl(UserRepo userRepo) {
@@ -24,7 +24,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User saveNewUser(User user) throws UserValidationException {
+    public List<User> searchUsers(Map<String, String> filters) {
+        if (filters == null || filters.isEmpty()) return userRepo.findAll();
+        else return userRepo.findAll(buildExample(filters));
+    }
+
+    @Override
+    public User searchUserById(Long id) throws UserValidationException {
+        Optional<User> userOptional = userRepo.findById(id);
+        if (userOptional.isEmpty()) throw new UserValidationException("User not found for given id");
+        return userOptional.get();
+    }
+
+    @Override
+    public User createUser(User user) throws UserValidationException {
         validateUser(user, true);
         return userRepo.save(user);
     }
@@ -42,21 +55,11 @@ public class UserServiceImpl implements UserService {
         userRepo.deleteById(id);
     }
 
-    @Override
-    public List<User> searchUsers(Map<String, String> filters) {
-        if (filters == null || filters.isEmpty()) return userRepo.findAll();
-        else return userRepo.findAll(buildExample(filters));
-    }
-
-    @Override
-    public User searchUserById(Long id) {
-        return userRepo.getOne(id);
-    }
 
     private void validateUser(User user, boolean isNew) throws UserValidationException {
-        if (user == null) throw new UserValidationException("User passed to save can not be null");
-        if (isNew && (user.getId() != null || user.getId() != 0))
-            throw new UserValidationException("UserID can not have a value when calling the new group endpoint");
+        if (user == null) throw new UserValidationException("User passed can not be null");
+        if (isNew && (user.getId() != null))
+            throw new UserValidationException("UserID can not have a value when calling the new user endpoint");
         if (user.getFirstName() == null || user.getFirstName().isBlank())
             throw new UserValidationException("Invalid FirstName");
         if (user.getLastName() == null || user.getLastName().isBlank())

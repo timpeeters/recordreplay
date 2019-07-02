@@ -8,14 +8,15 @@ import java.util.Map;
 
 public interface UserService {
 
-    User saveNewUser(User user) throws UserValidationException;
+    List<User> searchUsers(Map<String, String> filters);
+
+    User searchUserById(Long id) throws UserValidationException;
+
+    User createUser(User user) throws UserValidationException;
 
     User updateUser(User user) throws UserValidationException;
 
     void deleteUserById(Long id) throws UserValidationException;
 
-    List<User> searchUsers(Map<String, String> filters);
-
-    User searchUserById(Long id);
 
 }

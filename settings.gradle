@@ -1,2 +1,2 @@
 rootProject.name = 'recordreplay'
-include 'demo-soap'
+include 'demo-soap', 'demorest'

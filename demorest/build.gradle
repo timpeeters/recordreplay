@@ -1,17 +1,11 @@
 plugins {
     id 'org.springframework.boot' version '2.1.6.RELEASE'
     id 'java'
+    id 'checkstyle'
+    id 'pmd'
 }
 
 apply plugin: 'io.spring.dependency-management'
-
-group = 'be.xplore'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
-
-repositories {
-    mavenCentral()
-}
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
