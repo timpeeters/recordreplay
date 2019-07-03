@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new UserValidationException("User passed can not be null");
         }
-        if (isNew && (user.getId() != null)) {
+        if (isNew && user.getId() != null) {
             throw new UserValidationException("UserID can not have a value when calling the new user endpoint");
         }
     }
