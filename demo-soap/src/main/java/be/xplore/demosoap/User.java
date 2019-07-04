@@ -55,6 +55,7 @@ public class User {
         this.role = role;
     }
 
+    @Override
     public boolean equals(final Object otherObject) {
         if (!(otherObject instanceof User)) {
             return false;
@@ -73,6 +74,7 @@ public class User {
         return Objects.hash(id, firstName, lastName);
     }
 
+    @Override
     public String toString() {
         return new StringJoiner(", ", "User[", "]")
                 .add("id=" + getId())
