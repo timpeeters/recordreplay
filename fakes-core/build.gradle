@@ -3,3 +3,7 @@ plugins {
     id 'checkstyle'
     id 'pmd'
 }
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+}
