@@ -2,12 +2,14 @@ plugins {
     id 'java'
     id 'checkstyle'
     id 'pmd'
+    id 'jacoco'
 }
 
 allprojects {
     apply plugin: 'idea'
     apply plugin: 'checkstyle'
     apply plugin: 'pmd'
+    apply plugin: 'jacoco'
 
     group 'be.xplore'
 
@@ -39,6 +41,7 @@ dependencies {
 }
 
 subprojects {
+
     project.plugins.withType(JavaBasePlugin) {
         project.with {
             sourceCompatibility = JavaVersion.VERSION_11
@@ -46,3 +49,24 @@ subprojects {
         }
     }
 }
+
+jacoco {
+    toolVersion = '0.8.4'
+}
+
+task codeCoverageReport(type: JacocoReport) {
+    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+
+    subprojects.each {
+        sourceSets sourceSets.main
+    }
+
+    reports {
+        xml.enabled = true
+        xml.destination file("${buildDir}/reports/jacoco/report.xml")
+        html.enabled = false
+        csv.enabled = false
+    }
+}
+
+rootProject.check.dependsOn codeCoverageReport
