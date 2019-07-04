@@ -5,6 +5,9 @@ plugins {
 }
 
 allprojects {
+    apply plugin: 'checkstyle'
+    apply plugin: 'pmd'
+
     group 'be.xplore'
 
     repositories {

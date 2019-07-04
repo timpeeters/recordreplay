@@ -12,6 +12,7 @@
         <exclude name="AccessorMethodGeneration"/>
         <exclude name="JUnitAssertionsShouldIncludeMessage"/>
         <exclude name="JUnitTestContainsTooManyAsserts"/>
+        <exclude name="JUnitTestsShouldIncludeAssert"/>
     </rule>
 
     <rule ref="category/java/bestpractices.xml/JUnitTestContainsTooManyAsserts">
@@ -31,6 +32,7 @@
         <exclude name="MethodArgumentCouldBeFinal"/>
         <exclude name="MethodNamingConventions"/>
         <exclude name="OnlyOneReturn"/>
+        <exclude name="ShortClassName"/>
         <exclude name="ShortMethodName"/>
         <exclude name="ShortVariable"/>
         <exclude name="TooManyStaticImports"/>
@@ -59,6 +61,7 @@
         <exclude name="LoosePackageCoupling"/>
         <exclude name="SignatureDeclareThrowsException"/>
         <exclude name="TooManyMethods"/>
+        <exclude name="UseUtilityClass"/>
     </rule>
 
     <rule ref="category/java/design.xml/SignatureDeclareThrowsException">
