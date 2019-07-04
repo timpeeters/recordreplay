@@ -6,6 +6,8 @@ plugins {
 
 allprojects {
     apply plugin: 'idea'
+    apply plugin: 'checkstyle'
+    apply plugin: 'pmd'
 
     group 'be.xplore'
 
