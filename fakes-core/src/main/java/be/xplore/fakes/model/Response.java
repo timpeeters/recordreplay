@@ -1,5 +1,7 @@
 package be.xplore.fakes.model;
 
+import java.util.Objects;
+
 public class Response {
 
     private int statusCode;
@@ -21,5 +23,23 @@ public class Response {
     public Response setStatusText(String statusText) {
         this.statusText = statusText;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Response response = (Response) o;
+        return this.statusCode == response.getStatusCode() &&
+                this.statusText.equals(response.getStatusText());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(statusCode, statusText);
     }
 }

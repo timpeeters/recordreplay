@@ -1,5 +1,7 @@
 package be.xplore.fakes.model;
 
+import java.util.Objects;
+
 public class Stub {
 
     private Request request;
@@ -21,5 +23,23 @@ public class Stub {
     public Stub setResponse(Response response) {
         this.response = response;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Stub stub = (Stub) o;
+        return this.request.equals(stub.getRequest()) &&
+                this.response.equals(stub.getResponse());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(request, response);
     }
 }
