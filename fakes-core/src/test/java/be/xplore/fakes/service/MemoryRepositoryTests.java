@@ -8,14 +8,14 @@ import static org.junit.Assert.assertEquals;
 
 public class MemoryRepositoryTests {
     @Test
-    public void addValidStub() {
+    public void addValidStub() throws InvalidStubException {
         Repository repo = new MemoryRepository();
         repo.add(new Stub());
         assertEquals(1, repo.find().size());
     }
 
     @Test(expected = InvalidStubException.class)
-    public void addNullStubShouldExcept() {
+    public void addNullStubShouldExcept() throws InvalidStubException {
         Repository repo = new MemoryRepository();
         repo.add(null);
     }
