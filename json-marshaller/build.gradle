@@ -1,0 +1,11 @@
+plugins {
+    id 'java'
+    id 'checkstyle'
+    id 'pmd'
+}
+
+dependencies {
+    compile project(':fakes-core')
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.9.9'
+    testCompile 'junit:junit:4.12'
+}
