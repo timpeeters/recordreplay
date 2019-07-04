@@ -1,6 +1,7 @@
 package be.xplore.fakes.service;
 
 import be.xplore.fakes.model.Stub;
+import be.xplore.fakes.service.except.InvalidStubException;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -13,7 +14,7 @@ public class MemoryRepositoryTests {
         assertEquals(1, repo.find().size());
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = InvalidStubException.class)
     public void addNullStubShouldExcept() {
         Repository repo = new MemoryRepository();
         repo.add(null);
