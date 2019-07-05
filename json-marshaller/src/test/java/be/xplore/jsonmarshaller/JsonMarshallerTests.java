@@ -6,64 +6,53 @@ import be.xplore.fakes.model.RequestMethod;
 import be.xplore.fakes.model.Response;
 import be.xplore.fakes.model.Stub;
 import be.xplore.fakes.service.Marshaller;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.StringReader;
+import java.io.StringWriter;
+
 
 public class JsonMarshallerTests {
 
-    private Path filePath;
+    private Stub stub;
+    private String stubJson;
+    private Marshaller marshaller;
 
-    private final Request request = new Request()
-            .setMethod(RequestMethod.GET)
-            .setPath("/test");
-    private final Response response = new Response()
-            .setStatusCode(200)
-            .setStatusText("Successful");
+    @Before
+    public void setUpTest() throws JsonProcessingException {
+        Request request = new Request()
+                .setMethod(RequestMethod.GET)
+                .setPath("/test");
+        Response response = new Response()
+                .setStatusCode(200)
+                .setStatusText("Successful");
+        stub = new Stub()
+                .setRequest(request)
+                .setResponse(response);
 
-    private final Stub stub = new Stub()
-            .setRequest(request)
-            .setResponse(response);
+        stubJson = new ObjectMapper().writeValueAsString(stub);
 
-    @Test
-    public void marshallCreatesFile() throws IOException {
-        Marshaller marshaller = new JsonMarshaller();
-        marshaller.marshal(stub, Files.newBufferedWriter(filePath));
-        assertTrue("File doesn't exist", Files.exists(filePath));
+        marshaller = new JsonMarshaller();
     }
+
 
     @Test
     public void marshallWritesJsonString() throws IOException {
-        String stubJson = new ObjectMapper()
-                .writeValueAsString(stub);
-        Marshaller marshaller = new JsonMarshaller();
-        marshaller.marshal(stub, Files.newBufferedWriter(filePath));
-        assertEquals("Json string not written to file correctly", Files.readString(filePath), stubJson);
+        StringWriter stringWriter = new StringWriter();
+        marshaller.marshal(stub, stringWriter);
+        assertEquals("Json string marshalled correctly", stringWriter.toString(), stubJson);
     }
 
     @Test
     public void unmarshallCreatesStubFromJson() throws IOException {
-        Marshaller marshaller = new JsonMarshaller();
-        marshaller.marshal(stub, Files.newBufferedWriter(filePath));
-        Stub stubFromJson = marshaller.unMarshal(Files.newBufferedReader(filePath));
-        assertEquals("No correct stub generated from json", stub, stubFromJson);
-    }
-
-    @Before
-    public void createTestFile() throws IOException {
-        filePath = Files.createTempFile("testJson", ".txt");
-    }
-    @After
-    public void deleteTestFile() throws IOException {
-        Files.deleteIfExists(filePath);
+        Stub stubFromJson = marshaller.unMarshal(new StringReader(stubJson));
+        assertEquals("No correct stub unmarshalled", stub, stubFromJson);
     }
 
 }
