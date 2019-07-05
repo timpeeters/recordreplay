@@ -1,4 +1,5 @@
 plugins {
+    id 'jacoco'
     id 'java'
     id 'checkstyle'
     id 'pmd'
@@ -12,7 +13,23 @@ allprojects {
     group 'be.xplore'
 
     repositories {
-        mavenCentral()
+        jcenter()
+    }
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+subprojects {
+    apply plugin: 'jacoco'
+    apply plugin: 'java'
+
+    project.plugins.withType(JavaBasePlugin) {
+        project.with {
+            sourceCompatibility = JavaVersion.VERSION_11
+            targetCompatibility = JavaVersion.VERSION_11
+        }
     }
 
     pmd {
@@ -20,6 +37,10 @@ allprojects {
         ruleSetFiles = files("${rootProject.projectDir}/config/pmd/ruleset.xml")
         ruleSets = []
         toolVersion = '6.15.0'
+    }
+
+    jacoco {
+        toolVersion = '0.8.4'
     }
 
     checkstyle {
@@ -34,15 +55,19 @@ allprojects {
     }
 }
 
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-}
+task codeCoverageReport(type: JacocoReport) {
+    dependsOn = subprojects.build
+    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+    subprojects.each {
+        sourceSets it.sourceSets.main
+    }
 
-subprojects {
-    project.plugins.withType(JavaBasePlugin) {
-        project.with {
-            sourceCompatibility = JavaVersion.VERSION_11
-            targetCompatibility = JavaVersion.VERSION_11
-        }
+    reports {
+        xml.enabled = true
+        xml.destination file("${buildDir}/reports/jacoco/report.xml")
+        html.enabled = false
+        csv.enabled = false
     }
 }
+
+rootProject.check.dependsOn codeCoverageReport
