@@ -1,0 +1,10 @@
+plugins {
+    id 'java'
+    id 'checkstyle'
+    id 'pmd'
+}
+
+dependencies {
+    compile project(':fakes-core')
+    testCompile 'junit:junit:4.12'
+}
