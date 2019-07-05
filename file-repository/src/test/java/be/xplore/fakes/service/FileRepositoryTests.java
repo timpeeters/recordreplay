@@ -9,6 +9,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 
@@ -28,6 +29,11 @@ public class FileRepositoryTests {
     public void createFileRepoFromNonExistingFile() throws IOException, InvalidFileException, MarshalException {
         new FileRepository<>(Paths.get(tempDir.getRoot().getAbsolutePath().concat("FileToCreate")).toFile(),
                 MockedMarshaller.class);
+    }
+
+    @Test(expected = InvalidFileException.class)
+    public void createFileRepoWithNullFileThrows() throws InvalidFileException, MarshalException, IOException {
+        new FileRepository<>(null, MockedMarshaller.class);
     }
 
     @Test(expected = InvalidFileException.class)
@@ -51,5 +57,32 @@ public class FileRepositoryTests {
     public void readFromFileRepo() throws MarshalException, InvalidFileException, IOException, RepositoryException {
         Repository repo = new FileRepository<>(tempDir.newFile(), MockedMarshaller.class);
         assertNotNull(repo.find());
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    @Test(expected = RepositoryException.class)
+    public void writeToReadOnlyFileThrows() throws MarshalException, InvalidFileException, IOException,
+            RepositoryException, InvalidStubException {
+        File file = tempDir.newFile();
+        Repository repo = new FileRepository<>(file, MockedMarshaller.class);
+        file.setReadOnly();
+        repo.add(new Stub());
+    }
+
+    @Test(expected = RepositoryException.class)
+    public void writeToDeletedFileThrows() throws MarshalException, InvalidFileException, IOException,
+            RepositoryException, InvalidStubException {
+        Repository repo = new FileRepository<>(tempDir.newFile(), MockedMarshaller.class);
+        tempDir.delete();
+        repo.add(new Stub());
+    }
+
+    @Test(expected = RepositoryException.class)
+    public void readFromDeletedFileThrows() throws MarshalException, InvalidFileException, IOException,
+            RepositoryException {
+        File file = tempDir.newFile();
+        Repository repo = new FileRepository<>(file, MockedMarshaller.class);
+        tempDir.delete();
+        repo.find();
     }
 }

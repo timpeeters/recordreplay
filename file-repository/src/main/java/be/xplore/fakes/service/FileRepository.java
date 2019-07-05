@@ -21,10 +21,8 @@ public class FileRepository<M extends Marshaller> implements Repository {
 
     public FileRepository(File file, Class<M> marshallerType)
             throws InvalidFileException, IOException, MarshalException {
-        if (!file.exists()) {
-            Files.createFile(Paths.get(file.getAbsolutePath()));
-        }
         this.file = file;
+        createFileIfNotExists();
         validateFile();
         try {
             this.marshaller = marshallerType.getConstructor().newInstance();
@@ -55,8 +53,17 @@ public class FileRepository<M extends Marshaller> implements Repository {
     }
 
     private void validateFile() throws InvalidFileException {
-        if (!file.isFile()) {
+        if (file.isDirectory()) {
             throw new InvalidFileException("File is a directory", file);
+        }
+    }
+
+    private void createFileIfNotExists() throws IOException, InvalidFileException {
+        if (file == null) {
+            throw new InvalidFileException("File is null!");
+        }
+        if (!file.exists()) {
+            Files.createFile(Paths.get(file.getAbsolutePath()));
         }
     }
 }

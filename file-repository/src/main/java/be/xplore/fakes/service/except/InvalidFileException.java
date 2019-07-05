@@ -8,4 +8,8 @@ public class InvalidFileException extends Exception {
     public InvalidFileException(String message, File file) {
         super(String.format("%s (Path: %s)", message, file == null ? "null" : file.getAbsolutePath()));
     }
+
+    public InvalidFileException(String message) {
+        this(message, null);
+    }
 }
