@@ -15,8 +15,7 @@ public class JsonMarshaller implements Marshaller {
 
     @Override
     public void marshal(Stub stub, Writer writer) throws IOException {
-        String jsonString;
-        jsonString = mapper.writeValueAsString(stub);
+        String jsonString = mapper.writeValueAsString(stub);
         writer.append(jsonString);
         writer.close();
     }
