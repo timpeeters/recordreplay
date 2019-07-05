@@ -51,7 +51,7 @@ public class JsonMarshallerTests {
 
     @Test
     public void unmarshallCreatesStubFromJson() throws IOException {
-        Stub stubFromJson = marshaller.unMarshal(Files.newBufferedReader(filePath));
+        Stub stubFromJson = marshaller.unMarshal(new StringReader(stubJson));
         assertEquals("No correct stub unmarshalled", stub, stubFromJson);
     }
 
