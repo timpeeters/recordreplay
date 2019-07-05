@@ -18,7 +18,8 @@ import java.io.StringWriter;
 
 public class JsonMarshallerTests {
 
-    private final String expectedJsonString = "{\"request\":{\"method\":\"GET\",\"path\":\"/test\"},\"response\":{\"statusCode\":200,\"statusText\":\"Successful\"}}";
+    private final String expectedJsonString = "{\"request\":{\"method\":\"GET\",\"path\":\"/test\"}" +
+            ",\"response\":{\"statusCode\":200,\"statusText\":\"Successful\"}}";
     private Stub stub;
     private Marshaller marshaller;
 
