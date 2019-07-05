@@ -9,5 +9,5 @@ import java.io.Writer;
 public interface Marshaller {
     void marshal(Stub stub, Writer writer) throws IOException;
 
-    Stub unMarshal(Reader reader);
+    Stub unMarshal(Reader reader) throws IOException;
 }
