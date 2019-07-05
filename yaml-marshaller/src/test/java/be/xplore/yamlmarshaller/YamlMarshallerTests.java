@@ -5,9 +5,6 @@ import be.xplore.fakes.model.RequestMethod;
 import be.xplore.fakes.model.Response;
 import be.xplore.fakes.model.Stub;
 import be.xplore.fakes.service.Marshaller;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,12 +17,20 @@ import static org.junit.Assert.assertEquals;
 
 public class YamlMarshallerTests {
 
+
+    private final String expectedYamlString = "---\n" +
+            "request:\n" +
+            "  method: \"GET\"\n" +
+            "  path: \"/test\"\n" +
+            "response:\n" +
+            "  statusCode: 200\n" +
+            "  statusText: \"Successful\"\n";
+
     private Stub stub;
-    private String stubYaml;
     private Marshaller marshaller;
 
     @Before
-    public void setUpTest() throws JsonProcessingException {
+    public void setUpTest() {
         Request request = new Request()
                 .setMethod(RequestMethod.GET)
                 .setPath("/test");
@@ -36,22 +41,19 @@ public class YamlMarshallerTests {
                 .setRequest(request)
                 .setResponse(response);
 
-        stubYaml = new ObjectMapper(new YAMLFactory())
-                .writeValueAsString(stub);
-
         marshaller = new YamlMarshaller();
     }
 
     @Test
-    public void marshallWritesJsonString() throws IOException {
+    public void marshallWritesYamlString() throws IOException {
         StringWriter stringWriter = new StringWriter();
         marshaller.marshal(stub, stringWriter);
-        assertEquals("Yaml string marshalled correctly", stringWriter.toString(), stubYaml);
+        assertEquals("Yaml string marshalled correctly", expectedYamlString, stringWriter.toString());
     }
 
     @Test
-    public void unmarshallCreatesStubFromJson() throws IOException {
-        Stub stubFromYaml = marshaller.unMarshal(new StringReader(stubYaml));
+    public void unmarshallCreatesStubFromYaml() throws IOException {
+        Stub stubFromYaml = marshaller.unMarshal(new StringReader(expectedYamlString));
         assertEquals("No correct stub unmarshalled", stub, stubFromYaml);
     }
 

@@ -6,8 +6,6 @@ import be.xplore.fakes.model.RequestMethod;
 import be.xplore.fakes.model.Response;
 import be.xplore.fakes.model.Stub;
 import be.xplore.fakes.service.Marshaller;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,12 +18,12 @@ import java.io.StringWriter;
 
 public class JsonMarshallerTests {
 
+    private final String expectedJsonString = "{\"request\":{\"method\":\"GET\",\"path\":\"/test\"},\"response\":{\"statusCode\":200,\"statusText\":\"Successful\"}}";
     private Stub stub;
-    private String stubJson;
     private Marshaller marshaller;
 
     @Before
-    public void setUpTest() throws JsonProcessingException {
+    public void setUpTest() {
         Request request = new Request()
                 .setMethod(RequestMethod.GET)
                 .setPath("/test");
@@ -36,8 +34,6 @@ public class JsonMarshallerTests {
                 .setRequest(request)
                 .setResponse(response);
 
-        stubJson = new ObjectMapper().writeValueAsString(stub);
-
         marshaller = new JsonMarshaller();
     }
 
@@ -46,12 +42,12 @@ public class JsonMarshallerTests {
     public void marshallWritesJsonString() throws IOException {
         StringWriter stringWriter = new StringWriter();
         marshaller.marshal(stub, stringWriter);
-        assertEquals("Json string marshalled correctly", stringWriter.toString(), stubJson);
+        assertEquals("Json string marshalled correctly", expectedJsonString, stringWriter.toString());
     }
 
     @Test
     public void unmarshallCreatesStubFromJson() throws IOException {
-        Stub stubFromJson = marshaller.unMarshal(new StringReader(stubJson));
+        Stub stubFromJson = marshaller.unMarshal(new StringReader(expectedJsonString));
         assertEquals("No correct stub unmarshalled", stub, stubFromJson);
     }
 
