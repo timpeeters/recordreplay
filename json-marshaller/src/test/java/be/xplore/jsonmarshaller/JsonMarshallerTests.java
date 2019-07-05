@@ -46,13 +46,13 @@ public class JsonMarshallerTests {
     public void marshallWritesJsonString() throws IOException {
         StringWriter stringWriter = new StringWriter();
         marshaller.marshal(stub, stringWriter);
-        assertEquals("Json string not written to file correctly", stringWriter.toString(), stubJson);
+        assertEquals("Json string marshalled correctly", stringWriter.toString(), stubJson);
     }
 
     @Test
     public void unmarshallCreatesStubFromJson() throws IOException {
-        Stub jsonToStub = marshaller.unMarshal(new StringReader(stubJson));
-        assertEquals("No correct stub generated from json", stub, jsonToStub);
+        Stub stubFromJson = marshaller.unMarshal(Files.newBufferedReader(filePath));
+        assertEquals("No correct stub unmarshalled", stub, stubFromJson);
     }
 
 }
