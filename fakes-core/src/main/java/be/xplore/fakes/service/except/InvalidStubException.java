@@ -6,12 +6,4 @@ public class InvalidStubException extends Exception {
     public InvalidStubException(String message) {
         super(message);
     }
-
-    public InvalidStubException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public InvalidStubException(Throwable cause) {
-        super(cause);
-    }
 }

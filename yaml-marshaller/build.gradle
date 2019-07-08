@@ -5,8 +5,9 @@ plugins {
 }
 
 dependencies {
-    compile project(':fakes-core')
+    compile project(':file-repository')
     compile 'com.fasterxml.jackson.core:jackson-databind:2.9.9'
     compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.9'
     testCompile 'junit:junit:4.12'
 }
+
