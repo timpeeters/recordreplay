@@ -12,6 +12,7 @@ import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
 
 public class FileRepository<M extends Marshaller> implements Repository {
@@ -35,7 +36,7 @@ public class FileRepository<M extends Marshaller> implements Repository {
 
     @Override
     public void add(Stub stub) throws RepositoryException {
-        try (Writer w = Files.newBufferedWriter(file.toPath())) {
+        try (Writer w = Files.newBufferedWriter(file.toPath(), StandardOpenOption.APPEND)) {
             marshaller.marshal(stub, w);
         } catch (IOException e) {
             throw new RepositoryException(e);
