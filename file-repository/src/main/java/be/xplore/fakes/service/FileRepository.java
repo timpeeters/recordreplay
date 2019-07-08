@@ -12,12 +12,11 @@ import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Collections;
 import java.util.List;
 
 public class FileRepository<M extends Marshaller> implements Repository {
     private final File file;
-    private final M marshaller;
+    private final Marshaller marshaller;
 
     public FileRepository(File file, Class<M> marshallerType)
             throws InvalidFileException, IOException, MarshalException {
@@ -46,7 +45,7 @@ public class FileRepository<M extends Marshaller> implements Repository {
     @Override
     public List<Stub> find() throws RepositoryException {
         try (Reader r = Files.newBufferedReader(file.toPath())) {
-            return Collections.singletonList(marshaller.unMarshal(r));
+            return marshaller.unMarshal(r);
         } catch (IOException e) {
             throw new RepositoryException(e);
         }

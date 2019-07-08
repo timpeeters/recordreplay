@@ -27,7 +27,7 @@ public class FileRepositoryTests {
 
     @Test
     public void createFileRepoFromNonExistingFile() throws IOException, InvalidFileException, MarshalException {
-        new FileRepository<>(Paths.get(tempDir.getRoot().getAbsolutePath().concat("FileToCreate")).toFile(),
+        new FileRepository<>(Paths.get(tempDir.getRoot().getAbsolutePath().concat("/FileToCreate")).toFile(),
                 MockedMarshaller.class);
     }
 
@@ -49,13 +49,14 @@ public class FileRepositoryTests {
     @Test
     public void addStubToFileRepo() throws MarshalException, InvalidFileException, InvalidStubException,
             RepositoryException, IOException {
-        Repository repo = new FileRepository<>(tempDir.newFile(), MockedMarshaller.class);
+        Repository repo = createTestFileRepository();
         repo.add(new Stub());
     }
 
     @Test
-    public void readFromFileRepo() throws MarshalException, InvalidFileException, IOException, RepositoryException {
-        Repository repo = new FileRepository<>(tempDir.newFile(), MockedMarshaller.class);
+    public void readStubsFromFileRepo() throws MarshalException, InvalidFileException, IOException,
+            RepositoryException {
+        Repository repo = createTestFileRepository();
         assertNotNull(repo.find());
     }
 
@@ -72,7 +73,7 @@ public class FileRepositoryTests {
     @Test(expected = RepositoryException.class)
     public void writeToDeletedFileThrows() throws MarshalException, InvalidFileException, IOException,
             RepositoryException, InvalidStubException {
-        Repository repo = new FileRepository<>(tempDir.newFile(), MockedMarshaller.class);
+        Repository repo = createTestFileRepository();
         tempDir.delete();
         repo.add(new Stub());
     }
@@ -80,9 +81,14 @@ public class FileRepositoryTests {
     @Test(expected = RepositoryException.class)
     public void readFromDeletedFileThrows() throws MarshalException, InvalidFileException, IOException,
             RepositoryException {
-        File file = tempDir.newFile();
-        Repository repo = new FileRepository<>(file, MockedMarshaller.class);
+        Repository repo = createTestFileRepository();
         tempDir.delete();
         repo.find();
+    }
+
+
+    private FileRepository<MockedMarshaller> createTestFileRepository() throws IOException, MarshalException,
+            InvalidFileException {
+        return new FileRepository<>(tempDir.newFile(), MockedMarshaller.class);
     }
 }
