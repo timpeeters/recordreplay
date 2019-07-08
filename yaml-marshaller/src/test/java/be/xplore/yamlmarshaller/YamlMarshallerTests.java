@@ -8,7 +8,6 @@ import be.xplore.fakes.service.Marshaller;
 import org.junit.Before;
 import org.junit.Test;
 
-
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -53,7 +52,7 @@ public class YamlMarshallerTests {
 
     @Test
     public void unmarshallCreatesStubFromYaml() throws IOException {
-        Stub stubFromYaml = marshaller.unMarshal(new StringReader(expectedYamlString));
+        Stub stubFromYaml = marshaller.unMarshal(new StringReader(expectedYamlString)).get(0);
         assertEquals("No correct stub unmarshalled", stub, stubFromYaml);
     }
 

@@ -8,6 +8,8 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.Collections;
+import java.util.List;
 
 public class YamlMarshaller implements Marshaller {
 
@@ -21,7 +23,7 @@ public class YamlMarshaller implements Marshaller {
     }
 
     @Override
-    public Stub unMarshal(Reader reader) throws IOException {
-        return mapper.readValue(reader, Stub.class);
+    public List<Stub> unMarshal(Reader reader) throws IOException {
+        return Collections.singletonList(mapper.readValue(reader, Stub.class));
     }
 }
