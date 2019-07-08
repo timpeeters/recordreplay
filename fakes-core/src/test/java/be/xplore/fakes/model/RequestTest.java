@@ -9,42 +9,43 @@ public class RequestTest {
 
     @Test
     public void checkEquality() {
-        Request request1 = getNewExampleRequest();
-        Request request2 = getNewExampleRequest();
-        assertEquals(request1, request1);
-        assertEquals("Equals method not implemented correctly", request1, request2);
+        Request request = getNewExampleRequest1();
+        assertEquals(request, request);
+        assertEquals("Equals method not implemented correctly", request, getNewExampleRequest1());
     }
 
     @Test
     public void checkNotEqual() {
-        Request request1 = getNewExampleRequest();
-        Request request2 = new Request()
-                .setMethod(RequestMethod.POST);
-        assertNotEquals(request1, request2);
+        assertNotEquals(getNewExampleRequest1(), getNewExampleRequest2());
+        assertNotEquals(getNewExampleRequest1(), getNewExampleRequest1().setPath(getNewExampleRequest2().getPath()));
     }
 
     @SuppressWarnings("ConstantConditions")
     @Test
     public void checkNullAndOtherClass() {
-        Request request1 = getNewExampleRequest();
-        Request request2 = null;
+        Request request = getNewExampleRequest1();
+        Request nullRequest = null;
 
-        assertNotEquals(request1, request2);
-        assertNotEquals(request1, 5);
+        assertNotEquals(request, nullRequest);
+        assertNotEquals(request, 5);
     }
 
     @Test
     public void hashCodeTest() {
-        assertEquals(getNewExampleRequest().hashCode(), getNewExampleRequest().hashCode());
-        assertNotEquals(getNewExampleRequest().hashCode(),
-                getNewExampleRequest().setMethod(RequestMethod.POST).hashCode());
-        assertNotEquals(getNewExampleRequest().hashCode(), getNewExampleRequest().setPath("/abc").hashCode());
+        assertEquals(getNewExampleRequest1().hashCode(), getNewExampleRequest1().hashCode());
+        assertNotEquals(getNewExampleRequest1().hashCode(),getNewExampleRequest2());
     }
 
 
-    private Request getNewExampleRequest() {
+    private Request getNewExampleRequest1() {
         return new Request()
                 .setPath("/test")
                 .setMethod(RequestMethod.GET);
+    }
+
+    private Request getNewExampleRequest2() {
+        return new Request()
+                .setPath("/abc")
+                .setMethod(RequestMethod.POST);
     }
 }
