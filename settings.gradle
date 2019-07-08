@@ -1,3 +1,9 @@
 rootProject.name = 'recordreplay'
-include 'demo-soap', 'demorest', 'fakes-core', 'json-marshaller', 'file-repository'
+
+include 'demo-soap'
+include 'demorest' 
+include 'fakes-core'
+include 'file-repository'
+include 'json-marshaller'
+include 'yaml-marshaller'
 
