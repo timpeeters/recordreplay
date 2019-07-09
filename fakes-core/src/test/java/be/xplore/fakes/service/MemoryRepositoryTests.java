@@ -4,7 +4,7 @@ import be.xplore.fakes.model.Stub;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MemoryRepositoryTests {
 
@@ -18,7 +18,7 @@ public class MemoryRepositoryTests {
     @Test
     public void addValidStub() {
         repo.add(new Stub());
-        assertEquals(1, repo.find().size());
+        assertThat(repo.find().size()).isEqualTo(1);
     }
 
     @Test(expected = NullPointerException.class)
