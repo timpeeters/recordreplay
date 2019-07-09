@@ -3,19 +3,22 @@ package be.xplore.fakes.service;
 import be.xplore.fakes.model.Stub;
 
 import java.io.IOException;
+import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 public class FileRepository<M extends Marshaller> implements Repository {
     private final Path targetDir;
     private final Marshaller marshaller;
+    private int size;
 
     public FileRepository(Path targetDir, Class<M> marshallerType) {
         if (!validatePath(targetDir)) {
@@ -23,6 +26,7 @@ public class FileRepository<M extends Marshaller> implements Repository {
         }
         this.targetDir = targetDir.toAbsolutePath();
         this.marshaller = constructMarshaller(marshallerType);
+        this.size = 0;
     }
 
     @Override
@@ -32,31 +36,27 @@ public class FileRepository<M extends Marshaller> implements Repository {
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
+        ++size;
     }
 
     @Override
     public List<Stub> find() {
-        /*
-        Stream<Path> dirContents;
-        try {
-            dirContents = Files.list(targetDir);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-
-
-        try (Reader r = Files.newBufferedReader()) {
-            return marshaller.unMarshal();
-        } catch (IOException e) {
-            throw new RepositoryException(e);
-
-        }*/
-        return Collections.emptyList();
+        List<Stub> results = new ArrayList<>(size());
+        contentStream().forEach(path -> {
+            if (Files.isRegularFile(path)) {
+                results.add(read(path));
+            }
+        });
+        return results;
     }
 
-    public int count() {
-        try {
-            return (int) Files.list(targetDir).count();
+    public int size() {
+        return size;
+    }
+
+    private Stub read(Path file) {
+        try (Reader r = Files.newBufferedReader(file)) {
+            return marshaller.unMarshal(r);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -70,6 +70,14 @@ public class FileRepository<M extends Marshaller> implements Repository {
             throw new IllegalArgumentException(String.format("Path(%s) is not a directory!", path.toString()));
         }
         return true;
+    }
+
+    private Stream<Path> contentStream() {
+        try {
+            return Files.list(targetDir);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     private static String getUniqueStubFileName(Stub stub) {

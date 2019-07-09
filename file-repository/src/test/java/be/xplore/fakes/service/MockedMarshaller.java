@@ -5,8 +5,6 @@ import be.xplore.fakes.model.Stub;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.Collections;
-import java.util.List;
 
 public class MockedMarshaller implements Marshaller {
     @Override
@@ -16,9 +14,9 @@ public class MockedMarshaller implements Marshaller {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
-    public List<Stub>unMarshal(Reader reader) throws IOException {
+    public Stub unMarshal(Reader reader) throws IOException {
         reader.read();
-        return Collections.singletonList(new Stub());
+        return new Stub();
     }
 }
 
