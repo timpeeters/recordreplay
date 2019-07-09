@@ -7,6 +7,16 @@ public class Request {
     private RequestMethod method;
     private String path;
 
+    public Request() {
+        this.method = RequestMethod.GET;
+        this.path = "";
+    }
+
+    public Request(RequestMethod method, String path) {
+        this.method = method;
+        this.path = path;
+    }
+
     public RequestMethod getMethod() {
         return method;
     }

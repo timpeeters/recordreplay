@@ -7,6 +7,16 @@ public class Stub {
     private Request request;
     private Response response;
 
+    public Stub() {
+        this.request = new Request();
+        this.response = new Response();
+    }
+
+    public Stub(Request request, Response response) {
+        this.request = request;
+        this.response = response;
+    }
+
     public Request getRequest() {
         return request;
     }
