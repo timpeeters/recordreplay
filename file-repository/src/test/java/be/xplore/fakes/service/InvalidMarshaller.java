@@ -4,7 +4,6 @@ import be.xplore.fakes.model.Stub;
 
 import java.io.Reader;
 import java.io.Writer;
-import java.util.List;
 
 @SuppressWarnings("unused")
 public class InvalidMarshaller implements Marshaller {
@@ -18,7 +17,7 @@ public class InvalidMarshaller implements Marshaller {
     }
 
     @Override
-    public List<Stub> unMarshal(Reader reader) {
+    public Stub unMarshal(Reader reader) {
         return null;
     }
 }
