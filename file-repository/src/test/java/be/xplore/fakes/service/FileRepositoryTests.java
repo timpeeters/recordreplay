@@ -9,8 +9,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class FileRepositoryTests {
 
@@ -49,7 +48,7 @@ public class FileRepositoryTests {
     public void addStubToFileRepo() {
         var repo = createTestFileRepository();
         repo.add(new Stub());
-        assertEquals(1, repo.size());
+        assertThat(repo.size()).isEqualTo(1);
     }
 
     @Test
@@ -57,8 +56,8 @@ public class FileRepositoryTests {
         var repo = createTestFileRepository();
         repo.add(new Stub());
         var result = repo.find();
-        assertNotNull(result);
-        assertEquals(1, result.size());
+        assertThat(result).isNotNull();
+        assertThat(result.size()).isEqualTo(1);
     }
 
     @Test(expected = UncheckedIOException.class)
@@ -72,6 +71,13 @@ public class FileRepositoryTests {
     public void readFromDeletedFileThrows() {
         Repository repo = createTestFileRepository();
         tempDir.delete();
+        repo.find();
+    }
+
+    @Test
+    public void readWhenRepoHasSubDirNoThrow() throws IOException {
+        Repository repo = createTestFileRepository();
+        tempDir.newFolder();
         repo.find();
     }
 

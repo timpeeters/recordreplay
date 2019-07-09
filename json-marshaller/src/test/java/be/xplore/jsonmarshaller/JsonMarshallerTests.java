@@ -9,10 +9,10 @@ import be.xplore.fakes.service.Marshaller;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.StringReader;
 import java.io.StringWriter;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class JsonMarshallerTests {
@@ -42,12 +42,12 @@ public class JsonMarshallerTests {
     public void marshallWritesJsonString() {
         StringWriter stringWriter = new StringWriter();
         marshaller.marshal(stub, stringWriter);
-        assertEquals("Json string marshalled correctly", expectedJsonString, stringWriter.toString());
+        assertThat(stringWriter.toString()).as("Json string marshalled correctly").isEqualTo(expectedJsonString);
     }
 
     @Test
     public void unmarshallCreatesStubFromJson() {
         Stub unmarshalledStub = marshaller.unMarshal(new StringReader(expectedJsonString));
-        assertEquals("No correct stub unmarshalled", stub, unmarshalledStub);
+        assertThat(unmarshalledStub).as("No correct stub unmarshalled").isEqualTo(stub);
     }
 }
