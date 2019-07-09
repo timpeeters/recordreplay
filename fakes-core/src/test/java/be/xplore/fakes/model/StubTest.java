@@ -1,23 +1,24 @@
 package be.xplore.fakes.model;
 
+
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class StubTest {
 
     @Test
     public void checkEquality() {
-        assertEquals("Equals method not implemented correctly", getNewExampleStub1(), getNewExampleStub1());
+        assertThat(getNewExampleStub1()).as("Equals method not implemented correctly").isEqualTo(getNewExampleStub1());
         Stub stub = getNewExampleStub1();
-        assertEquals(stub, stub);
+        assertThat(stub).isEqualTo(stub);
     }
 
     @Test
     public void checkNotEqual() {
-        assertNotEquals(getNewExampleStub1(), getNewExampleStub2());
-        assertNotEquals(getNewExampleStub1(), getNewExampleStub1().setResponse(getNewExampleStub2().getResponse()));
+        assertThat(getNewExampleStub2()).isNotEqualTo(getNewExampleStub1());
+        assertThat(getNewExampleStub1().setResponse(getNewExampleStub2().getResponse()))
+                .isNotEqualTo(getNewExampleStub1());
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -25,14 +26,14 @@ public class StubTest {
     public void checkNullAndOtherClass() {
         Stub stub = getNewExampleStub1();
         Stub nullStub = null;
-        assertNotEquals(stub, nullStub);
-        assertNotEquals(stub, 5);
+        assertThat(nullStub).isNotEqualTo(stub);
+        assertThat(5).isNotEqualTo(stub);
     }
 
     @Test
     public void hashCodeTest() {
-        assertEquals(getNewExampleStub1().hashCode(), getNewExampleStub1().hashCode());
-        assertNotEquals(getNewExampleStub1().hashCode(), getNewExampleStub2().hashCode());
+        assertThat(getNewExampleStub1().hashCode()).isEqualTo(getNewExampleStub1().hashCode());
+        assertThat(getNewExampleStub2().hashCode()).isNotEqualTo(getNewExampleStub1().hashCode());
     }
 
     private Stub getNewExampleStub1() {

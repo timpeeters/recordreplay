@@ -11,7 +11,7 @@ import org.junit.Test;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class YamlMarshallerTests {
 
@@ -46,13 +46,13 @@ public class YamlMarshallerTests {
     public void marshallWritesYamlString() {
         StringWriter stringWriter = new StringWriter();
         marshaller.marshal(stub, stringWriter);
-        assertEquals("Yaml string marshalled correctly", expectedYamlString, stringWriter.toString());
+        assertThat(stringWriter.toString()).as("Yaml string marshalled correctly").isEqualTo(expectedYamlString);
     }
 
     @Test
     public void unmarshallCreatesStubFromYamlString() {
         Stub unmarshalledStub = marshaller.unMarshal(new StringReader(expectedYamlString));
-        assertEquals("No correct stub unmarshalled", stub, unmarshalledStub);
+        assertThat(unmarshalledStub).as("No correct stub unmarshalled").isEqualTo(stub);
     }
 
 }
