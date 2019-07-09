@@ -16,13 +16,10 @@ public class RequestHeaderMatcher implements RequestMatcher {
     }
 
     private boolean validateHeaderLists(Request request, Request otherRequest) {
-        if (request.getHeaders() == null || otherRequest.getHeaders() == null) {
-            return true;
-        }
-        if (request.getHeaders().size() == 0 || otherRequest.getHeaders().size() == 0) {
-            return true;
-        }
-        return false;
+        return request.getHeaders() == null
+                || otherRequest.getHeaders() == null
+                || request.getHeaders().size() == 0
+                || otherRequest.getHeaders().size() == 0;
     }
 
     private double calculateMatchDistance(Request request, Request otherRequest) {

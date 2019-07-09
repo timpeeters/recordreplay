@@ -16,15 +16,11 @@ public class RequestParamMatcher implements RequestMatcher {
     }
 
     private boolean validateParamLists(Request request, Request otherRequest) {
-        if (request.getParams() == null || otherRequest.getParams() == null) {
-            return true;
-        }
-        if (request.getParams().size() == 0 || otherRequest.getParams().size() == 0) {
-            return true;
-        }
-        return false;
+        return request.getParams() == null
+                || otherRequest.getParams() == null
+                || request.getParams().size() == 0
+                || otherRequest.getParams().size() == 0;
     }
-
 
     private double calculateMatchDistance(Request request, Request otherRequest) {
         List<String> smallestList = determineSmallestList(request, otherRequest);
