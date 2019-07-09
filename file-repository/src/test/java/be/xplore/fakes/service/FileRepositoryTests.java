@@ -1,16 +1,15 @@
 package be.xplore.fakes.service;
 
 import be.xplore.fakes.model.Stub;
-import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class FileRepositoryTests {
 
@@ -44,21 +43,20 @@ public class FileRepositoryTests {
     public void createFileRepoWithInvalidMarshallerThrowsIllegalArgument() {
         new FileRepository<>(tempDirPath(), InvalidMarshaller.class);
     }
-/*
+
     @Test
-    public void addStubToFileRepo() throws IOException {
-        FileRepository repo = createTestFileRepository();
+    public void addStubToFileRepo() {
+        var repo = createTestFileRepository();
         repo.add(new Stub());
-        assertEquals(1, Files.list(tempDirPath()).count());
-    }
-/*
-    @Test
-    public void readStubsFromFileRepo() throws MarshalException, InvalidPathException, IOException,
-            RepositoryException {
-        Repository repo = createTestFileRepository();
-        assertNotNull(repo.find());
+        assertEquals(1, repo.count());
     }
 
+    @Test
+    public void readStubsFromFileRepo() {
+        var repo = createTestFileRepository();
+        assertNotNull(repo.find());
+    }
+/*
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @Test(expected = RepositoryException.class)
     public void writeToReadOnlyFileThrows() throws MarshalException, InvalidPathException, IOException,

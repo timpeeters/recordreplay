@@ -21,27 +21,45 @@ public class FileRepository<M extends Marshaller> implements Repository {
         if (!validatePath(targetDir)) {
             createDir(targetDir);
         }
+        this.targetDir = targetDir.toAbsolutePath();
         this.marshaller = constructMarshaller(marshallerType);
-        this.targetDir = targetDir;
     }
 
     @Override
     public void add(Stub stub) {
-     /*   try (Writer w = Files.newBufferedWriter(Paths.get(targetDir, ""))) {
+        try (Writer w = Files.newBufferedWriter(Paths.get(targetDir.toString(), getUniqueStubFileName(stub)))) {
             marshaller.marshal(stub, w);
         } catch (IOException e) {
-            throw new RepositoryException(e);
-        }*/
+            throw new UncheckedIOException(e);
+        }
     }
 
     @Override
     public List<Stub> find() {
-      /*  try (Reader r = Files.newBufferedReader(file.toPath())) {
-            return marshaller.unMarshal(r);
+        /*
+        Stream<Path> dirContents;
+        try {
+            dirContents = Files.list(targetDir);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
+
+        try (Reader r = Files.newBufferedReader()) {
+            return marshaller.unMarshal();
         } catch (IOException e) {
             throw new RepositoryException(e);
+
         }*/
         return Collections.emptyList();
+    }
+
+    public int count() {
+        try {
+            return (int) Files.list(targetDir).count();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     private static boolean validatePath(Path path) {
@@ -54,8 +72,11 @@ public class FileRepository<M extends Marshaller> implements Repository {
         return true;
     }
 
-    private static String getUniqueStubFileName() {
-        return UUID.randomUUID().toString();
+    private static String getUniqueStubFileName(Stub stub) {
+        var req = stub.getRequest();
+        return req.getMethod().toString() + "_" +
+                req.getPath() +
+                UUID.randomUUID().toString();
     }
 
     private static void createDir(Path dir) {
