@@ -1,7 +1,7 @@
 rootProject.name = 'recordreplay'
 
 include 'demo-soap'
-include 'demorest' 
+include 'demo-rest' 
 include 'fakes-core'
 include 'file-repository'
 include 'json-marshaller'
