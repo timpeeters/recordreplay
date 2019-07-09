@@ -2,35 +2,39 @@ package be.xplore.jsonmarshaller;
 
 import be.xplore.fakes.model.Stub;
 import be.xplore.fakes.service.Marshaller;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.UncheckedIOException;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class JsonMarshaller implements Marshaller {
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper;
 
-    @Override
-    public void marshal(Stub stub, Writer writer) throws IOException {
-        String jsonString = mapper.writeValueAsString(stub);
-        writer.append(jsonString);
+    public JsonMarshaller() {
+        this.mapper = new ObjectMapper();
     }
 
     @Override
-    public List<Stub> unMarshal(Reader reader) throws IOException {
-        List<Stub> stubs = new ArrayList<>();
-        MappingIterator<Stub> stubIterator = mapper.readValues(new JsonFactory().createParser(reader), Stub.class);
-        while (stubIterator.hasNext()) {
-            stubs.add(stubIterator.next());
+    public void marshal(Stub stub, Writer writer) {
+        try {
+            writer.append(mapper.writeValueAsString(stub));
+        } catch (IOException e) {
+            throw new UncheckedIOException("Unable to marshal stub into json", e);
         }
-        return stubs;
+    }
+
+    @Override
+    public Stub unMarshal(Reader reader) {
+        try {
+            return mapper.readValue(reader, Stub.class);
+        } catch (IOException e) {
+            throw new UncheckedIOException("Unable to unmarshal json into stub", e);
+        }
     }
 
 }

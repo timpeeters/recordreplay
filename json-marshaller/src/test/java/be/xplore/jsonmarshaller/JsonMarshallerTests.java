@@ -11,10 +11,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.List;
 
 
 public class JsonMarshallerTests {
@@ -41,15 +39,15 @@ public class JsonMarshallerTests {
 
 
     @Test
-    public void marshallWritesJsonString() throws IOException {
+    public void marshallWritesJsonString() {
         StringWriter stringWriter = new StringWriter();
         marshaller.marshal(stub, stringWriter);
         assertEquals("Json string marshalled correctly", expectedJsonString, stringWriter.toString());
     }
 
     @Test
-    public void unmarshallCreatesStubFromJson() throws IOException {
-        List<Stub> stubs = marshaller.unMarshal(new StringReader(expectedJsonString));
-        assertEquals("No correct stub unmarshalled", stub, stubs.get(0));
+    public void unmarshallCreatesStubFromJson() {
+        Stub unmarshalledStub = marshaller.unMarshal(new StringReader(expectedJsonString));
+        assertEquals("No correct stub unmarshalled", stub, unmarshalledStub);
     }
 }

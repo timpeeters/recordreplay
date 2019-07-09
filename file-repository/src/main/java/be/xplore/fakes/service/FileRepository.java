@@ -46,7 +46,7 @@ public class FileRepository<M extends Marshaller> implements Repository {
     @Override
     public List<Stub> find() throws RepositoryException {
         try (Reader r = Files.newBufferedReader(file.toPath())) {
-            return marshaller.unMarshal(r);
+            return null;
         } catch (IOException e) {
             throw new RepositoryException(e);
         }

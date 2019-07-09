@@ -2,34 +2,37 @@ package be.xplore.yamlmarshaller;
 
 import be.xplore.fakes.model.Stub;
 import be.xplore.fakes.service.Marshaller;
-import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.UncheckedIOException;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
 
 public class YamlMarshaller implements Marshaller {
 
-    private final YAMLFactory yamlFactory = new YAMLFactory();
-    private final ObjectMapper mapper = new ObjectMapper(yamlFactory);
+    private final ObjectMapper mapper;
 
-    @Override
-    public void marshal(Stub stub, Writer writer) throws IOException {
-        String yamlString = mapper.writeValueAsString(stub);
-        writer.append(yamlString);
+    public YamlMarshaller() {
+        this.mapper = new ObjectMapper(new YAMLFactory());
     }
 
     @Override
-    public List<Stub> unMarshal(Reader reader) throws IOException {
-        List<Stub> stubs = new ArrayList<>();
-        MappingIterator<Stub> stubIterator = mapper.readValues(yamlFactory.createParser(reader), Stub.class);
-        while (stubIterator.hasNext()) {
-            stubs.add(stubIterator.next());
+    public void marshal(Stub stub, Writer writer) {
+        try {
+            writer.append(mapper.writeValueAsString(stub));
+        } catch (IOException e) {
+            throw new UncheckedIOException("Unable to marshal stub into yaml", e);
         }
-        return stubs;
+    }
+
+    @Override
+    public Stub unMarshal(Reader reader) {
+        try {
+            return mapper.readValue(reader, Stub.class);
+        } catch (IOException e) {
+            throw new UncheckedIOException("Unable to unmarshal yaml into stub", e);
+        }
     }
 }
