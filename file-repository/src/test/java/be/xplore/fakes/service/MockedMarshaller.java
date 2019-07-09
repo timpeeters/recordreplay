@@ -4,21 +4,28 @@ import be.xplore.fakes.model.Stub;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.UncheckedIOException;
 import java.io.Writer;
-import java.util.Collections;
-import java.util.List;
 
 public class MockedMarshaller implements Marshaller {
     @Override
-    public void marshal(Stub stub, Writer writer) throws IOException {
-        writer.append(stub.toString());
+    public void marshal(Stub stub, Writer writer) {
+        try {
+            writer.append(stub.toString());
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
-    public List<Stub>unMarshal(Reader reader) throws IOException {
-        reader.read();
-        return Collections.singletonList(new Stub());
+    public Stub unMarshal(Reader reader) {
+        try {
+            reader.read();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+        return new Stub();
     }
 }
 

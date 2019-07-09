@@ -32,6 +32,11 @@ subprojects {
         }
     }
 
+    dependencies {
+        testCompile group: 'junit', name: 'junit', version: '4.12'
+        testCompile("org.assertj:assertj-core:3.12.2")
+    }
+
     pmd {
         consoleOutput = true
         ruleSetFiles = files("${rootProject.projectDir}/config/pmd/ruleset.xml")

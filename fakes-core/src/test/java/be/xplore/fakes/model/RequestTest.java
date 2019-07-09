@@ -2,22 +2,22 @@ package be.xplore.fakes.model;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class RequestTest {
 
     @Test
     public void checkEquality() {
         Request request = getNewExampleRequest1();
-        assertEquals(request, request);
-        assertEquals("Equals method not implemented correctly", request, getNewExampleRequest1());
+        assertThat(request).isEqualTo(request);
+        assertThat(getNewExampleRequest1()).as("Equals method not implemented correctly").isEqualTo(request);
     }
 
     @Test
     public void checkNotEqual() {
-        assertNotEquals(getNewExampleRequest1(), getNewExampleRequest2());
-        assertNotEquals(getNewExampleRequest1(), getNewExampleRequest1().setPath(getNewExampleRequest2().getPath()));
+        assertThat(getNewExampleRequest2()).isNotEqualTo(getNewExampleRequest1());
+        assertThat(getNewExampleRequest1().setPath(getNewExampleRequest2().getPath()))
+                .isNotEqualTo(getNewExampleRequest1());
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -26,14 +26,14 @@ public class RequestTest {
         Request request = getNewExampleRequest1();
         Request nullRequest = null;
 
-        assertNotEquals(request, nullRequest);
-        assertNotEquals(request, 5);
+        assertThat(nullRequest).isNotEqualTo(request);
+        assertThat(5).isNotEqualTo(request);
     }
 
     @Test
     public void hashCodeTest() {
-        assertEquals(getNewExampleRequest1().hashCode(), getNewExampleRequest1().hashCode());
-        assertNotEquals(getNewExampleRequest1().hashCode(),getNewExampleRequest2());
+        assertThat(getNewExampleRequest1().hashCode()).isEqualTo(getNewExampleRequest1().hashCode());
+        assertThat(getNewExampleRequest2()).isNotEqualTo(getNewExampleRequest1().hashCode());
     }
 
 

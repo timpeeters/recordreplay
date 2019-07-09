@@ -2,13 +2,11 @@ package be.xplore.fakes.service;
 
 import be.xplore.fakes.model.Stub;
 
-import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.List;
 
 public interface Marshaller {
-    void marshal(Stub stub, Writer writer) throws IOException;
+    void marshal(Stub stub, Writer writer);
 
-    List<Stub> unMarshal(Reader reader) throws IOException;
+    Stub unMarshal(Reader reader);
 }
