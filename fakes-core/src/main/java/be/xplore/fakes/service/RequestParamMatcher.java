@@ -25,26 +25,34 @@ public class RequestParamMatcher implements RequestMatcher {
         return false;
     }
 
+
     private double calculateMatchDistance(Request request, Request otherRequest) {
-        double distanceIncrement = getDistanceIncrement(request.getParams(), otherRequest.getParams());
-        return request
-                .getParams()
+        List<String> smallestList = determineSmallestList(request, otherRequest);
+        double distanceIncrement = getDistanceIncrement(request, otherRequest);
+        return determineLargestList(request, otherRequest)
                 .stream()
-                .filter(s -> !otherRequest.getParams().contains(s))
+                .filter(s -> !smallestList.contains(s))
                 .mapToDouble(s -> distanceIncrement)
                 .sum();
     }
 
-    private double getDistanceIncrement(List<String> params1, List<String> params2) {
-        return 1D / determineLargestList(params1, params2);
+    private double getDistanceIncrement(Request request, Request otherRequest) {
+        return 1D / determineLargestList(request, otherRequest).size();
     }
 
-    private int determineLargestList(List<String> params1, List<String> params2) {
-        if (params1.size() > params2.size()) {
-            return params1.size();
+    private List<String> determineLargestList(Request request, Request otherRequest) {
+        if (request.getParams().size() > otherRequest.getParams().size()) {
+            return request.getParams();
         } else {
-            return params2.size();
+            return otherRequest.getParams();
         }
     }
 
+    private List<String> determineSmallestList(Request request, Request otherRequest) {
+        if (request.getParams().size() > otherRequest.getParams().size()) {
+            return otherRequest.getParams();
+        } else {
+            return request.getParams();
+        }
+    }
 }
