@@ -11,14 +11,26 @@ import org.junit.Test;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class JsonMarshallerTests {
 
-    private final String expectedJsonString = "{\"request\":{\"method\":\"GET\",\"path\":\"/test\"}" +
-            ",\"response\":{\"statusCode\":200,\"statusText\":\"Successful\"}}";
+    private final String expectedJsonString = "{" +
+            "\"request\":" +
+            "{\"method\":\"GET\"," +
+            "\"path\":\"/test\"," +
+            "\"params\":[]," +
+            "\"headers\":[]," +
+            "\"body\":\"test body" +
+            "\"}," +
+            "\"response\":" +
+            "{\"statusCode\":200," +
+            "\"statusText\":\"Successful\"}" +
+            "}";
+
     private Stub stub;
     private Marshaller marshaller;
 
@@ -26,7 +38,10 @@ public class JsonMarshallerTests {
     public void setUpTest() {
         Request request = new Request()
                 .setMethod(RequestMethod.GET)
-                .setPath("/test");
+                .setPath("/test")
+                .setParams(new ArrayList<>())
+                .setHeaders(new ArrayList<>())
+                .setBody("test body");
         Response response = new Response()
                 .setStatusCode(200)
                 .setStatusText("Successful");
