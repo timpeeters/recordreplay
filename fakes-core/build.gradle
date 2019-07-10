@@ -2,8 +2,13 @@ plugins {
     id 'java'
     id 'checkstyle'
     id 'pmd'
+    id 'org.springframework.boot' version '2.1.6.RELEASE'
 }
 
+apply plugin: 'io.spring.dependency-management'
+
 dependencies {
-    testCompile 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation project(':demo-rest')
 }
