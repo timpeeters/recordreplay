@@ -5,6 +5,8 @@ plugins {
     id 'pmd'
 }
 
+defaultTasks 'build'
+
 allprojects {
     apply plugin: 'idea'
     apply plugin: 'checkstyle'
