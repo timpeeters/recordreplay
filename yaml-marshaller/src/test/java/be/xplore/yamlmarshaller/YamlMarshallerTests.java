@@ -8,13 +8,10 @@ import be.xplore.fakes.service.Marshaller;
 import org.junit.Before;
 import org.junit.Test;
 
-
-import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class YamlMarshallerTests {
 
@@ -46,16 +43,16 @@ public class YamlMarshallerTests {
     }
 
     @Test
-    public void marshallWritesYamlString() throws IOException {
+    public void marshallWritesYamlString() {
         StringWriter stringWriter = new StringWriter();
         marshaller.marshal(stub, stringWriter);
-        assertEquals("Yaml string marshalled correctly", expectedYamlString, stringWriter.toString());
+        assertThat(stringWriter.toString()).as("Yaml string marshalled correctly").isEqualTo(expectedYamlString);
     }
 
     @Test
-    public void unmarshallCreatesStubFromYamlString() throws IOException {
-        List<Stub> stubs = marshaller.unMarshal(new StringReader(expectedYamlString));
-        assertEquals("No correct stub unmarshalled", stub, stubs.get(0));
+    public void unmarshallCreatesStubFromYamlString() {
+        Stub unmarshalledStub = marshaller.unMarshal(new StringReader(expectedYamlString));
+        assertThat(unmarshalledStub).as("No correct stub unmarshalled").isEqualTo(stub);
     }
 
 }

@@ -5,6 +5,8 @@ plugins {
     id 'pmd'
 }
 
+defaultTasks 'build'
+
 allprojects {
     apply plugin: 'idea'
     apply plugin: 'checkstyle'
@@ -30,6 +32,11 @@ subprojects {
             sourceCompatibility = JavaVersion.VERSION_11
             targetCompatibility = JavaVersion.VERSION_11
         }
+    }
+
+    dependencies {
+        testCompile group: 'junit', name: 'junit', version: '4.12'
+        testCompile("org.assertj:assertj-core:3.12.2")
     }
 
     pmd {

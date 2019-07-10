@@ -2,23 +2,22 @@ package be.xplore.fakes.model;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ResponseTest {
 
     @Test
     public void checkEquality() {
         Response response = getNewExampleResponse1();
-        assertEquals(response, response);
-        assertEquals("Equals method not implemented correctly", response, getNewExampleResponse1());
+        assertThat(response).isEqualTo(response);
+        assertThat(getNewExampleResponse1()).as("Equals method not implemented correctly").isEqualTo(response);
     }
 
     @Test
     public void checkNotEqual() {
-        assertNotEquals(getNewExampleResponse1(), getNewExampleResponse2());
-        assertNotEquals(getNewExampleResponse1(),
-                getNewExampleResponse1().setStatusText(getNewExampleResponse2().getStatusText()));
+        assertThat(getNewExampleResponse2()).isNotEqualTo(getNewExampleResponse1());
+        assertThat(getNewExampleResponse1().setStatusText(getNewExampleResponse2().getStatusText()))
+                .isNotEqualTo(getNewExampleResponse1());
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -26,14 +25,14 @@ public class ResponseTest {
     public void checkNullAndOtherClass() {
         Response response = getNewExampleResponse1();
         Response nullResponse = null;
-        assertNotEquals(response, nullResponse);
-        assertNotEquals(response, 5);
+        assertThat(nullResponse).isNotEqualTo(response);
+        assertThat(5).isNotEqualTo(response);
     }
 
     @Test
     public void hashCodeTest() {
-        assertEquals(getNewExampleResponse1().hashCode(), getNewExampleResponse1().hashCode());
-        assertNotEquals(getNewExampleResponse1().hashCode(), getNewExampleResponse2().hashCode());
+        assertThat(getNewExampleResponse1().hashCode()).isEqualTo(getNewExampleResponse1().hashCode());
+        assertThat(getNewExampleResponse2().hashCode()).isNotEqualTo(getNewExampleResponse1().hashCode());
     }
 
     private Response getNewExampleResponse1() {

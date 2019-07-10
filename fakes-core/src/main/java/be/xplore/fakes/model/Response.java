@@ -7,6 +7,11 @@ public class Response {
     private int statusCode;
     private String statusText;
 
+    public Response() {
+        this.statusCode = 200;
+        this.statusText = "OK";
+    }
+
     public int getStatusCode() {
         return statusCode;
     }

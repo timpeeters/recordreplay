@@ -1,94 +1,105 @@
 package be.xplore.fakes.service;
 
 import be.xplore.fakes.model.Stub;
-import be.xplore.fakes.service.except.InvalidFileException;
-import be.xplore.fakes.service.except.InvalidStubException;
-import be.xplore.fakes.service.except.MarshalException;
-import be.xplore.fakes.service.except.RepositoryException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
+import java.io.UncheckedIOException;
+import java.nio.file.Path;
 
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class FileRepositoryTests {
+@RunWith(MockitoJUnitRunner.class)
+public class FileRepositoryTests<M extends Marshaller> {
 
     @Rule
     public TemporaryFolder tempDir = new TemporaryFolder();
 
+    @Mock
+    private Marshaller mockedMarshaller;
+
+    @SuppressWarnings("unused")
     @Test
-    public void createFileRepoFromExistingFile() throws IOException, InvalidFileException, MarshalException {
-        new FileRepository<>(tempDir.newFile(), MockedMarshaller.class);
-    }
-
-    @Test
-    public void createFileRepoFromNonExistingFile() throws IOException, InvalidFileException, MarshalException {
-        new FileRepository<>(Paths.get(tempDir.getRoot().getAbsolutePath().concat("/FileToCreate")).toFile(),
-                MockedMarshaller.class);
-    }
-
-    @Test(expected = InvalidFileException.class)
-    public void createFileRepoWithNullFileThrows() throws InvalidFileException, MarshalException, IOException {
-        new FileRepository<>(null, MockedMarshaller.class);
-    }
-
-    @Test(expected = InvalidFileException.class)
-    public void createFileRepoFromDirThrows() throws IOException, InvalidFileException, MarshalException {
-        new FileRepository<>(tempDir.newFolder(), MockedMarshaller.class);
-    }
-
-    @Test(expected = MarshalException.class)
-    public void createFileRepoWithInvalidMarshallerThrows() throws IOException, MarshalException, InvalidFileException {
-        new FileRepository<>(tempDir.newFile(), InvalidMarshaller.class);
+    public void createFileRepoFromPath() {
+        Repository r = createTestFileRepository();
     }
 
     @Test
-    public void addStubToFileRepo() throws MarshalException, InvalidFileException, InvalidStubException,
-            RepositoryException, IOException {
-        Repository repo = createTestFileRepository();
+    public void createFileRepoFromNonExistingDir() throws IOException {
+        Path deletedDir = tempDir.newFolder().toPath();
+        tempDir.delete();
+        new FileRepository<>(deletedDir, mockedMarshaller.getClass());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void createFileRepoWithNullPathThrowsNullptr() {
+        new FileRepository<>(null, mockedMarshaller.getClass());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void createFileRepoFromFilePathThrowsIllegalArgument() throws IOException {
+        new FileRepository<>(tempDir.newFile().toPath(), mockedMarshaller.getClass());
+    }
+
+    @Test
+    public void addStubToFileRepo() {
+        var repo = createTestFileRepository();
         repo.add(new Stub());
+        assertThat(repo.size()).isEqualTo(1);
     }
 
     @Test
-    public void readStubsFromFileRepo() throws MarshalException, InvalidFileException, IOException,
-            RepositoryException {
-        Repository repo = createTestFileRepository();
-        assertNotNull(repo.find());
-    }
-
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    @Test(expected = RepositoryException.class)
-    public void writeToReadOnlyFileThrows() throws MarshalException, InvalidFileException, IOException,
-            RepositoryException, InvalidStubException {
-        File file = tempDir.newFile();
-        Repository repo = new FileRepository<>(file, MockedMarshaller.class);
-        file.setReadOnly();
+    public void readStubsFromFileRepo() {
+        FileRepository<? extends Marshaller> repo = createTestFileRepository();
         repo.add(new Stub());
+        java.util.List<Stub> result = repo.find();
+        assertThat(result).isNotNull();
+        assertThat(result.size()).isEqualTo(1);
     }
 
-    @Test(expected = RepositoryException.class)
-    public void writeToDeletedFileThrows() throws MarshalException, InvalidFileException, IOException,
-            RepositoryException, InvalidStubException {
+    @Test(expected = UncheckedIOException.class)
+    public void writeToDeletedFileThrows() {
         Repository repo = createTestFileRepository();
         tempDir.delete();
         repo.add(new Stub());
     }
 
-    @Test(expected = RepositoryException.class)
-    public void readFromDeletedFileThrows() throws MarshalException, InvalidFileException, IOException,
-            RepositoryException {
+    @Test(expected = UncheckedIOException.class)
+    public void readFromDeletedFileThrows() {
         Repository repo = createTestFileRepository();
         tempDir.delete();
         repo.find();
     }
 
+    @Test
+    public void readWhenRepoHasSubDirNoThrow() throws IOException {
+        Repository repo = createTestFileRepository();
+        tempDir.newFolder();
+        repo.find();
+    }
 
-    private FileRepository<MockedMarshaller> createTestFileRepository() throws IOException, MarshalException,
-            InvalidFileException {
-        return new FileRepository<>(tempDir.newFile(), MockedMarshaller.class);
+    @Test(expected = UncheckedIOException.class)
+    public void marshallingFailureThrows() {
+        new FileRepository<>(tempDirPath(), BrokenMarshaller.class).add(new Stub());
+    }
+
+    @Test(expected = UncheckedIOException.class)
+    public void unmarshallingFailureThrows() {
+        var repo = new FileRepository<>(tempDirPath(), BrokenMarshaller.class);
+        repo.add(new Stub());
+        repo.find();
+    }
+
+    private FileRepository<? extends Marshaller> createTestFileRepository() {
+        return new FileRepository<>(tempDirPath(), mockedMarshaller.getClass());
+    }
+
+    private Path tempDirPath() {
+        return tempDir.getRoot().toPath();
     }
 }

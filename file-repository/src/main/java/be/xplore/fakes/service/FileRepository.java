@@ -1,69 +1,109 @@
 package be.xplore.fakes.service;
 
 import be.xplore.fakes.model.Stub;
-import be.xplore.fakes.service.except.InvalidFileException;
-import be.xplore.fakes.service.except.MarshalException;
-import be.xplore.fakes.service.except.RepositoryException;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.UncheckedIOException;
 import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Stream;
 
 public class FileRepository<M extends Marshaller> implements Repository {
-    private final File file;
+    private final Path targetDir;
     private final Marshaller marshaller;
+    private int size;
 
-    public FileRepository(File file, Class<M> marshallerType)
-            throws InvalidFileException, IOException, MarshalException {
-        this.file = file;
-        createFileIfNotExists();
-        validateFile();
-        try {
-            this.marshaller = marshallerType.getConstructor().newInstance();
-        } catch (InstantiationException
-                | IllegalAccessException
-                | InvocationTargetException
-                | NoSuchMethodException e) {
-            throw new MarshalException(e);
+    public FileRepository(Path targetDir, Class<M> marshallerType) {
+        if (!validatePath(targetDir)) {
+            createDir(targetDir);
         }
+        this.targetDir = targetDir.toAbsolutePath();
+        this.marshaller = constructMarshaller(marshallerType);
+        this.size = 0;
     }
 
     @Override
-    public void add(Stub stub) throws RepositoryException {
-        try (Writer w = Files.newBufferedWriter(file.toPath(), StandardOpenOption.APPEND)) {
+    public void add(Stub stub) {
+        try (Writer w = Files.newBufferedWriter(Paths.get(targetDir.toString(), getUniqueStubFileName(stub)))) {
             marshaller.marshal(stub, w);
         } catch (IOException e) {
-            throw new RepositoryException(e);
+            throw new UncheckedIOException(e);
         }
+        ++size;
     }
 
     @Override
-    public List<Stub> find() throws RepositoryException {
-        try (Reader r = Files.newBufferedReader(file.toPath())) {
+    public List<Stub> find() {
+        List<Stub> results = new ArrayList<>(size());
+        contentStream().forEach(path -> {
+            if (Files.isRegularFile(path)) {
+                results.add(read(path));
+            }
+        });
+        return results;
+    }
+
+    public int size() {
+        return size;
+    }
+
+    private Stub read(Path file) {
+        try (Reader r = Files.newBufferedReader(file)) {
             return marshaller.unMarshal(r);
         } catch (IOException e) {
-            throw new RepositoryException(e);
+            throw new UncheckedIOException(e);
         }
     }
 
-    private void validateFile() throws InvalidFileException {
-        if (file.isDirectory()) {
-            throw new InvalidFileException("File is a directory", file);
+    private static boolean validatePath(Path path) {
+        if (!Files.exists(path)) {
+            return false;
+        }
+        if (!Files.isDirectory(path)) {
+            throw new IllegalArgumentException(String.format("Path(%s) is not a directory!", path.toString()));
+        }
+        return true;
+    }
+
+    private Stream<Path> contentStream() {
+        try {
+            return Files.list(targetDir);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
     }
 
-    private void createFileIfNotExists() throws IOException, InvalidFileException {
-        if (file == null) {
-            throw new InvalidFileException("File is null!");
+    private static String getUniqueStubFileName(Stub stub) {
+        var req = stub.getRequest();
+        return req.getMethod().toString() + "_" +
+                req.getPath() +
+                UUID.randomUUID().toString();
+    }
+
+    private static void createDir(Path dir) {
+        try {
+            Files.createDirectories(dir.toAbsolutePath());
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
-        if (!file.exists()) {
-            Files.createFile(Paths.get(file.getAbsolutePath()));
+    }
+
+    private static Marshaller constructMarshaller(Class<? extends Marshaller> marshallerType) {
+        try {
+            return marshallerType.getConstructor().newInstance();
+        } catch (InstantiationException
+                | InvocationTargetException
+                | NoSuchMethodException
+                | IllegalAccessException e) {
+            throw new IllegalArgumentException(String.format("Can not instantiate Marshaller of type %s, does it have" +
+                    " a public default constructor?", marshallerType.getName()), e);
         }
     }
 }
