@@ -1,14 +1,15 @@
 package be.xplore.fakes.model;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class Request {
 
     private RequestMethod method;
     private String path;
-    private List<String> params;
-    private List<String> headers;
+    private Map<String, List<String>> params;
+    private Map<String, List<String>> headers;
     private String body;
 
 
@@ -40,20 +41,20 @@ public class Request {
         return this;
     }
 
-    public List<String> getParams() {
+    public Map<String, List<String>> getParams() {
         return params;
     }
 
-    public Request setParams(List<String> params) {
+    public Request setParams(Map<String, List<String>> params) {
         this.params = params;
         return this;
     }
 
-    public List<String> getHeaders() {
+    public Map<String, List<String>> getHeaders() {
         return headers;
     }
 
-    public Request setHeaders(List<String> headers) {
+    public Request setHeaders(Map<String, List<String>> headers) {
         this.headers = headers;
         return this;
     }
