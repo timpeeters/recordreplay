@@ -36,13 +36,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) throws UserValidationException {
-        validateUser(user, true);
+        validateUser(user);
         return userRepo.save(user);
     }
 
     @Override
     public User updateUser(User user) throws UserValidationException {
-        validateUser(user, false);
+        validateUser(user);
         return userRepo.save(user);
     }
 
@@ -55,12 +55,9 @@ public class UserServiceImpl implements UserService {
         userRepo.deleteById(id);
     }
 
-    private void validateUser(User user, boolean isNew) throws UserValidationException {
+    private void validateUser(User user) throws UserValidationException {
         if (user == null) {
             throw new UserValidationException("User passed can not be null");
-        }
-        if (isNew && user.getId() != null) {
-            throw new UserValidationException("UserID can not have a value when calling the new user endpoint");
         }
     }
 
