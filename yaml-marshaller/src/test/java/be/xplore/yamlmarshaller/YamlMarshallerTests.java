@@ -16,7 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class YamlMarshallerTests {
 
-
     private final String expectedYamlString = "---\n" +
             "request:\n  " +
             "method: \"GET\"\n  " +
@@ -52,7 +51,6 @@ public class YamlMarshallerTests {
     public void marshallWritesYamlString() {
         StringWriter stringWriter = new StringWriter();
         marshaller.marshal(stub, stringWriter);
-        System.out.println(stringWriter.toString());
         assertThat(stringWriter.toString()).as("Yaml string not marshalled correctly").isEqualTo(expectedYamlString);
     }
 
