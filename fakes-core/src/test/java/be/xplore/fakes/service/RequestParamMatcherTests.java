@@ -6,17 +6,26 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class RequestParamMatcherTests {
 
-    private static List<String> sameParams1 = new ArrayList<>();
-    private static List<String> sameParams2 = new ArrayList<>();
-    private static List<String> diffParams = new ArrayList<>();
-    private static List<String> halfParams = new ArrayList<>();
+    private static final String SAME_KEY_1 = "paramKey1";
+    private static final String SAME_KEY_2 = "paramKey2";
+
+    private static Map<String, List<String>> sameParams1 = new HashMap<>();
+    private static Map<String, List<String>> sameParams2 = new HashMap<>();
+    private static Map<String, List<String>> diffParams = new HashMap<>();
+    private static Map<String, List<String>> halfParams = new HashMap<>();
+
+    private static List<String> sameParamValues = new ArrayList<>();
+    private static List<String> diffParamValues = new ArrayList<>();
+    private static List<String> halfParamValues = new ArrayList<>();
 
     private static Request sameRequest1;
     private static Request sameRequest2;
@@ -27,19 +36,39 @@ public class RequestParamMatcherTests {
 
 
     @BeforeClass
-    public static void setUpSameParamLists() {
-        sameParams1.add("paramTest1");
-        sameParams1.add("paramTest2");
-        sameParams2.add("paramTest1");
-        sameParams2.add("paramTest2");
+    public static void fillSameParamValues() {
+        sameParamValues.add("test1");
+        sameParamValues.add("test2");
+        sameParamValues.add("test3");
+        sameParamValues.add("test4");
     }
 
     @BeforeClass
-    public static void setUpDiffParamLists() {
-        diffParams.add("paramTest3");
-        diffParams.add("paramTest4");
-        halfParams.add("paramTest1");
-        halfParams.add("paramTest6");
+    public static void fillDiffParamValues() {
+        diffParamValues.add("test5");
+        diffParamValues.add("test6");
+    }
+
+    @BeforeClass
+    public static void fillHalfParamValues() {
+        halfParamValues.add("test1");
+        halfParamValues.add("test2");
+    }
+
+    @BeforeClass
+    public static void fillSameParamMaps() {
+        sameParams1.put(SAME_KEY_1, sameParamValues);
+        sameParams1.put(SAME_KEY_2, sameParamValues);
+        sameParams2.put(SAME_KEY_1, sameParamValues);
+        sameParams2.put(SAME_KEY_2, sameParamValues);
+    }
+
+    @BeforeClass
+    public static void fillUpDiffParamList() {
+        diffParams.put(SAME_KEY_1, diffParamValues);
+        diffParams.put("paramKey3", diffParamValues);
+        halfParams.put(SAME_KEY_1, halfParamValues);
+        halfParams.put(SAME_KEY_2, halfParamValues);
     }
 
     @BeforeClass

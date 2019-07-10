@@ -14,8 +14,7 @@ import java.util.List;
 
 public class DefaultHttpClient implements be.xplore.fakes.service.HttpClient {
 
-    private HttpClient client = HttpClient.newHttpClient();
-
+    private final HttpClient client = HttpClient.newHttpClient();
 
     @Override
     public Response execute(Request request) {
@@ -64,7 +63,7 @@ public class DefaultHttpClient implements be.xplore.fakes.service.HttpClient {
             throw new UncheckedIOException("Could not send http-request", e);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new RuntimeException(e);
+            throw new IllegalStateException("Current thread is interrupted", e);
         }
     }
 
