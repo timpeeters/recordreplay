@@ -10,20 +10,22 @@ import org.junit.Test;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class YamlMarshallerTests {
 
-
     private final String expectedYamlString = "---\n" +
-            "request:\n" +
-            "  method: \"GET\"\n" +
-            "  path: \"/test\"\n" +
-            "response:\n" +
-            "  statusCode: 200\n" +
-            "  statusText: \"Successful\"\n";
-
+            "request:\n  " +
+            "method: \"GET\"\n  " +
+            "path: \"/test\"\n  " +
+            "params: []\n  " +
+            "headers: []\n  " +
+            "body: \"test body\"\n" +
+            "response:\n  " +
+            "statusCode: 200\n  " +
+            "statusText: \"Successful\"\n";
     private Stub stub;
     private Marshaller marshaller;
 
@@ -31,7 +33,10 @@ public class YamlMarshallerTests {
     public void setUpTest() {
         Request request = new Request()
                 .setMethod(RequestMethod.GET)
-                .setPath("/test");
+                .setPath("/test")
+                .setParams(new ArrayList<>())
+                .setHeaders(new ArrayList<>())
+                .setBody("test body");
         Response response = new Response()
                 .setStatusCode(200)
                 .setStatusText("Successful");
@@ -46,7 +51,7 @@ public class YamlMarshallerTests {
     public void marshallWritesYamlString() {
         StringWriter stringWriter = new StringWriter();
         marshaller.marshal(stub, stringWriter);
-        assertThat(stringWriter.toString()).as("Yaml string marshalled correctly").isEqualTo(expectedYamlString);
+        assertThat(stringWriter.toString()).as("Yaml string not marshalled correctly").isEqualTo(expectedYamlString);
     }
 
     @Test
