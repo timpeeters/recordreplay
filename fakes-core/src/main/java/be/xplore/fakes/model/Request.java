@@ -103,6 +103,18 @@ public class Request {
             body = "";
         }
 
+        public static Builder get(String path) {
+            return new Builder().method(RequestMethod.GET).path(path);
+        }
+
+        public static Builder post(String path) {
+            return new Builder().method(RequestMethod.POST).path(path);
+        }
+
+        public static Builder put(String path) {
+            return new Builder().method(RequestMethod.PUT).path(path);
+        }
+
         public Builder method(RequestMethod method) {
             this.method = method;
             return this;

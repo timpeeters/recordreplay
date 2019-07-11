@@ -18,6 +18,14 @@ public class Response {
         return new Builder();
     }
 
+    public static Response ok() {
+        return Builder.ok().build();
+    }
+
+    public static Response notFound() {
+        return Builder.notFound().build();
+    }
+
     public int getStatusCode() {
         return statusCode;
     }
@@ -60,6 +68,14 @@ public class Response {
 
         private Builder() {
             statusText = "";
+        }
+
+        public static Builder ok() {
+            return new Builder().statusCode(200).statusText("OK");
+        }
+
+        public static Builder notFound() {
+            return new Builder().statusCode(404).statusText("NOT FOUND");
         }
 
         public Builder statusCode(int statusCode) {
