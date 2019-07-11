@@ -14,25 +14,12 @@ public class Request {
     private List<String> headers;
     private String body;
 
-
-    @Deprecated
-    public Request() {
-        this.method = RequestMethod.GET;
-        this.path = "";
-    }
-
-    @Deprecated
-    public Request(RequestMethod method, String path) {
-        this.method = method;
-        this.path = path;
-    }
-
     public Request(Builder builder) {
         this.method = notNull(builder.method);
         this.path = notNull(builder.path);
-        this.params = notNull(builder.params);
-        this.headers = notNull(builder.headers);
-        this.body = notNull(builder.body);
+        this.params = builder.params;
+        this.headers = builder.headers;
+        this.body = builder.body;
     }
 
     public static Builder builder() {
