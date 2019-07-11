@@ -10,9 +10,9 @@ public class RequestBodyMatcherTests {
 
     private final RequestMatcher matcher = new RequestBodyMatcher();
 
-    private final Request sameRequest1 = Request.builder().body("/test").build();
-    private final Request sameRequest2 = Request.builder().body("/test").build();
-    private final Request diffRequest = Request.builder().body("/diff").build();
+    private final Request sameRequest1 = Request.Builder.post("").body("/test").build();
+    private final Request sameRequest2 = Request.Builder.post("").body("/test").build();
+    private final Request diffRequest =  Request.Builder.post("").body("/diff").build();
 
     @Test
     public void requestPathMatcherShouldReturnResultZeroOnMatch() {
