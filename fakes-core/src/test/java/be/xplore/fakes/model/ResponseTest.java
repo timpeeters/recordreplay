@@ -46,17 +46,11 @@ public class ResponseTest {
     }
 
     private Response getNewExampleResponse1() {
-        return Response.builder()
-                .statusCode(200)
-                .statusText("OK")
-                .build();
+        return Response.ok();
     }
 
     private Response getNewExampleResponse2() {
-        return Response.builder()
-                .statusCode(404)
-                .statusText("NOT FOUND")
-                .build();
+        return Response.notFound();
     }
 
 }

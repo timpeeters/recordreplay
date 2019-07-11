@@ -1,6 +1,7 @@
 package be.xplore.fakes.service;
 
 import be.xplore.fakes.model.Request;
+import be.xplore.fakes.model.RequestMethod;
 import be.xplore.fakes.model.Response;
 import be.xplore.fakes.model.Stub;
 import org.junit.Before;
@@ -19,7 +20,10 @@ public class MemoryRepositoryTests {
 
     @Test
     public void addValidStub() {
-        repo.add(new Stub(new Request(), new Response()));
+        repo.add(new Stub(
+                Request.builder().method(RequestMethod.GET).path("/abc").build(),
+                Response.ok())
+        );
         assertThat(repo.find().size()).isEqualTo(1);
     }
 

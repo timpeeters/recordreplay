@@ -10,12 +10,9 @@ public class RequestMethodMatcherTests {
 
     private final RequestMatcher matcher = new RequestMethodMatcher();
 
-    private final Request sameRequest1 = new Request()
-            .setMethod(RequestMethod.GET);
-    private final Request sameRequest2 = new Request()
-            .setMethod(RequestMethod.GET);
-    private final Request diffRequest = new Request()
-            .setMethod(RequestMethod.POST);
+    private final Request sameRequest1 = Request.builder().method(RequestMethod.GET).build();
+    private final Request sameRequest2 = Request.builder().method(RequestMethod.GET).build();
+    private final Request diffRequest = Request.builder().method(RequestMethod.POST).build();
 
     @Test
     public void requestMethodMatcherShouldReturnResultZeroOnMatch() {

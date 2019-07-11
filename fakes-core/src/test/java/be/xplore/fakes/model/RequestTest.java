@@ -50,14 +50,10 @@ public class RequestTest {
 
 
     private Request getNewExampleRequest1() {
-        return new Request()
-                .setPath("/test")
-                .setMethod(RequestMethod.GET);
+        return Request.builder().path("/test").method(RequestMethod.GET).build();
     }
 
     private Request getNewExampleRequest2() {
-        return new Request()
-                .setPath("/abc")
-                .setMethod(RequestMethod.POST);
+        return Request.builder().path("/abc").method(RequestMethod.POST).build();
     }
 }

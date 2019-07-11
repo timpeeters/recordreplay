@@ -9,12 +9,9 @@ public class RequestPathMatcherTests {
 
     private final RequestMatcher matcher = new RequestPathMatcher();
 
-    private final Request sameRequest1 = new Request()
-            .setPath("/test");
-    private final Request sameRequest2 = new Request()
-            .setPath("/test");
-    private final Request diffRequest = new Request()
-            .setPath("/diff");
+    private final Request sameRequest1 = Request.builder().path("/test").build();
+    private final Request sameRequest2 = Request.builder().path("/test").build();
+    private final Request diffRequest = Request.builder().path("/diff").build();
 
     @Test
     public void requestPathMatcherShouldReturnResultZeroOnMatch(){

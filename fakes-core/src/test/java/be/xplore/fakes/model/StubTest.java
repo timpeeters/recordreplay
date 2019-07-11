@@ -37,23 +37,18 @@ public class StubTest {
     }
 
     private Stub getNewExampleStub1() {
-        return new Stub()
-                .setResponse(new Response()
-                        .setStatusCode(404)
-                        .setStatusText("NOT FOUND"))
-                .setRequest(new Request()
-                        .setPath("/test")
-                        .setMethod(RequestMethod.GET));
+        return new Stub(
+                Request.builder().method(RequestMethod.GET).path("/test").build(),
+                Response.builder().statusCode(404).statusText("NOT FOUND").build()
+
+        );
     }
 
     private Stub getNewExampleStub2() {
-        return new Stub()
-                .setResponse(new Response()
-                        .setStatusCode(200)
-                        .setStatusText("OK"))
-                .setRequest(new Request()
-                        .setPath("/abc")
-                        .setMethod(RequestMethod.POST));
+        return new Stub(
+                Request.builder().method(RequestMethod.GET).path("/test").build(),
+                Response.ok()
+        );
     }
 
 }
