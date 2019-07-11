@@ -23,7 +23,7 @@ public class JsonMarshallerTests {
             "{\"method\":\"GET\"," +
             "\"path\":\"/test\"," +
             "\"params\":[]," +
-            "\"headerMap\":[]," +
+            "\"headers\":[]," +
             "\"body\":\"test body" +
             "\"}," +
             "\"response\":" +

@@ -21,7 +21,7 @@ public class YamlMarshallerTests {
             "method: \"GET\"\n  " +
             "path: \"/test\"\n  " +
             "params: []\n  " +
-            "headerMap: []\n  " +
+            "headers: []\n  " +
             "body: \"test body\"\n" +
             "response:\n  " +
             "statusCode: 200\n  " +
