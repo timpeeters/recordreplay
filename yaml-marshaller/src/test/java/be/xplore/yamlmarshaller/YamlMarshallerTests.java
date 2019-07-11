@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -20,8 +20,8 @@ public class YamlMarshallerTests {
             "request:\n  " +
             "method: \"GET\"\n  " +
             "path: \"/test\"\n  " +
-            "params: []\n  " +
-            "headers: []\n  " +
+            "params: {}\n  " +
+            "headers: {}\n  " +
             "body: \"test body\"\n" +
             "response:\n  " +
             "statusCode: 200\n  " +
@@ -34,8 +34,8 @@ public class YamlMarshallerTests {
         Request request = new Request()
                 .setMethod(RequestMethod.GET)
                 .setPath("/test")
-                .setParams(new ArrayList<>())
-                .setHeaders(new ArrayList<>())
+                .setParams(new HashMap<>())
+                .setHeaders(new HashMap<>())
                 .setBody("test body");
         Response response = new Response()
                 .setStatusCode(200)

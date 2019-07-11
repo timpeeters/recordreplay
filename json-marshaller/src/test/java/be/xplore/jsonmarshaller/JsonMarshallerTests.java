@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,8 +22,8 @@ public class JsonMarshallerTests {
             "\"request\":" +
             "{\"method\":\"GET\"," +
             "\"path\":\"/test\"," +
-            "\"params\":[]," +
-            "\"headers\":[]," +
+            "\"params\":{}," +
+            "\"headers\":{}," +
             "\"body\":\"test body" +
             "\"}," +
             "\"response\":" +
@@ -39,16 +39,15 @@ public class JsonMarshallerTests {
         Request request = new Request()
                 .setMethod(RequestMethod.GET)
                 .setPath("/test")
-                .setParams(new ArrayList<>())
-                .setHeaders(new ArrayList<>())
+                .setParams(new HashMap<>())
+                .setHeaders(new HashMap<>())
                 .setBody("test body");
         Response response = new Response()
                 .setStatusCode(200)
                 .setStatusText("Successful");
-        stub = new Stub()
-                .setRequest(request)
-                .setResponse(response);
 
+        stub = new Stub().setRequest(request)
+                .setResponse(response);
         marshaller = new JsonMarshaller();
     }
 
