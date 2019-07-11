@@ -2,7 +2,6 @@ package be.xplore.jsonmarshaller;
 
 
 import be.xplore.fakes.model.Request;
-import be.xplore.fakes.model.RequestMethod;
 import be.xplore.fakes.model.Response;
 import be.xplore.fakes.model.Stub;
 import be.xplore.fakes.service.Marshaller;
@@ -28,7 +27,7 @@ public class JsonMarshallerTests {
             "\"}," +
             "\"response\":" +
             "{\"statusCode\":200," +
-            "\"statusText\":\"Successful\"}" +
+            "\"statusText\":\"OK\"}" +
             "}";
 
     private Stub stub;
@@ -36,19 +35,11 @@ public class JsonMarshallerTests {
 
     @Before
     public void setUpTest() {
-        Request request = new Request()
-                .setMethod(RequestMethod.GET)
-                .setPath("/test")
-                .setParams(new ArrayList<>())
-                .setHeaders(new ArrayList<>())
-                .setBody("test body");
-        Response response = new Response()
-                .setStatusCode(200)
-                .setStatusText("Successful");
-        stub = new Stub()
-                .setRequest(request)
-                .setResponse(response);
-
+        stub = new Stub(
+                Request.Builder.get("/test").params(new ArrayList<>())
+                        .headers(new ArrayList<>()).body("test body").build(),
+                Response.ok()
+        );
         marshaller = new JsonMarshaller();
     }
 

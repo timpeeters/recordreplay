@@ -7,6 +7,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RequestTest {
 
     @Test
+    @SuppressWarnings({"checkstyle:executablestatementcount", "PMD.JUnitTestContainsTooManyAsserts"})
+    public void requestBuilder() {
+        Request request = Request.builder().method(RequestMethod.GET).path("/abc").build();
+        assertThat(request).isNotNull();
+        assertThat(request.getMethod()).isEqualTo(RequestMethod.GET);
+        assertThat(request.getPath()).isEqualTo("/abc");
+        assertThat(request.getParams()).isNotNull().isEmpty();
+        assertThat(request.getHeaders()).isNotNull().isEmpty();
+        assertThat(request.getBody()).isNotNull().isEmpty();
+    }
+
+    @Test
     public void checkEquality() {
         Request request = getNewExampleRequest1();
         assertThat(request).isEqualTo(request);
@@ -38,14 +50,10 @@ public class RequestTest {
 
 
     private Request getNewExampleRequest1() {
-        return new Request()
-                .setPath("/test")
-                .setMethod(RequestMethod.GET);
+        return Request.builder().path("/test").method(RequestMethod.GET).build();
     }
 
     private Request getNewExampleRequest2() {
-        return new Request()
-                .setPath("/abc")
-                .setMethod(RequestMethod.POST);
+        return Request.builder().path("/abc").method(RequestMethod.POST).build();
     }
 }

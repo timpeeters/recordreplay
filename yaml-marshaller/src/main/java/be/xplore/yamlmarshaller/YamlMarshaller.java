@@ -30,7 +30,7 @@ public class YamlMarshaller implements Marshaller {
     @Override
     public Stub unMarshal(Reader reader) {
         try {
-            return mapper.readValue(reader, Stub.class);
+            return mapper.readValue(reader, YamlStub.class).toStub();
         } catch (IOException e) {
             throw new UncheckedIOException("Unable to unmarshal yaml into stub", e);
         }
