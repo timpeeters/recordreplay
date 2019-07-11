@@ -15,11 +15,13 @@ public class Request {
     private String body;
 
 
+    @Deprecated
     public Request() {
         this.method = RequestMethod.GET;
         this.path = "";
     }
 
+    @Deprecated
     public Request(RequestMethod method, String path) {
         this.method = method;
         this.path = path;

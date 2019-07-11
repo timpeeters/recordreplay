@@ -9,6 +9,12 @@ public class Response {
     private int statusCode;
     private String statusText;
 
+    @Deprecated
+    public Response() {
+        this.statusCode = 200;
+        this.statusText = "OK";
+    }
+
     private Response(Builder builder) {
         this.statusCode = Assert.notNull(builder.statusCode);
         this.statusText = builder.statusText;
