@@ -7,6 +7,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RequestTest {
 
     @Test
+    public void requestBuilder() {
+        Request request = Request.builder().method(RequestMethod.GET).path("/abc").build();
+        assertThat(request).isNotNull();
+        assertThat(request.getMethod()).isEqualTo(RequestMethod.GET);
+        assertThat(request.getPath()).isEqualTo("/abc");
+        assertThat(request.getParams()).isNotNull().isEmpty();
+        assertThat(request.getHeaders()).isNotNull().isEmpty();
+        assertThat(request.getBody()).isNotNull().isEmpty();
+    }
+
+    @Test
     public void checkEquality() {
         Request request = getNewExampleRequest1();
         assertThat(request).isEqualTo(request);

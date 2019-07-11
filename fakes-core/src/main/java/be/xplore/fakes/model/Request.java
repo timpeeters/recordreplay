@@ -1,7 +1,10 @@
 package be.xplore.fakes.model;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+
+import static be.xplore.fakes.util.Assert.notNull;
 
 public class Request {
 
@@ -20,6 +23,18 @@ public class Request {
     public Request(RequestMethod method, String path) {
         this.method = method;
         this.path = path;
+    }
+
+    public Request(Builder builder) {
+        this.method = notNull(builder.method);
+        this.path = notNull(builder.path);
+        this.params = notNull(builder.params);
+        this.headers = notNull(builder.headers);
+        this.body = notNull(builder.body);
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     public RequestMethod getMethod() {
@@ -83,5 +98,49 @@ public class Request {
     @Override
     public int hashCode() {
         return Objects.hash(method, path);
+    }
+
+
+    public static class Builder {
+        private RequestMethod method;
+        private String path;
+        private List<String> params;
+        private List<String> headers;
+        private String body;
+
+        private Builder() {
+            params = Collections.emptyList();
+            headers = Collections.emptyList();
+            body = "";
+        }
+
+        public Builder method(RequestMethod method) {
+            this.method = method;
+            return this;
+        }
+
+        public Builder path(String path) {
+            this.path = path;
+            return this;
+        }
+
+        public Builder params(List<String> params) {
+            this.params = params;
+            return this;
+        }
+
+        public Builder headers(List<String> headers) {
+            this.headers = headers;
+            return this;
+        }
+
+        public Builder body(String body) {
+            this.body = body;
+            return this;
+        }
+
+        public Request build() {
+            return new Request(this);
+        }
     }
 }
