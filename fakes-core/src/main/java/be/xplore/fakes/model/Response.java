@@ -6,8 +6,8 @@ import java.util.Objects;
 
 public class Response {
 
-    private int statusCode;
-    private String statusText;
+    private final int statusCode;
+    private final String statusText;
 
     private Response(Builder builder) {
         this.statusCode = Assert.notNull(builder.statusCode);
@@ -30,18 +30,8 @@ public class Response {
         return statusCode;
     }
 
-    public Response setStatusCode(int statusCode) {
-        this.statusCode = statusCode;
-        return this;
-    }
-
     public String getStatusText() {
         return statusText;
-    }
-
-    public Response setStatusText(String statusText) {
-        this.statusText = statusText;
-        return this;
     }
 
     @Override

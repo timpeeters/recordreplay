@@ -8,11 +8,11 @@ import static be.xplore.fakes.util.Assert.notNull;
 
 public class Request {
 
-    private RequestMethod method;
-    private String path;
-    private List<String> params;
-    private List<String> headers;
-    private String body;
+    private final RequestMethod method;
+    private final String path;
+    private final List<String> params;
+    private final List<String> headers;
+    private final String body;
 
     public Request(Builder builder) {
         this.method = notNull(builder.method);
@@ -30,45 +30,20 @@ public class Request {
         return method;
     }
 
-    public Request setMethod(RequestMethod method) {
-        this.method = method;
-        return this;
-    }
-
     public String getPath() {
         return path;
-    }
-
-    public Request setPath(String path) {
-        this.path = path;
-        return this;
     }
 
     public List<String> getParams() {
         return params;
     }
 
-    public Request setParams(List<String> params) {
-        this.params = params;
-        return this;
-    }
-
     public List<String> getHeaders() {
         return headers;
     }
 
-    public Request setHeaders(List<String> headers) {
-        this.headers = headers;
-        return this;
-    }
-
     public String getBody() {
         return body;
-    }
-
-    public Request setBody(String body) {
-        this.body = body;
-        return this;
     }
 
     @Override

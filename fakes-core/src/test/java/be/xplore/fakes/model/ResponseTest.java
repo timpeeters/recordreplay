@@ -6,7 +6,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ResponseTest {
 
+    private static final Response.Builder RESPONSE_BUILDER_1 = Response.Builder.ok();
+    private static final Response.Builder RESPONSE_BUILDER_2 = Response.Builder.notFound();
+
     @Test
+
     public void responseBuilder() {
         Response response = Response.builder().statusCode(200).statusText("OK").build();
         assertThat(response.getStatusCode()).isEqualTo(200);
@@ -25,9 +29,9 @@ public class ResponseTest {
 
     @Test
     public void checkNotEqual() {
-        assertThat(getNewExampleResponse2()).isNotEqualTo(getNewExampleResponse1());
-        assertThat(getNewExampleResponse1().setStatusText(getNewExampleResponse2().getStatusText()))
-                .isNotEqualTo(getNewExampleResponse1());
+        assertThat(getNewExampleResponse1()).isNotEqualTo(getNewExampleResponse2());
+        assertThat(RESPONSE_BUILDER_1.statusText("abc").build())
+                .isNotEqualTo(RESPONSE_BUILDER_1.statusText("xyz").build());
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -45,12 +49,13 @@ public class ResponseTest {
         assertThat(getNewExampleResponse2().hashCode()).isNotEqualTo(getNewExampleResponse1().hashCode());
     }
 
+
     private Response getNewExampleResponse1() {
-        return Response.ok();
+        return RESPONSE_BUILDER_1.build();
     }
+
 
     private Response getNewExampleResponse2() {
-        return Response.notFound();
+        return RESPONSE_BUILDER_2.build();
     }
-
 }
