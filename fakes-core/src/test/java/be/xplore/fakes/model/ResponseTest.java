@@ -7,6 +7,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ResponseTest {
 
     @Test
+    public void responseBuilder() {
+        Response response = Response.builder().statusCode(200).statusText("OK").build();
+        assertThat(response.getStatusCode()).isEqualTo(200);
+        assertThat(response.getStatusText()).isEqualTo("OK");
+
+        response = Response.builder().statusCode(200).build();
+        assertThat(response.getStatusText()).isNotNull().isEmpty();
+    }
+
+    @Test
     public void checkEquality() {
         Response response = getNewExampleResponse1();
         assertThat(response).isEqualTo(response);
@@ -36,15 +46,17 @@ public class ResponseTest {
     }
 
     private Response getNewExampleResponse1() {
-        return new Response()
-                .setStatusCode(200)
-                .setStatusText("OK");
+        return Response.builder()
+                .statusCode(200)
+                .statusText("OK")
+                .build();
     }
 
     private Response getNewExampleResponse2() {
-        return new Response()
-                .setStatusCode(404)
-                .setStatusText("NOT FOUND");
+        return Response.builder()
+                .statusCode(404)
+                .statusText("NOT FOUND")
+                .build();
     }
 
 }

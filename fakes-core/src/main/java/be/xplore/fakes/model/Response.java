@@ -1,5 +1,7 @@
 package be.xplore.fakes.model;
 
+import be.xplore.fakes.util.Assert;
+
 import java.util.Objects;
 
 public class Response {
@@ -7,9 +9,13 @@ public class Response {
     private int statusCode;
     private String statusText;
 
-    public Response() {
-        this.statusCode = 200;
-        this.statusText = "OK";
+    private Response(Builder builder) {
+        this.statusCode = Assert.notNull(builder.statusCode);
+        this.statusText = builder.statusText;
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     public int getStatusCode() {
@@ -46,5 +52,28 @@ public class Response {
     @Override
     public int hashCode() {
         return Objects.hash(statusCode, statusText);
+    }
+
+    public static class Builder {
+        private Integer statusCode;
+        private String statusText;
+
+        private Builder() {
+            statusText = "";
+        }
+
+        public Builder statusCode(int statusCode) {
+            this.statusCode = statusCode;
+            return this;
+        }
+
+        public Builder statusText(String statusText) {
+            this.statusText = statusText;
+            return this;
+        }
+
+        public Response build() {
+            return new Response(this);
+        }
     }
 }
