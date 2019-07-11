@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RequestTest {
 
     @Test
+    @SuppressWarnings({"checkstyle:executablestatementcount", "PMD.JUnitTestContainsTooManyAsserts"})
     public void requestBuilder() {
         Request request = Request.builder().method(RequestMethod.GET).path("/abc").build();
         assertThat(request).isNotNull();
