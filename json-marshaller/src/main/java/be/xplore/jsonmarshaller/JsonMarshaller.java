@@ -31,7 +31,7 @@ public class JsonMarshaller implements Marshaller {
     @Override
     public Stub unMarshal(Reader reader) {
         try {
-            return mapper.readValue(reader, Stub.class);
+            return mapper.readValue(reader, JsonStub.class).toStub();
         } catch (IOException e) {
             throw new UncheckedIOException("Unable to unmarshal json into stub", e);
         }
