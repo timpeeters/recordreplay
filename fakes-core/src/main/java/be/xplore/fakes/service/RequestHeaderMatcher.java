@@ -31,8 +31,8 @@ public class RequestHeaderMatcher implements RequestMatcher {
     }
 
     private Headers smallest(Headers headers, Headers otherHeaders) {
-            return otherHeaders;
         if (headers.size() > otherHeaders.size()) {
+            return otherHeaders;
         } else {
             return headers;
         }
