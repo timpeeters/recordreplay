@@ -15,15 +15,26 @@ public class HeadersTests {
 
 
     private static List<String> someHeaders = new ArrayList<>();
+    private static List<String> expectedStringList = new ArrayList<>();
     private static String[] expectedVarargs = {"Key", "headerTest1", "Key", "headerTest2"};
     private static Map<String, List<String>> headerMap = new HashMap<>();
     private static Headers headers;
 
     @BeforeClass
-    public static void setUpParamMap() {
+    public static void setUpHeaderMap() {
         someHeaders.add("headerTest1");
         someHeaders.add("headerTest2");
         headerMap.put("Key", someHeaders);
+    }
+
+    @BeforeClass
+    public static void setUpExpectedStrings() {
+        expectedStringList.add("KeyheaderTest1");
+        expectedStringList.add("KeyheaderTest2");
+    }
+
+    @BeforeClass
+    public static void setUpHeaders(){
         headers = Headers.builder().headerMap(headerMap).build();
     }
 
@@ -41,11 +52,9 @@ public class HeadersTests {
                 .isInstanceOf(Headers.Builder.class);
     }
 
-    @Test
-    public void isEmptyShouldReturnTrueOnNullMap() {
-        assertThat(Headers.builder().headerMap(null).build().isEmpty())
-                .as("Null paramsMap not detected")
-                .isTrue();
+    @Test(expected = IllegalArgumentException.class)
+    public void buildingHeaderWithNullShouldThrow() {
+        Headers.builder().headerMap(null).build();
     }
 
     @Test
@@ -64,8 +73,16 @@ public class HeadersTests {
 
     @Test
     public void getHeaderVarargsShouldReturnArrayOfLists() {
-        assertThat(Arrays.equals(headers.getHeaderVarargs(), expectedVarargs))
+        assertThat(Arrays.equals(headers.toVarargs(), expectedVarargs))
                 .as("Varargs not generated correctly")
                 .isTrue();
     }
+
+    @Test
+    public void getHeaderAsKeyValueStringShouldReturnListOfStrings() {
+        assertThat(headers.toStringList().equals(expectedStringList))
+                .as("Key-Value String-list not generated correctly")
+                .isTrue();
+    }
+
 }

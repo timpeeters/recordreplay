@@ -13,6 +13,6 @@ class YamlRequest {
     public String body;
 
     Request toRequest() {
-        return Request.builder().method(method).path(path).params(params).headers(headers).body(body).build();
+        return Request.builder().method(method).path(path).queryParams(params).headers(headers).body(body).build();
     }
 }

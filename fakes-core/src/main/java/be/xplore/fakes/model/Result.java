@@ -4,12 +4,12 @@ public class Result {
 
     private double distance;
 
+    public Result(double distance) {
+        this.distance = distance;
+    }
+
     public double getDistance() {
         return distance;
     }
 
-    public Result setDistance(double distance) {
-        this.distance = distance;
-        return this;
-    }
 }

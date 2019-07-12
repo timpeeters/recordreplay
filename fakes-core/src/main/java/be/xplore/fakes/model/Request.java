@@ -1,8 +1,9 @@
 package be.xplore.fakes.model;
 
 import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static be.xplore.fakes.util.Assert.notNull;
 
@@ -10,15 +11,15 @@ public class Request {
 
     private RequestMethod method;
     private String path;
-    private List<String> params;
-    private List<String> headers;
+    private QueryParams queryParams;
+    private Headers headers;
     private String body;
 
     public Request(Builder builder) {
         this.method = notNull(builder.method);
         this.path = notNull(builder.path);
-        this.params = builder.params;
-        this.headers = builder.headers;
+        this.queryParams = notNull(builder.queryParams);
+        this.headers = notNull(builder.headers);
         this.body = builder.body;
     }
 
@@ -44,20 +45,20 @@ public class Request {
         return this;
     }
 
-    public List<String> getParams() {
-        return params;
+    public QueryParams getQueryParams() {
+        return queryParams;
     }
 
-    public Request setParams(List<String> params) {
-        this.params = params;
+    public Request setQueryParams(QueryParams queryParams) {
+        this.queryParams = queryParams;
         return this;
     }
 
-    public List<String> getHeaders() {
+    public Headers getHeaders() {
         return headers;
     }
 
-    public Request setHeaders(List<String> headers) {
+    public Request setHeaders(Headers headers) {
         this.headers = headers;
         return this;
     }
@@ -93,13 +94,13 @@ public class Request {
     public static class Builder {
         private RequestMethod method;
         private String path;
-        private List<String> params;
-        private List<String> headers;
+        private QueryParams queryParams;
+        private Headers headers;
         private String body;
 
         private Builder() {
-            params = Collections.emptyList();
-            headers = Collections.emptyList();
+            queryParams = QueryParams.builder().params(new HashMap<>()).build();
+            headers = Headers.builder().headerMap(new HashMap<>()).build();
             body = "";
         }
 
@@ -125,12 +126,12 @@ public class Request {
             return this;
         }
 
-        public Builder params(List<String> params) {
-            this.params = params;
+        public Builder queryParams(QueryParams queryParams) {
+            this.queryParams = queryParams;
             return this;
         }
 
-        public Builder headers(List<String> headers) {
+        public Builder headers(Headers headers) {
             this.headers = headers;
             return this;
         }

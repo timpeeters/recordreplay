@@ -19,7 +19,7 @@ public class YamlMarshallerTests {
             "request:\n  " +
             "method: \"GET\"\n  " +
             "path: \"/test\"\n  " +
-            "params: []\n  " +
+            "queryParams: []\n  " +
             "headers: []\n  " +
             "body: \"test body\"\n" +
             "response:\n  " +
@@ -31,7 +31,7 @@ public class YamlMarshallerTests {
     @Before
     public void setUpTest() {
         stub = new Stub(
-                Request.Builder.get("/test").params(new ArrayList<>())
+                Request.Builder.get("/test").queryParams(new ArrayList<>())
                         .headers(new ArrayList<>()).body("test body").build(),
                 Response.ok()
         );

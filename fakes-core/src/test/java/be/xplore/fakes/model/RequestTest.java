@@ -13,8 +13,8 @@ public class RequestTest {
         assertThat(request).isNotNull();
         assertThat(request.getMethod()).isEqualTo(RequestMethod.GET);
         assertThat(request.getPath()).isEqualTo("/abc");
-        assertThat(request.getParams()).isNotNull().isEmpty();
-        assertThat(request.getHeaders()).isNotNull().isEmpty();
+        assertThat(request.getQueryParams()).isNotNull();
+        assertThat(request.getHeaders()).isNotNull();
         assertThat(request.getBody()).isNotNull().isEmpty();
     }
 

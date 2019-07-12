@@ -33,12 +33,13 @@ public class QueryParamsTests {
     public void builder() {
     }
 
-    @Test
-    public void isEmptyShouldReturnTrueOnNullMap() {
-        assertThat(QueryParams.builder().params(null).build().isEmpty())
-                .as("Null paramsMap not detected")
-                .isTrue();
+    @Test(expected = IllegalArgumentException.class)
+    public void buildingQueryWithNullShouldThrow() {
+        QueryParams.builder().params(null).build();
     }
+
+   // @Test(expected = UnsupportedOperationException.class)
+
 
     @Test
     public void isEmptyShouldReturnTrueOnEmptyMap() {
@@ -58,7 +59,7 @@ public class QueryParamsTests {
     @Test
     public void toStringShouldReturnUriParamString() {
         assertThat(queryParams.getQueryString())
-                .as("toString does not format to correct URL format")
+                .as("getQueryString does not format to correct URL format")
                 .isEqualTo("?Key=paramTest1&Key=paramTest2");
     }
 }
