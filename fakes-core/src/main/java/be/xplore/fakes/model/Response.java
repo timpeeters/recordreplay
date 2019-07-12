@@ -2,7 +2,6 @@ package be.xplore.fakes.model;
 
 import be.xplore.fakes.util.Assert;
 
-import java.util.Collections;
 import java.util.Objects;
 
 public class Response {
@@ -55,6 +54,14 @@ public class Response {
     @Override
     public int hashCode() {
         return Objects.hash(statusCode, statusText);
+    }
+
+    public Headers getHeaders() {
+        return headers;
+    }
+
+    public String getBody() {
+        return body;
     }
 
     public static class Builder {
