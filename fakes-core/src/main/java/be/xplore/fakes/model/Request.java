@@ -1,9 +1,7 @@
 package be.xplore.fakes.model;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static be.xplore.fakes.util.Assert.notNull;
 
@@ -20,7 +18,7 @@ public class Request {
         this.path = notNull(builder.path);
         this.queryParams = notNull(builder.queryParams);
         this.headers = notNull(builder.headers);
-        this.body = builder.body;
+        this.body = notNull(builder.body);
     }
 
     public static Builder builder() {
@@ -99,8 +97,8 @@ public class Request {
         private String body;
 
         private Builder() {
-            queryParams = QueryParams.builder().params(new HashMap<>()).build();
-            headers = Headers.builder().headerMap(new HashMap<>()).build();
+            queryParams = QueryParams.builder().params(Collections.emptyMap()).build();
+            headers = Headers.builder().headerMap(Collections.emptyMap()).build();
             body = "";
         }
 

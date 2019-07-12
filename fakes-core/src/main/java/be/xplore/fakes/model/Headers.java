@@ -47,10 +47,10 @@ public class Headers {
                     headerList.add(key);
                     headerList.add(value);
                 }));
-       return headerList.toArray(String[]::new);
+        return headerList.toArray(String[]::new);
     }
 
-    public Headers copyOf(){
+    public Headers copyOf() {
         return Headers.builder().headerMap(this.headerMap).build();
     }
 

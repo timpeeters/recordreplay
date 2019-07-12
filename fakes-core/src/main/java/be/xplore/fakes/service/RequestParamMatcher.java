@@ -12,14 +12,17 @@ public class RequestParamMatcher implements RequestMatcher {
     }
 
     private double calculateDistance(QueryParams params, QueryParams otherParams) {
+        double distance;
         if (params.isEmpty() && otherParams.isEmpty()) {
-            return 0;
+            distance = 0;
         } else if (params.isEmpty() || otherParams.isEmpty()) {
-            return 1;
+            distance = 1;
+        } else {
+            distance = largest(params, otherParams)
+                    .returnMismatchingQueries(smallest(params, otherParams))
+                    .size() * (1D / largest(params, otherParams).size());
         }
-        return largest(params, otherParams)
-                .returnMismatchingQueries(smallest(params, otherParams))
-                .size() * (1D / largest(params, otherParams).size());
+        return distance;
     }
 
     private QueryParams largest(QueryParams params, QueryParams otherParams) {

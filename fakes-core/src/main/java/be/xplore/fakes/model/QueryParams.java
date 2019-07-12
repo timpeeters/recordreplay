@@ -2,7 +2,11 @@ package be.xplore.fakes.model;
 
 import be.xplore.fakes.util.Assert;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class QueryParams {
@@ -49,8 +53,7 @@ public class QueryParams {
     }
 
     public int size() {
-        //TODO implement shit
-        return 0;
+        return this.toStringList().size();
     }
 
     public QueryParams copyOf(){

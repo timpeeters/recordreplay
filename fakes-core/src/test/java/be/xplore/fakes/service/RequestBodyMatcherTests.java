@@ -2,6 +2,7 @@ package be.xplore.fakes.service;
 
 
 import be.xplore.fakes.model.Request;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -10,9 +11,16 @@ public class RequestBodyMatcherTests {
 
     private final RequestMatcher matcher = new RequestBodyMatcher();
 
-    private final Request sameRequest1 = Request.Builder.post("").body("/test").build();
-    private final Request sameRequest2 = Request.Builder.post("").body("/test").build();
-    private final Request diffRequest =  Request.Builder.post("").body("/diff").build();
+    private Request sameRequest1;
+    private Request sameRequest2;
+    private Request diffRequest;
+
+    @Before
+    public void setupTest() {
+        sameRequest1 = Request.Builder.post("").body("/test").build();
+        sameRequest2 = Request.Builder.post("").body("/test").build();
+        diffRequest = Request.Builder.post("").body("/diff").build();
+    }
 
     @Test
     public void requestPathMatcherShouldReturnResultZeroOnMatch() {

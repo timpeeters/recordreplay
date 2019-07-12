@@ -12,14 +12,17 @@ public class RequestHeaderMatcher implements RequestMatcher {
     }
 
     private double calculateDistance(Headers headers, Headers otherHeaders) {
+        double distance;
         if (headers.isEmpty() && otherHeaders.isEmpty()) {
-            return 0;
+            distance = 0;
         } else if (headers.isEmpty() || otherHeaders.isEmpty()) {
-            return 1;
-        }
-        return largest(headers, otherHeaders)
+            distance = 1;
+        } else {
+            distance = largest(headers, otherHeaders)
                 .returnMismatchingHeaders(smallest(headers, otherHeaders))
-                .size() * (1D / largest(headers, otherHeaders).size());
+                    .size() * (1D / largest(headers, otherHeaders).size());
+        }
+        return distance;
     }
 
     private Headers largest(Headers headers, Headers otherHeaders) {

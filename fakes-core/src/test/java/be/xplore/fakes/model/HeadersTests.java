@@ -1,9 +1,8 @@
 package be.xplore.fakes.model;
 
-import org.junit.BeforeClass;
+import org.assertj.core.util.Maps;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -13,30 +12,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class HeadersTests {
 
-
-    private static List<String> someHeaders = new ArrayList<>();
-    private static List<String> expectedStringList = new ArrayList<>();
-    private static String[] expectedVarargs = {"Key", "headerTest1", "Key", "headerTest2"};
-    private static Map<String, List<String>> headerMap = new HashMap<>();
-    private static Headers headers;
-
-    @BeforeClass
-    public static void setUpHeaderMap() {
-        someHeaders.add("headerTest1");
-        someHeaders.add("headerTest2");
-        headerMap.put("Key", someHeaders);
-    }
-
-    @BeforeClass
-    public static void setUpExpectedStrings() {
-        expectedStringList.add("KeyheaderTest1");
-        expectedStringList.add("KeyheaderTest2");
-    }
-
-    @BeforeClass
-    public static void setUpHeaders(){
-        headers = Headers.builder().headerMap(headerMap).build();
-    }
+    private final String[] expectedVarargs = {"Key", "headerTest1", "Key", "headerTest2"};
+    private final List<String> expectedStringList = List.of("KeyheaderTest1", "KeyheaderTest2");
+    private final Map<String, List<String>> headerMap = Maps.newHashMap("Key", List.of("headerTest1","headerTest2"));
+    private final Headers headers = Headers.builder().headerMap(headerMap).build();
 
     @Test
     public void getHeadersShouldReturnMapOfHeaders() {
@@ -46,7 +25,7 @@ public class HeadersTests {
     }
 
     @Test
-    public void builderShoudlReturnNewBuilderObject() {
+    public void builderShouldReturnNewBuilderObject() {
         assertThat(Headers.builder())
                 .as("Doesn't return a new Builder object")
                 .isInstanceOf(Headers.Builder.class);
