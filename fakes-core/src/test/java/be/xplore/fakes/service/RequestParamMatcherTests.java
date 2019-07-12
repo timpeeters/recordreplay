@@ -73,14 +73,10 @@ public class RequestParamMatcherTests {
 
     @BeforeClass
     public static void initRequests() {
-        sameRequest1 = new Request()
-                .setParams(sameParams1);
-        sameRequest2 = new Request()
-                .setParams(sameParams2);
-        diffRequest = new Request()
-                .setParams(diffParams);
-        halfRequest = new Request()
-                .setParams(halfParams);
+        sameRequest1 = Request.Builder.post("").params(sameParams1).build();
+        sameRequest2 = Request.Builder.post("").params(sameParams2).build();
+        diffRequest  = Request.Builder.post("").params(diffParams).build();
+        halfRequest  = Request.Builder.post("").params(halfParams).build();
     }
 
     @Test

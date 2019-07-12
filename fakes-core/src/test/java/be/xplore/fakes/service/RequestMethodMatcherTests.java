@@ -1,7 +1,6 @@
 package be.xplore.fakes.service;
 
 import be.xplore.fakes.model.Request;
-import be.xplore.fakes.model.RequestMethod;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -10,12 +9,9 @@ public class RequestMethodMatcherTests {
 
     private final RequestMatcher matcher = new RequestMethodMatcher();
 
-    private final Request sameRequest1 = new Request()
-            .setMethod(RequestMethod.GET);
-    private final Request sameRequest2 = new Request()
-            .setMethod(RequestMethod.GET);
-    private final Request diffRequest = new Request()
-            .setMethod(RequestMethod.POST);
+    private final Request sameRequest1 = Request.Builder.put("/test").build();
+    private final Request sameRequest2 = Request.Builder.put("/test").build();
+    private final Request diffRequest  = Request.Builder.get("/diff").build();
 
     @Test
     public void requestMethodMatcherShouldReturnResultZeroOnMatch() {

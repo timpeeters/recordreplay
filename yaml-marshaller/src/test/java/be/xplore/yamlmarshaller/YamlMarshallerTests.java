@@ -1,7 +1,6 @@
 package be.xplore.yamlmarshaller;
 
 import be.xplore.fakes.model.Request;
-import be.xplore.fakes.model.RequestMethod;
 import be.xplore.fakes.model.Response;
 import be.xplore.fakes.model.Stub;
 import be.xplore.fakes.service.Marshaller;
@@ -25,25 +24,17 @@ public class YamlMarshallerTests {
             "body: \"test body\"\n" +
             "response:\n  " +
             "statusCode: 200\n  " +
-            "statusText: \"Successful\"\n";
+            "statusText: \"OK\"\n";
     private Stub stub;
     private Marshaller marshaller;
 
     @Before
     public void setUpTest() {
-        Request request = new Request()
-                .setMethod(RequestMethod.GET)
-                .setPath("/test")
-                .setParams(new HashMap<>())
-                .setHeaders(new HashMap<>())
-                .setBody("test body");
-        Response response = new Response()
-                .setStatusCode(200)
-                .setStatusText("Successful");
-        stub = new Stub()
-                .setRequest(request)
-                .setResponse(response);
-
+        stub = new Stub(
+                Request.Builder.get("/test").params(new ArrayList<>())
+                        .headers(new ArrayList<>()).body("test body").build(),
+                Response.ok()
+        );
         marshaller = new YamlMarshaller();
     }
 

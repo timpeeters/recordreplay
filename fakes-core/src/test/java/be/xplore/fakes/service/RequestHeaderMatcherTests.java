@@ -71,14 +71,10 @@ public class RequestHeaderMatcherTests {
 
     @BeforeClass
     public static void initRequests() {
-        sameRequest1 = new Request()
-                .setHeaders(sameHeaders1);
-        sameRequest2 = new Request()
-                .setHeaders(sameHeaders2);
-        diffRequest = new Request()
-                .setHeaders(diffHeaders);
-        halfRequest = new Request()
-                .setHeaders(halfHeaders);
+        sameRequest1 = Request.Builder.post("").headers(sameHeaders1).build();
+        sameRequest2 = Request.Builder.post("").headers(sameHeaders2).build();
+        diffRequest  = Request.Builder.post("").headers(diffHeaders).build();
+        halfRequest  = Request.Builder.post("").headers(halfHeaders).build();
     }
 
     @Test
