@@ -21,7 +21,7 @@ public class YamlMarshaller implements Marshaller {
     @Override
     public void marshal(Stub stub, Writer writer) {
         try {
-            writer.append(mapper.writeValueAsString(stub));
+            writer.append(mapper.writeValueAsString(new YamlStub(stub)));
         } catch (IOException e) {
             throw new UncheckedIOException("Unable to marshal stub into yaml", e);
         }

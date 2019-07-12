@@ -1,5 +1,7 @@
 package be.xplore.yamlmarshaller;
 
+import be.xplore.fakes.model.Headers;
+import be.xplore.fakes.model.QueryParams;
 import be.xplore.fakes.model.Request;
 import be.xplore.fakes.model.Response;
 import be.xplore.fakes.model.Stub;
@@ -9,31 +11,32 @@ import org.junit.Test;
 
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.HashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class YamlMarshallerTests {
 
     private final String expectedYamlString = "---\n" +
-            "request:\n  " +
-            "method: \"GET\"\n  " +
-            "path: \"/test\"\n  " +
-            "queryParams: []\n  " +
-            "headers: []\n  " +
-            "body: \"test body\"\n" +
-            "response:\n  " +
-            "statusCode: 200\n  " +
-            "statusText: \"OK\"\n";
+            "request:\n" +
+            "  method: \"GET\"\n" +
+            "  path: \"/test\"\n" +
+            "  queryParams: {}\n" +
+            "  headers: {}\n" +
+            "  body: \"request body\"\n" +
+            "response:\n" +
+            "  statusCode: 200\n" +
+            "  statusText: \"OK\"\n" +
+            "  headers: {}\n" +
+            "  body: \"response body\"\n";
     private Stub stub;
     private Marshaller marshaller;
 
     @Before
     public void setUpTest() {
         stub = new Stub(
-                Request.Builder.get("/test").queryParams(new ArrayList<>())
-                        .headers(new ArrayList<>()).body("test body").build(),
-                Response.ok()
+                Request.Builder.get("/test").queryParams(QueryParams.EMPTY)
+                        .headers(Headers.EMPTY).body("request body").build(),
+                Response.Builder.ok().body("response body").build()
         );
         marshaller = new YamlMarshaller();
     }
