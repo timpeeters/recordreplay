@@ -1,6 +1,6 @@
 package be.xplore.fakes.model;
 
-import java.util.Collections;
+import java.net.URI;
 import java.util.Objects;
 
 import static be.xplore.fakes.util.Assert.notNull;
@@ -25,49 +25,28 @@ public class Request {
         return new Builder();
     }
 
-    public RequestMethod getMethod() {
-        return method;
+    public URI toUri() {
+        return URI.create(getPath() + getQueryParams().getQueryString());
     }
 
-    public Request setMethod(RequestMethod method) {
-        this.method = method;
-        return this;
+    public RequestMethod getMethod() {
+        return method;
     }
 
     public String getPath() {
         return path;
     }
 
-    public Request setPath(String path) {
-        this.path = path;
-        return this;
-    }
-
     public QueryParams getQueryParams() {
         return queryParams;
-    }
-
-    public Request setQueryParams(QueryParams queryParams) {
-        this.queryParams = queryParams;
-        return this;
     }
 
     public Headers getHeaders() {
         return headers;
     }
 
-    public Request setHeaders(Headers headers) {
-        this.headers = headers;
-        return this;
-    }
-
     public String getBody() {
         return body;
-    }
-
-    public Request setBody(String body) {
-        this.body = body;
-        return this;
     }
 
     @Override
@@ -97,8 +76,8 @@ public class Request {
         private String body;
 
         private Builder() {
-            queryParams = QueryParams.builder().params(Collections.emptyMap()).build();
-            headers = Headers.builder().headerMap(Collections.emptyMap()).build();
+            queryParams = QueryParams.EMPTY;
+            headers = Headers.EMPTY;
             body = "";
         }
 

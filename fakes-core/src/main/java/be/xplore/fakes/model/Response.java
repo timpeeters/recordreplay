@@ -2,16 +2,21 @@ package be.xplore.fakes.model;
 
 import be.xplore.fakes.util.Assert;
 
+import java.util.Collections;
 import java.util.Objects;
 
 public class Response {
 
-    private int statusCode;
-    private String statusText;
+    private final int statusCode;
+    private final String statusText;
+    private final Headers headers;
+    private final String body;
 
     private Response(Builder builder) {
         this.statusCode = Assert.notNull(builder.statusCode);
         this.statusText = builder.statusText;
+        this.headers = builder.headers;
+        this.body = builder.body;
     }
 
     public static Builder builder() {
@@ -30,18 +35,8 @@ public class Response {
         return statusCode;
     }
 
-    public Response setStatusCode(int statusCode) {
-        this.statusCode = statusCode;
-        return this;
-    }
-
     public String getStatusText() {
         return statusText;
-    }
-
-    public Response setStatusText(String statusText) {
-        this.statusText = statusText;
-        return this;
     }
 
     @Override
@@ -65,9 +60,13 @@ public class Response {
     public static class Builder {
         private Integer statusCode;
         private String statusText;
+        private Headers headers;
+        private String body;
 
         private Builder() {
             statusText = "";
+            headers = Headers.EMPTY;
+            body = "";
         }
 
         public static Builder ok() {
@@ -85,6 +84,16 @@ public class Response {
 
         public Builder statusText(String statusText) {
             this.statusText = statusText;
+            return this;
+        }
+
+        public Builder headers(Headers headers) {
+            this.headers = headers;
+            return this;
+        }
+
+        public Builder body(String body) {
+            this.body = body;
             return this;
         }
 
