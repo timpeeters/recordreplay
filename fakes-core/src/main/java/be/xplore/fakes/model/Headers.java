@@ -2,6 +2,7 @@ package be.xplore.fakes.model;
 
 import be.xplore.fakes.util.Assert;
 
+import java.net.http.HttpHeaders;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -11,10 +12,15 @@ import java.util.stream.Collectors;
 
 public class Headers {
 
+    public static final Headers EMPTY = builder().headerMap(Collections.emptyMap()).build();
     private final Map<String, List<String>> headerMap;
 
     private Headers(Builder builder) {
         this.headerMap = Collections.unmodifiableMap(Assert.notNull(builder.headerMap));
+    }
+
+    public Headers(HttpHeaders headers) {
+        this.headerMap = Collections.unmodifiableMap(headers.map());
     }
 
     public Map<String, List<String>> getHeaderMap() {
@@ -47,10 +53,10 @@ public class Headers {
                     headerList.add(key);
                     headerList.add(value);
                 }));
-       return headerList.toArray(String[]::new);
+        return headerList.toArray(String[]::new);
     }
 
-    public Headers copyOf(){
+    public Headers copyOf() {
         return Headers.builder().headerMap(this.headerMap).build();
     }
 
