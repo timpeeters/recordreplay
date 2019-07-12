@@ -1,9 +1,8 @@
 package be.xplore.fakes.model;
 
-import java.util.Collections;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static be.xplore.fakes.util.Assert.notNull;
 
@@ -27,6 +26,10 @@ public class Request {
         return new Builder();
     }
 
+    public URI toUri() {
+        return URI.create(getPath() + getQueryParams().getQueryString());
+    }
+
     public RequestMethod getMethod() {
         return method;
     }
@@ -35,27 +38,12 @@ public class Request {
         return path;
     }
 
-    public Request setPath(String path) {
-        this.path = path;
-        return this;
-    }
-
     public QueryParams getQueryParams() {
         return queryParams;
     }
 
-    public Request setQueryParams(QueryParams queryParams) {
-        this.queryParams = queryParams;
-        return this;
-    }
-
     public Headers getHeaders() {
         return headers;
-    }
-
-    public Request setHeaders(Headers headers) {
-        this.headers = headers;
-        return this;
     }
 
     public String getBody() {
@@ -89,7 +77,7 @@ public class Request {
         private String body;
 
         private Builder() {
-            queryParams = QueryParams.builder().params(new HashMap<>()).build();
+            queryParams = QueryParams.EMPTY;
             headers = Headers.builder().headerMap(new HashMap<>()).build();
             body = "";
         }

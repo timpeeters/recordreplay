@@ -1,16 +1,14 @@
 package be.xplore.fakes.service;
 
+import be.xplore.fakes.model.Headers;
 import be.xplore.fakes.model.Request;
 import be.xplore.fakes.model.Response;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DefaultHttpClient implements be.xplore.fakes.service.HttpClient {
 
@@ -28,32 +26,9 @@ public class DefaultHttpClient implements be.xplore.fakes.service.HttpClient {
                 .newBuilder()
                 .method(request.getMethod().name(),
                         HttpRequest.BodyPublishers.ofString(request.getBody()))
-                .uri(uriBuilder(request))
-                .headers(headersBuilder(request))
+                .uri(request.toUri())
+                .headers(request.getHeaders().toVarargs())
                 .build();
-    }
-
-    private URI uriBuilder(Request request) {
-        StringBuilder uri = new StringBuilder(request.getPath()).append('?');
-        request.getParams()
-                .forEach((key, value) -> request.getParams().get(key)
-                        .forEach(s -> uri
-                                .append(key)
-                                .append('=')
-                                .append(s)
-                                .append('&')));
-        return URI.create(uri.deleteCharAt(uri.length()).toString());
-    }
-
-    private String[] headersBuilder(Request request) {
-        List<String> keyValueList = new ArrayList<>();
-        request.getHeaders()
-                .forEach((key, value) -> value
-                        .forEach(s -> {
-                            keyValueList.add(key);
-                            keyValueList.add(s);
-                        }));
-        return keyValueList.toArray(String[]::new);
     }
 
     private HttpResponse getHttpResponse(HttpRequest httpRequest) {
@@ -67,9 +42,12 @@ public class DefaultHttpClient implements be.xplore.fakes.service.HttpClient {
         }
     }
 
-    private Response responseBuilder(HttpResponse httpResponse) {
-        return new Response().setStatusCode(httpResponse.statusCode())
-                .setStatusText(httpResponse.body().toString());
+    private Response responseBuilder(HttpResponse<String> httpResponse) {
+        return Response.builder()
+                .statusCode(httpResponse.statusCode())
+                .headers(new Headers(httpResponse.headers()))
+                .body(httpResponse.body())
+                .build();
     }
 }
 
