@@ -21,8 +21,8 @@ public class JsonMarshallerTests {
             "\"request\":" +
             "{\"method\":\"GET\"," +
             "\"path\":\"/test\"," +
-            "\"params\":{}," +
-            "\"headers\":{}," +
+            "\"queryParams\":[]," +
+            "\"headers\":[]," +
             "\"body\":\"test body" +
             "\"}," +
             "\"response\":" +
@@ -36,7 +36,7 @@ public class JsonMarshallerTests {
     @Before
     public void setUpTest() {
         stub = new Stub(
-                Request.Builder.get("/test").params(new ArrayList<>())
+                Request.Builder.get("/test").queryParams(new ArrayList<>())
                         .headers(new ArrayList<>()).body("test body").build(),
                 Response.ok()
         );

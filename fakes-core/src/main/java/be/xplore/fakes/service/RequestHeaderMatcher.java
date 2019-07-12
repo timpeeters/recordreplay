@@ -1,67 +1,40 @@
 package be.xplore.fakes.service;
 
+import be.xplore.fakes.model.Headers;
 import be.xplore.fakes.model.Request;
 import be.xplore.fakes.model.Result;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class RequestHeaderMatcher implements RequestMatcher {
 
     @Override
     public Result matches(Request request, Request otherRequest) {
-        if (validateHeaderMaps(request, otherRequest)) {
-            return new Result().setDistance(1);
+        return new Result(calculateDistance(request.getHeaders(), otherRequest.getHeaders()));
+    }
+
+    private double calculateDistance(Headers headers, Headers otherHeaders) {
+        if (headers.isEmpty() && otherHeaders.isEmpty()) {
+            return 0;
+        } else if (headers.isEmpty() || otherHeaders.isEmpty()) {
+            return 1;
         }
-        return new Result().setDistance(calculateMatchDistance(request, otherRequest));
+        return largest(headers, otherHeaders)
+                .returnMismatchingHeaders(smallest(headers, otherHeaders))
+                .size() * (1D / largest(headers, otherHeaders).size());
     }
 
-    private boolean validateHeaderMaps(Request request, Request otherRequest) {
-        return request.getHeaders() == null
-                || otherRequest.getHeaders() == null
-                || request.getHeaders().size() == 0
-                || otherRequest.getHeaders().size() == 0;
-    }
-
-    private double calculateMatchDistance(Request request, Request otherRequest) {
-        List<String> smallestList = determineSmallestHeaderPairs(request, otherRequest);
-        double distanceIncrement = getDistanceIncrement(request, otherRequest);
-        return determineLargestHeaderPairs(request, otherRequest)
-                .stream()
-                .filter(s -> !smallestList.contains(s))
-                .mapToDouble(s -> distanceIncrement)
-                .sum();
-    }
-
-    private List<String> getKeyValueHeaderPairs(Request request) {
-        List<String> keyValueHeaderPairs = new ArrayList<>();
-        request.getHeaders()
-                .forEach((headerKey, valueList) -> request.getHeaders().get(headerKey)
-                        .forEach(headerValue -> keyValueHeaderPairs.add(headerKey + ":" + headerValue)));
-        return keyValueHeaderPairs;
-    }
-
-    private double getDistanceIncrement(Request request, Request otherRequest) {
-        return 1D / determineLargestHeaderPairs(request, otherRequest).size();
-    }
-
-    private List<String> determineLargestHeaderPairs(Request request, Request otherRequest) {
-        List<String> keyValueHeaderPairs1 = getKeyValueHeaderPairs(request);
-        List<String> keyValueHeaderPairs2 = getKeyValueHeaderPairs(otherRequest);
-        if (keyValueHeaderPairs1.size() > keyValueHeaderPairs2.size()) {
-            return keyValueHeaderPairs1;
+    private Headers largest(Headers headers, Headers otherHeaders) {
+        if (headers.size() > otherHeaders.size()) {
+            return headers;
         } else {
-            return keyValueHeaderPairs2;
+            return otherHeaders;
         }
     }
 
-    private List<String> determineSmallestHeaderPairs(Request request, Request otherRequest) {
-        List<String> keyValueHeaderPairs1 = getKeyValueHeaderPairs(request);
-        List<String> keyValueHeaderPairs2 = getKeyValueHeaderPairs(otherRequest);
-        if (keyValueHeaderPairs1.size() > keyValueHeaderPairs2.size()) {
-            return keyValueHeaderPairs2;
+    private Headers smallest(Headers headers, Headers otherHeaders) {
+            return otherHeaders;
+        if (headers.size() > otherHeaders.size()) {
         } else {
-            return keyValueHeaderPairs1;
+            return headers;
         }
     }
 }

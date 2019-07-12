@@ -8,9 +8,9 @@ public class RequestPathMatcher implements RequestMatcher{
     @Override
     public Result matches(Request request, Request otherRequest) {
         if (request.getPath().equals(otherRequest.getPath())) {
-            return new Result().setDistance(0);
+            return new Result(0);
         } else {
-            return new Result().setDistance(1);
+            return new Result(1);
         }
     }
 }
