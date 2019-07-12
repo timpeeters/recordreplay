@@ -1,31 +1,30 @@
 package be.xplore.demorest.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
-@Entity
 public class User {
 
-    @Id
-    @GeneratedValue
-    private Long id;
-
-    @NotBlank
-    @NotNull
+    private long id;
     private String firstName;
-    @NotBlank
-    @NotNull
     private String lastName;
     private String role;
 
-    public Long getId() {
+    public User(User other) {
+        this.id = other.id;
+        this.firstName = other.firstName;
+        this.lastName = other.lastName;
+        this.role = other.role;
+    }
+
+    public User() {
+        this.firstName = "";
+        this.lastName = "";
+        this.role = "";
+    }
+
+    public long getId() {
         return id;
     }
 
-    public User setId(Long id) {
+    public User setId(long id) {
         this.id = id;
         return this;
     }

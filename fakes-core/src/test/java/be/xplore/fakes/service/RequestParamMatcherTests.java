@@ -1,54 +1,34 @@
 package be.xplore.fakes.service;
 
-
+import be.xplore.fakes.model.QueryParams;
 import be.xplore.fakes.model.Request;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class RequestParamMatcherTests {
 
-    private static List<String> sameParams1 = new ArrayList<>();
-    private static List<String> sameParams2 = new ArrayList<>();
-    private static List<String> diffParams = new ArrayList<>();
-    private static List<String> halfParams = new ArrayList<>();
-
-    private static Request sameRequest1;
-    private static Request sameRequest2;
-    private static Request diffRequest;
-    private static Request halfRequest;
-
+    private static final String KEY = "Key";
     private final RequestMatcher matcher = new RequestParamMatcher();
 
+    private final QueryParams sameQueryParams1 =
+            QueryParams.builder().params(Map.of(KEY, List.of("Test1", "Test2"))).build();
+    private final QueryParams sameQueryParams2 =
+            QueryParams.builder().params(Map.of(KEY, List.of("Test1", "Test2"))).build();
+    private final QueryParams diffQueryParams =
+            QueryParams.builder().params(Map.of(KEY, List.of("Test3", "Test4"))).build();
+    private final QueryParams halfQueryParams =
+            QueryParams.builder().params(Map.of(KEY, List.of("Test1", "Test8"))).build();
 
-    @BeforeClass
-    public static void setUpSameParamLists() {
-        sameParams1.add("paramTest1");
-        sameParams1.add("paramTest2");
-        sameParams2.add("paramTest1");
-        sameParams2.add("paramTest2");
-    }
+    private final Request sameRequest1 = Request.Builder.post("").queryParams(sameQueryParams1).build();
+    private final Request sameRequest2 = Request.Builder.post("").queryParams(sameQueryParams2).build();
+    private final Request diffRequest = Request.Builder.post("").queryParams(diffQueryParams).build();
+    private final Request halfRequest = Request.Builder.post("").queryParams(halfQueryParams).build();
 
-    @BeforeClass
-    public static void setUpDiffParamLists() {
-        diffParams.add("paramTest3");
-        diffParams.add("paramTest4");
-        halfParams.add("paramTest1");
-        halfParams.add("paramTest6");
-    }
-
-    @BeforeClass
-    public static void initRequests() {
-        sameRequest1 = Request.Builder.post("").params(sameParams1).build();
-        sameRequest2 = Request.Builder.post("").params(sameParams2).build();
-        diffRequest  = Request.Builder.post("").params(diffParams).build();
-        halfRequest  = Request.Builder.post("").params(halfParams).build();
-    }
 
     @Test
     public void requestParamMatcherShouldReturnResultZeroOnCompleteMatch() {

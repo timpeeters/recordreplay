@@ -19,8 +19,8 @@ public class RequestTest {
         assertThat(request).isNotNull();
         assertThat(request.getMethod()).isEqualTo(RequestMethod.GET);
         assertThat(request.getPath()).isEqualTo(PATH_1);
-        assertThat(request.getParams()).isNotNull().isEmpty();
-        assertThat(request.getHeaders()).isNotNull().isEmpty();
+        assertThat(request.getQueryParams().getParams()).isNotNull().isEmpty();
+        assertThat(request.getHeaders().getHeaderMap()).isNotNull().isEmpty();
         assertThat(request.getBody()).isNotNull().isEmpty();
     }
 

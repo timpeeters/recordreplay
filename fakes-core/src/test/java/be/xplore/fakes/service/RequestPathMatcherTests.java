@@ -1,6 +1,7 @@
 package be.xplore.fakes.service;
 
 import be.xplore.fakes.model.Request;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -9,9 +10,16 @@ public class RequestPathMatcherTests {
 
     private final RequestMatcher matcher = new RequestPathMatcher();
 
-    private final Request sameRequest1 = Request.Builder.put("/same").build();
-    private final Request sameRequest2 = Request.Builder.put("/same").build();
-    private final Request diffRequest  = Request.Builder.get("/diff").build();
+    private Request sameRequest1;
+    private Request sameRequest2;
+    private Request diffRequest;
+
+    @Before
+    public void setupTest() {
+        sameRequest1 = Request.Builder.put("/same").build();
+        sameRequest2 = Request.Builder.put("/same").build();
+        diffRequest  = Request.Builder.get("/diff").build();
+    }
 
     @Test
     public void requestPathMatcherShouldReturnResultZeroOnMatch(){

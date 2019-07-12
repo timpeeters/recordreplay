@@ -1,9 +1,8 @@
 package be.xplore.fakes.model;
 
-import org.junit.BeforeClass;
+import org.assertj.core.util.Maps;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -13,19 +12,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class HeadersTests {
 
-
-    private static List<String> someHeaders = new ArrayList<>();
-    private static String[] expectedVarargs = {"Key", "headerTest1", "Key", "headerTest2"};
-    private static Map<String, List<String>> headerMap = new HashMap<>();
-    private static Headers headers;
-
-    @BeforeClass
-    public static void setUpParamMap() {
-        someHeaders.add("headerTest1");
-        someHeaders.add("headerTest2");
-        headerMap.put("Key", someHeaders);
-        headers = Headers.builder().headerMap(headerMap).build();
-    }
+    private final String[] expectedVarargs = {"Key", "headerTest1", "Key", "headerTest2"};
+    private final List<String> expectedStringList = List.of("KeyheaderTest1", "KeyheaderTest2");
+    private final Map<String, List<String>> headerMap = Maps.newHashMap("Key", List.of("headerTest1","headerTest2"));
+    private final Headers headers = Headers.builder().headerMap(headerMap).build();
 
     @Test
     public void getHeadersShouldReturnMapOfHeaders() {
@@ -35,17 +25,15 @@ public class HeadersTests {
     }
 
     @Test
-    public void builderShoudlReturnNewBuilderObject() {
+    public void builderShouldReturnNewBuilderObject() {
         assertThat(Headers.builder())
                 .as("Doesn't return a new Builder object")
                 .isInstanceOf(Headers.Builder.class);
     }
 
-    @Test
-    public void isEmptyShouldReturnTrueOnNullMap() {
-        assertThat(Headers.builder().headerMap(null).build().isEmpty())
-                .as("Null paramsMap not detected")
-                .isTrue();
+    @Test(expected = IllegalArgumentException.class)
+    public void buildingHeaderWithNullShouldThrow() {
+        Headers.builder().headerMap(null).build();
     }
 
     @Test
@@ -64,8 +52,16 @@ public class HeadersTests {
 
     @Test
     public void getHeaderVarargsShouldReturnArrayOfLists() {
-        assertThat(Arrays.equals(headers.getHeaderVarargs(), expectedVarargs))
+        assertThat(Arrays.equals(headers.toVarargs(), expectedVarargs))
                 .as("Varargs not generated correctly")
                 .isTrue();
     }
+
+    @Test
+    public void getHeaderAsKeyValueStringShouldReturnListOfStrings() {
+        assertThat(headers.toStringList().equals(expectedStringList))
+                .as("Key-Value String-list not generated correctly")
+                .isTrue();
+    }
+
 }

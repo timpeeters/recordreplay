@@ -1,7 +1,6 @@
 package be.xplore.fakes.model;
 
-import java.util.Collections;
-import java.util.List;
+import java.net.URI;
 import java.util.Objects;
 
 import static be.xplore.fakes.util.Assert.notNull;
@@ -10,20 +9,24 @@ public class Request {
 
     private final RequestMethod method;
     private final String path;
-    private final List<String> params;
-    private final List<String> headers;
+    private final QueryParams queryParams;
+    private final Headers headers;
     private final String body;
 
     public Request(Builder builder) {
         this.method = notNull(builder.method);
         this.path = notNull(builder.path);
-        this.params = builder.params;
-        this.headers = builder.headers;
-        this.body = builder.body;
+        this.queryParams = notNull(builder.queryParams);
+        this.headers = notNull(builder.headers);
+        this.body = notNull(builder.body);
     }
 
     public static Builder builder() {
         return new Builder();
+    }
+
+    public URI toUri() {
+        return URI.create(getPath() + getQueryParams().getQueryString());
     }
 
     public RequestMethod getMethod() {
@@ -34,11 +37,11 @@ public class Request {
         return path;
     }
 
-    public List<String> getParams() {
-        return params;
+    public QueryParams getQueryParams() {
+        return queryParams;
     }
 
-    public List<String> getHeaders() {
+    public Headers getHeaders() {
         return headers;
     }
 
@@ -68,13 +71,13 @@ public class Request {
     public static class Builder {
         private RequestMethod method;
         private String path;
-        private List<String> params;
-        private List<String> headers;
+        private QueryParams queryParams;
+        private Headers headers;
         private String body;
 
         private Builder() {
-            params = Collections.emptyList();
-            headers = Collections.emptyList();
+            queryParams = QueryParams.EMPTY;
+            headers = Headers.EMPTY;
             body = "";
         }
 
@@ -100,12 +103,12 @@ public class Request {
             return this;
         }
 
-        public Builder params(List<String> params) {
-            this.params = params;
+        public Builder queryParams(QueryParams queryParams) {
+            this.queryParams = queryParams;
             return this;
         }
 
-        public Builder headers(List<String> headers) {
+        public Builder headers(Headers headers) {
             this.headers = headers;
             return this;
         }
