@@ -11,7 +11,7 @@ class YamlResponse {
     public Map<String, List<String>> headers;
     public String body;
 
-    public YamlResponse() {
+    YamlResponse() {
     }
 
     YamlResponse(Response response) {

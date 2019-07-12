@@ -7,11 +7,11 @@ import static be.xplore.fakes.util.Assert.notNull;
 
 public class Request {
 
-    private RequestMethod method;
-    private String path;
-    private QueryParams queryParams;
-    private Headers headers;
-    private String body;
+    private final RequestMethod method;
+    private final String path;
+    private final QueryParams queryParams;
+    private final Headers headers;
+    private final String body;
 
     public Request(Builder builder) {
         this.method = notNull(builder.method);

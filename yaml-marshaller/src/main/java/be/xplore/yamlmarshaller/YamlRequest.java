@@ -15,10 +15,10 @@ class YamlRequest {
     public Map<String, List<String>> headers;
     public String body;
 
-    public YamlRequest() {
+    YamlRequest() {
     }
 
-    public YamlRequest(Request request) {
+    YamlRequest(Request request) {
         this.method = request.getMethod();
         this.path = request.getPath();
         this.queryParams = request.getQueryParams().getParams();

@@ -1,35 +1,27 @@
 package be.xplore.jsonmarshaller;
 
 
-import be.xplore.fakes.model.*;
+import be.xplore.fakes.model.Headers;
+import be.xplore.fakes.model.QueryParams;
+import be.xplore.fakes.model.Request;
+import be.xplore.fakes.model.Response;
+import be.xplore.fakes.model.Stub;
 import be.xplore.fakes.service.Marshaller;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.HashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class JsonMarshallerTests {
 
-    private final String expectedJsonString = "{\"" +
-            "request\":" +
-            "{\"method\":\"GET\"," +
-            "\"path\":\"/test\"," +
-            "\"queryParams\":" +
-            "{\"params\":{}," +
-            "\"empty\":true," +
-            "\"queryString\":\"\"}," +
-            "\"headers\":" +
-            "{\"headerMap\":{}," +
-            "\"empty\":true}," +
-            "\"body\":\"test body\"}," +
-            "\"response\":" +
-            "{\"statusCode\":200," +
-            "\"statusText\":\"OK\"}}";
+    private final String expectedJsonString =
+            "{\"request\":{\"method\":\"GET\",\"path\":\"/test\",\"queryParams\":{}," +
+            "\"headers\":{},\"body\":\"request body\"},\"response\":{\"statusCode\":200," +
+            "\"statusText\":\"OK\",\"headers\":{},\"body\":\"response body\"}}";
 
     private Stub stub;
     private Marshaller marshaller;
@@ -37,9 +29,9 @@ public class JsonMarshallerTests {
     @Before
     public void setUpTest() {
         stub = new Stub(
-                Request.Builder.get("/test").queryParams(QueryParams.builder().build())
-                        .headers(Headers.builder().build()).body("test body").build(),
-                Response.ok()
+                Request.Builder.get("/test").queryParams(QueryParams.EMPTY)
+                        .headers(Headers.EMPTY).body("request body").build(),
+                Response.Builder.ok().body("response body").build()
         );
         marshaller = new JsonMarshaller();
     }

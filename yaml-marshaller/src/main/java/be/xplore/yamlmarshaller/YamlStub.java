@@ -6,7 +6,7 @@ class YamlStub {
     public YamlRequest request;
     public YamlResponse response;
 
-    public YamlStub() {
+    YamlStub() {
     }
 
     YamlStub(Stub stub) {
