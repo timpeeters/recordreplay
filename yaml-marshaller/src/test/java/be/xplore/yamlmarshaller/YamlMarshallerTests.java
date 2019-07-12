@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

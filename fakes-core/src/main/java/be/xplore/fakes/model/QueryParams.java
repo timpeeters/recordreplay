@@ -4,12 +4,13 @@ import be.xplore.fakes.util.Assert;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class QueryParams {
+
+    public static final QueryParams EMPTY = builder().params(Collections.emptyMap()).build();
 
     private final Map<String, List<String>> params;
 
@@ -56,7 +57,7 @@ public class QueryParams {
         return this.toStringList().size();
     }
 
-    public QueryParams copyOf(){
+    public QueryParams copyOf() {
         return QueryParams.builder().params(this.getParams()).build();
     }
 
@@ -75,13 +76,11 @@ public class QueryParams {
 
         private Map<String, List<String>> params;
 
-        private Builder(){
-            params = new HashMap<>();
+        private Builder() {
         }
 
         public Builder params(Map<String, List<String>> params) {
             this.params = params;
-
             return this;
         }
 
