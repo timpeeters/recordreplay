@@ -1,9 +1,7 @@
 package be.xplore.jsonmarshaller;
 
 
-import be.xplore.fakes.model.Request;
-import be.xplore.fakes.model.Response;
-import be.xplore.fakes.model.Stub;
+import be.xplore.fakes.model.*;
 import be.xplore.fakes.service.Marshaller;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,18 +15,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class JsonMarshallerTests {
 
-    private final String expectedJsonString = "{" +
-            "\"request\":" +
+    private final String expectedJsonString = "{\"" +
+            "request\":" +
             "{\"method\":\"GET\"," +
             "\"path\":\"/test\"," +
-            "\"queryParams\":[]," +
-            "\"headers\":[]," +
-            "\"body\":\"test body" +
-            "\"}," +
+            "\"queryParams\":" +
+            "{\"params\":{}," +
+            "\"empty\":true," +
+            "\"queryString\":\"\"}," +
+            "\"headers\":" +
+            "{\"headerMap\":{}," +
+            "\"empty\":true}," +
+            "\"body\":\"test body\"}," +
             "\"response\":" +
             "{\"statusCode\":200," +
-            "\"statusText\":\"OK\"}" +
-            "}";
+            "\"statusText\":\"OK\"}}";
 
     private Stub stub;
     private Marshaller marshaller;
@@ -36,8 +37,8 @@ public class JsonMarshallerTests {
     @Before
     public void setUpTest() {
         stub = new Stub(
-                Request.Builder.get("/test").queryParams(new ArrayList<>())
-                        .headers(new ArrayList<>()).body("test body").build(),
+                Request.Builder.get("/test").queryParams(QueryParams.builder().build())
+                        .headers(Headers.builder().build()).body("test body").build(),
                 Response.ok()
         );
         marshaller = new JsonMarshaller();
