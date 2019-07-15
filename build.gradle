@@ -1,6 +1,6 @@
 plugins {
     id 'jacoco'
-    id 'java'
+    id 'java-library'
     id 'checkstyle'
     id 'pmd'
 }
@@ -18,7 +18,7 @@ allprojects {
 
 subprojects {
     apply plugin: 'jacoco'
-    apply plugin: 'java'
+    apply plugin: 'java-library'
     apply plugin: 'checkstyle'
     apply plugin: 'pmd'
 
