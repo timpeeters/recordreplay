@@ -10,4 +10,5 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation project(':demo-rest')
+    testImplementation project(':demo-soap')
 }
