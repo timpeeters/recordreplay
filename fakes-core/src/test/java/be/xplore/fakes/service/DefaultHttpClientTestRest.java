@@ -38,4 +38,13 @@ public class DefaultHttpClientTestRest {
         Response response = client.execute(getUsersRequest);
         assertThat(response.getStatusCode()).isEqualTo(200);
     }
+
+    @Test
+    public void testInvalidRequest() {
+        Request getUsersRequest = Request.Builder.post(host + "/user/list")
+                .headers(Headers.builder().applicationJson().build())
+                .build();
+        Response response = client.execute(getUsersRequest);
+        assertThat(response.getStatusCode()).isEqualTo(405);
+    }
 }
