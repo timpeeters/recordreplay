@@ -8,12 +8,24 @@ import be.xplore.fakes.model.Stub;
 import be.xplore.fakes.service.Marshaller;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
 
+import java.io.IOException;
+import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.UncheckedIOException;
+import java.io.Writer;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class YamlMarshallerTests {
 
     private final String expectedYamlString = "---\n" +
@@ -52,6 +64,22 @@ public class YamlMarshallerTests {
     public void unmarshallCreatesStubFromYamlString() {
         Stub unmarshalledStub = marshaller.unMarshal(new StringReader(expectedYamlString));
         assertThat(unmarshalledStub).as("No correct stub unmarshalled").isEqualTo(stub);
+    }
+
+    @Test(expected = UncheckedIOException.class)
+    public void marshallerShouldThrowExceptionOnMockWriter() throws IOException {
+        Writer mockedWriter = mock(Writer.class);
+        when(mockedWriter.append(anyString())).thenThrow(IOException.class);
+        marshaller.marshal(stub, mockedWriter);
+    }
+
+    @Test(expected = UncheckedIOException.class)
+    public void unmarshallerShouldThrowExceptionOnMockReader() throws IOException {
+        Reader reader = mock(Reader.class);
+        when(reader.read(any(char[].class),
+                anyInt(),
+                anyInt())).thenThrow(IOException.class);
+        marshaller.unMarshal(reader);
     }
 
 }
