@@ -48,7 +48,7 @@ public class Headers {
 
     public String[] toVarargs() {
         List<String> headerList = new ArrayList<>();
-        headerMap.forEach((key, value1) -> value1
+        headerMap.forEach((key, valueList) -> valueList
                 .forEach(value -> {
                     headerList.add(key);
                     headerList.add(value);
@@ -85,7 +85,17 @@ public class Headers {
 
         public Builder headerMap(Map<String, List<String>> headerMap) {
             this.headerMap = headerMap;
+            return this;
+        }
 
+        public Builder header(String key, String value) {
+            List<String> values = headerMap.computeIfAbsent(key, k -> new ArrayList<>());
+            values.add(value);
+            return this;
+        }
+
+        public Builder applicationJson() {
+            header("Content-Type", "application/json");
             return this;
         }
 

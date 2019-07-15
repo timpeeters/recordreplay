@@ -14,7 +14,7 @@ public class UserRepoImpl implements UserRepo {
 
     public UserRepoImpl() {
         users = new ArrayList<>();
-        save(new User().setFirstName("Stijn").setLastName("Schack").setRole(""));
+        save(new User().setFirstName("John").setLastName("Doe").setRole("unknown"));
     }
 
     @Override
