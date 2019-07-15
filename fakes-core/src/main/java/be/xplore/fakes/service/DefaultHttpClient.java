@@ -17,7 +17,7 @@ public class DefaultHttpClient implements be.xplore.fakes.service.HttpClient {
     @Override
     public Response execute(Request request) {
         HttpRequest httpRequest = httpRequestBuilder(request);
-        HttpResponse httpResponse = getHttpResponse(httpRequest);
+        HttpResponse<String> httpResponse = getHttpResponse(httpRequest);
         return responseBuilder(httpResponse);
     }
 
@@ -31,7 +31,7 @@ public class DefaultHttpClient implements be.xplore.fakes.service.HttpClient {
                 .build();
     }
 
-    private HttpResponse getHttpResponse(HttpRequest httpRequest) {
+    private HttpResponse<String> getHttpResponse(HttpRequest httpRequest) {
         try {
             return client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
         } catch (IOException e) {

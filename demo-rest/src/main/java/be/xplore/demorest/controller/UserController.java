@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +17,6 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("user")
 public class UserController {
 
     private final UserService userService;
@@ -28,13 +26,13 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/list")
+    @GetMapping("/user/list")
     public ResponseEntity findAllUsers() {
         List<User> users = userService.searchUsers();
         return ResponseEntity.ok().body(users);
     }
 
-    @GetMapping("/")
+    @GetMapping("/user")
     public ResponseEntity findUserById(@RequestParam Long id) {
         User foundUser;
         try {
@@ -45,7 +43,7 @@ public class UserController {
         return ResponseEntity.ok(foundUser);
     }
 
-    @PostMapping("/create")
+    @PostMapping("/user/create")
     public ResponseEntity createUser(@Valid @RequestBody User user) {
         User createdUser;
         try {
@@ -56,7 +54,7 @@ public class UserController {
         return ResponseEntity.ok().body(createdUser);
     }
 
-    @PutMapping("/update")
+    @PutMapping("/user/update")
     public ResponseEntity updateUser(@Valid @RequestBody(required = true) User user) {
         User updatedUser;
         try {
@@ -67,7 +65,7 @@ public class UserController {
         return ResponseEntity.ok().body(updatedUser);
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/user/delete")
     public ResponseEntity deleteUser(@RequestParam Long id) {
         try {
             userService.deleteUserById(id);
