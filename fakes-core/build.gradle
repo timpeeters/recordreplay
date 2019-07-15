@@ -1,13 +1,4 @@
-plugins {
-    id 'java'
-    id 'checkstyle'
-    id 'pmd'
-}
-
 dependencies {
-    testImplementation platform('org.springframework.boot:spring-boot-dependencies:2.1.6.RELEASE')
-
-    testImplementation 'junit:junit:4.12'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation project(':demo-rest')
     testImplementation project(':demo-soap')
