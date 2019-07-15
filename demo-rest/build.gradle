@@ -1,11 +1,4 @@
-plugins {
-    id 'java'
-    id 'checkstyle'
-    id 'pmd'
-}
-
 dependencies {
-    implementation platform('org.springframework.boot:spring-boot-dependencies:2.1.6.RELEASE')
     implementation 'org.springframework.boot:spring-boot-starter-data-rest'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-web-services'

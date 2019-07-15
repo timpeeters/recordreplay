@@ -1,6 +1,6 @@
 plugins {
     id 'jacoco'
-    id 'java'
+    id 'java-library'
     id 'checkstyle'
     id 'pmd'
 }
@@ -9,23 +9,20 @@ defaultTasks 'build'
 
 allprojects {
     apply plugin: 'idea'
-    apply plugin: 'checkstyle'
-    apply plugin: 'pmd'
-
-    group 'be.xplore'
 
     repositories {
         jcenter()
     }
 }
 
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-}
 
 subprojects {
     apply plugin: 'jacoco'
-    apply plugin: 'java'
+    apply plugin: 'java-library'
+    apply plugin: 'checkstyle'
+    apply plugin: 'pmd'
+
+    group 'be.xplore'
 
     project.plugins.withType(JavaBasePlugin) {
         project.with {
@@ -35,8 +32,11 @@ subprojects {
     }
 
     dependencies {
-        testCompile group: 'junit', name: 'junit', version: '4.12'
-        testCompile("org.assertj:assertj-core:3.12.2")
+        implementation platform('org.springframework.boot:spring-boot-dependencies:2.1.6.RELEASE')
+        testImplementation platform('org.springframework.boot:spring-boot-dependencies:2.1.6.RELEASE')
+        testImplementation 'junit:junit:4.12'
+        testImplementation 'org.assertj:assertj-core:3.12.2'
+        testImplementation 'org.mockito:mockito-core:2.28.2'
     }
 
     pmd {
