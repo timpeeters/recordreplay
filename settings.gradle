@@ -7,4 +7,4 @@ include 'file-repository'
 include 'json-marshaller'
 include 'yaml-marshaller'
 include 'recordreplay-jetty'
-
+include 'recordreplay-servlet'

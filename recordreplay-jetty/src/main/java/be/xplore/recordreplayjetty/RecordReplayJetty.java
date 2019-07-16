@@ -1,18 +1,25 @@
 package be.xplore.recordreplayjetty;
 
-import org.eclipse.jetty.server.Connector;
+import be.xplore.recordreplay.service.DefaultHttpServlet;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.servlet.ServletHandler;
 
 public class RecordReplayJetty {
-    private static final int PORT = 8080;
-    private Server server;
 
+    private static final int PORT = 9090;
+    private final Server server = new Server(PORT);
+    private final Class<DefaultHttpServlet> servletClass = DefaultHttpServlet.class;
+    private final ServletHandler handler = new ServletHandler();
+
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public void start() {
-        server = new Server();
-        ServerConnector connector = new ServerConnector(server);
-        connector.setPort(PORT);
-        server.setConnectors(new Connector[]{connector});
+        server.setHandler(handler);
+        handler.addServletWithMapping(servletClass, "/*");
+        try {
+            server.start();
+        } catch (Exception e) {
+            throw new IllegalStateException("Jetty-server couldn't start", e);
+        }
     }
 
 }
