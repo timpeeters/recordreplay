@@ -21,8 +21,9 @@ public class HttpServletRequestMapper implements RequestMapper<HttpServletReques
                 .build();
     }
 
+    @SuppressWarnings("PMD.UseLocaleWithCaseConversions")
     private RequestMethod convertMethod(String method) {
-        return RequestMethod.valueOf(method);
+        return RequestMethod.valueOf(method.toUpperCase());
     }
 
     private QueryParams convertParams(Map<String, String[]> params) {
@@ -35,6 +36,9 @@ public class HttpServletRequestMapper implements RequestMapper<HttpServletReques
     }
 
     private Headers convertHeaders(HttpServletRequest request) {
+        if (request.getHeaderNames() == null) {
+            return Headers.EMPTY;
+        }
         var builder = Headers.builder();
         request.getHeaderNames().asIterator().forEachRemaining(
                 key -> request.getHeaders(key).asIterator().forEachRemaining(
