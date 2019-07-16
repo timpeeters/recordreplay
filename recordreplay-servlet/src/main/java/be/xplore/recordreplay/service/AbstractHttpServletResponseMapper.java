@@ -6,5 +6,5 @@ import javax.servlet.http.HttpServletResponse;
 
 public abstract class AbstractHttpServletResponseMapper implements ResponseMapper<HttpServletResponse> {
     @Override
-    public abstract HttpServletResponse map(Response response);
+    public abstract void map(Response response, HttpServletResponse httpServletResponse);
 }
