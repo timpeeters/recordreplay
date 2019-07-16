@@ -8,6 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.Collections;
@@ -83,17 +86,26 @@ public class RequestMapperTest {
 
     @Test
     public void convertParams() {
+        String idKey = "id";
         List<String> idValues = List.of("1", "2", "10");
         when(validHttpServletRequest.getParameterMap())
-                .thenReturn(Map.of("id", toArray(idValues, String.class)));
+                .thenReturn(Map.of(idKey, toArray(idValues, String.class)));
         Request request = mapper.map(validHttpServletRequest);
         assertThat(request.getQueryParams()).isEqualTo(
                 requestBuilder
-                        .queryParams(QueryParams.builder().params(Map.of("id", idValues))
+                        .queryParams(QueryParams.builder().params(Map.of(idKey, idValues))
                                 .build())
                         .build()
                         .getQueryParams()
         );
+    }
+
+    @Test
+    public void convertBody() throws IOException {
+        String body = "body" + System.lineSeparator() + "nextLine";
+        when(validHttpServletRequest.getReader()).thenReturn(new BufferedReader(new StringReader(body)));
+        Request request = mapper.map(validHttpServletRequest);
+        assertThat(request.getBody()).isEqualTo(body);
     }
 
 }
