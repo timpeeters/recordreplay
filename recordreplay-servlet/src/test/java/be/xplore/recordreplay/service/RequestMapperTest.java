@@ -1,6 +1,7 @@
 package be.xplore.recordreplay.service;
 
 import be.xplore.fakes.model.Headers;
+import be.xplore.fakes.model.QueryParams;
 import be.xplore.fakes.model.Request;
 import be.xplore.fakes.model.RequestMethod;
 import org.junit.Before;
@@ -10,9 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.util.IterableUtil.toArray;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -73,6 +77,21 @@ public class RequestMapperTest {
                         .headers(Headers.builder().header("Content-Type", "application/json").build())
                         .build()
                         .getHeaders()
+        );
+    }
+
+    @Test
+    public void convertParams() {
+        List<String> idValues = List.of("1", "2", "10");
+        when(validHttpServletRequest.getParameterMap())
+                .thenReturn(Map.of("id", toArray(idValues, String.class)));
+        Request request = mapper.map(validHttpServletRequest);
+        assertThat(request.getQueryParams()).isEqualTo(
+                requestBuilder
+                        .queryParams(QueryParams.builder().params(Map.of("id", idValues))
+                                .build())
+                        .build()
+                        .getQueryParams()
         );
     }
 
