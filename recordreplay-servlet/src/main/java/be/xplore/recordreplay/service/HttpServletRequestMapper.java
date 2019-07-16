@@ -6,19 +6,39 @@ import be.xplore.fakes.model.Request;
 import be.xplore.fakes.model.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class HttpServletRequestMapper implements RequestMapper<HttpServletRequest> {
+public class HttpServletRequestMapper<R extends HttpServletRequest> implements RequestMapper<R> {
+
+    public Request map(HttpServletRequest servletRequest) {
+        MappingRequest r = new MappingRequest();
+        map(servletRequest, r);
+        return r.toRequest();
+    }
+
     @Override
-    public Request map(HttpServletRequest request) {
-        return Request.builder()
-                .method(convertMethod(request.getMethod()))
-                .path(request.getRequestURL().toString())
-                .queryParams(convertParams(request.getParameterMap()))
-                .headers(convertHeaders(request))
-                .build();
+    public void map(HttpServletRequest servletRequest, MappingRequest request) {
+        request.setMethod(convertMethod(servletRequest.getMethod()));
+        request.setPath(servletRequest.getRequestURL().toString());
+        request.setQueryParams(convertParams(servletRequest.getParameterMap()));
+        request.setHeaders(convertHeaders(servletRequest));
+        request.setBody(tryReadBody(servletRequest));
+    }
+
+    private String tryReadBody(HttpServletRequest request) {
+        try (BufferedReader reader = request.getReader()) {
+            if (reader != null) {
+                return reader.lines().collect(Collectors.joining(System.lineSeparator()));
+            }
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+        return "";
     }
 
     @SuppressWarnings("PMD.UseLocaleWithCaseConversions")
@@ -35,13 +55,13 @@ public class HttpServletRequestMapper implements RequestMapper<HttpServletReques
         return QueryParams.builder().params(collect).build();
     }
 
-    private Headers convertHeaders(HttpServletRequest request) {
-        if (request.getHeaderNames() == null) {
+    private Headers convertHeaders(HttpServletRequest servletRequest) {
+        if (servletRequest.getHeaderNames() == null) {
             return Headers.EMPTY;
         }
         var builder = Headers.builder();
-        request.getHeaderNames().asIterator().forEachRemaining(
-                key -> request.getHeaders(key).asIterator().forEachRemaining(
+        servletRequest.getHeaderNames().asIterator().forEachRemaining(
+                key -> servletRequest.getHeaders(key).asIterator().forEachRemaining(
                         val -> builder.header(key, val)
                 )
         );

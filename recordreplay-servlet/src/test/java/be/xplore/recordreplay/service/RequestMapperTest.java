@@ -25,7 +25,7 @@ public class RequestMapperTest {
 
     private static final String PATH = "http://localhost:8080/user";
 
-    private Mapper<Request, HttpServletRequest> mapper;
+    private HttpServletRequestMapper mapper;
     private final Request.Builder requestBuilder = Request.Builder.get(PATH);
     private HttpServletRequest validHttpServletRequest;
 
@@ -46,7 +46,8 @@ public class RequestMapperTest {
     public void convertMethod() {
         when(validHttpServletRequest.getMethod()).thenReturn("GET");
         Request request = mapper.map(validHttpServletRequest);
-        assertThat(request.getMethod()).isEqualTo(requestBuilder.method(RequestMethod.GET).build().getMethod());
+        assertThat(request.getMethod())
+                .isEqualTo(requestBuilder.method(RequestMethod.GET).build().getMethod());
 
     }
 
