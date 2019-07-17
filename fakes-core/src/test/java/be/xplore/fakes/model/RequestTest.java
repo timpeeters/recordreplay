@@ -28,8 +28,8 @@ public class RequestTest {
     public void checkEquality() {
         Request request = EXAMPLE_REQUEST_BUILDER_1.build();
         assertThat(request).isEqualTo(request);
-        assertThat(EXAMPLE_REQUEST_BUILDER_1.build()).as("Equals method not implemented correctly")
-                .isEqualTo(request);
+        assertThat(request).as("Equals method not implemented correctly")
+                .isEqualTo(EXAMPLE_REQUEST_BUILDER_1.build());
     }
 
     @Test
@@ -39,14 +39,11 @@ public class RequestTest {
                 .isNotEqualTo(EXAMPLE_REQUEST_BUILDER_1.path(PATH_2).build());
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Test
     public void checkNullAndOtherClass() {
         Request request = EXAMPLE_REQUEST_BUILDER_1.build();
-        Request nullRequest = null;
-
-        assertThat(nullRequest).isNotEqualTo(request);
-        assertThat(5).isNotEqualTo(request);
+        assertThat(request).isNotEqualTo(null);
+        assertThat(request).isNotEqualTo("I'm not a Request");
     }
 
     @Test
