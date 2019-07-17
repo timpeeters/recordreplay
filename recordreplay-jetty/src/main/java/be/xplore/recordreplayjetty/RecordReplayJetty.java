@@ -5,20 +5,23 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletHandler;
 
 public class RecordReplayJetty {
+    private final Server server;
 
-    private static final int PORT = 9090;
-    private final Server server = new Server(PORT);
-    private final Class<DefaultHttpServlet> servletClass = DefaultHttpServlet.class;
-    private final ServletHandler handler = new ServletHandler();
+    public RecordReplayJetty(int port, String path) {
+        this.server = new Server(port);
+        ServletHandler handler = new ServletHandler();
+        handler.addServletWithMapping(DefaultHttpServlet.class, path);
+        this.server.setHandler(handler);
+    }
 
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    public void start() {
-        server.setHandler(handler);
-        handler.addServletWithMapping(servletClass, "/*");
+    public void start() throws InterruptedException {
         try {
             server.start();
         } catch (Exception e) {
             throw new IllegalStateException("Jetty-server couldn't start", e);
+        } finally {
+            server.join();
         }
     }
 }
