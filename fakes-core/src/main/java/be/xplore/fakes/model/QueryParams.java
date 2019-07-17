@@ -58,10 +58,6 @@ public class QueryParams {
         return this.toStringList().size();
     }
 
-    public QueryParams copyOf() {
-        return QueryParams.builder().params(this.getParams()).build();
-    }
-
     public boolean isEmpty() {
         return params.isEmpty();
     }

@@ -16,6 +16,7 @@ class JsonRequest {
     public Map<String, List<String>> headers;
     public String body;
 
+    @SuppressWarnings("unused")
     JsonRequest() {
     }
 

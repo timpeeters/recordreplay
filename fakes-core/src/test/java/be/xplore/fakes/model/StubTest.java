@@ -16,9 +16,17 @@ public class StubTest {
 
     @Test
     public void checkNotEqual() {
-        assertThat(getNewExampleStub2()).isNotEqualTo(getNewExampleStub1());
-        assertThat(getNewExampleStub1().setResponse(getNewExampleStub2().getResponse()))
-                .isNotEqualTo(getNewExampleStub1());
+        Stub stub1 = getNewExampleStub1();
+        Stub stub2 = getNewExampleStub2();
+        assertThat(stub1).isNotEqualTo(stub2);
+        assertThat(stub1).isNotEqualTo(new Stub(stub1.getRequest(), stub2.getResponse()));
+        assertThat(stub1).isNotEqualTo(new Stub(stub2.getRequest(), stub1.getResponse()));
+    }
+
+    @Test
+    public void checkNotEqualNoThrow() {
+        assertThat(getNewExampleStub1()).isNotEqualTo(null);
+        assertThat(getNewExampleStub1()).isNotEqualTo("I'm obviously not a Stub");
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -46,7 +54,7 @@ public class StubTest {
 
     private Stub getNewExampleStub2() {
         return new Stub(
-                Request.builder().method(RequestMethod.GET).path("/test").build(),
+                Request.builder().method(RequestMethod.POST).path("/test").build(),
                 Response.ok()
         );
     }
