@@ -1,0 +1,7 @@
+
+dependencies {
+    compile project(':fakes-core')
+    compile project(':recordreplay-servlet')
+    compile 'org.eclipse.jetty:jetty-server:9.4.19.v20190610'
+    compile 'org.eclipse.jetty:jetty-servlet:9.4.19.v20190610'
+}

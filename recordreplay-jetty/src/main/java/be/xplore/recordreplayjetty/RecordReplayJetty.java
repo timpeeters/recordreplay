@@ -21,5 +21,4 @@ public class RecordReplayJetty {
             throw new IllegalStateException("Jetty-server couldn't start", e);
         }
     }
-
 }
