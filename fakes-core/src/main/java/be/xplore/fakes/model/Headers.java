@@ -57,10 +57,6 @@ public class Headers {
         return headerList.toArray(String[]::new);
     }
 
-    public Headers copyOf() {
-        return Headers.builder().headerMap(this.headerMap).build();
-    }
-
     public int size() {
         return toStringList().size();
     }
