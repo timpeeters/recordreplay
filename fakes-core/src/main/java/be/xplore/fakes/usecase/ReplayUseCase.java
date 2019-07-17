@@ -11,12 +11,14 @@ import java.util.Optional;
 public class ReplayUseCase {
 
     private final Repository repository;
+    private final List<RequestMatcher> matchers;
 
-    public ReplayUseCase(Repository repository) {
+    public ReplayUseCase(Repository repository, List<RequestMatcher> matchers) {
         this.repository = repository;
+        this.matchers = matchers;
     }
 
-    public Optional<Response> replay(Request request, List<RequestMatcher> matchers) {
+    public Optional<Response> replay(Request request) {
         return repository.findExactResponse(request, matchers);
     }
 }
