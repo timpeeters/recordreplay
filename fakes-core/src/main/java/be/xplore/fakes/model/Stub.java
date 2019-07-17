@@ -4,8 +4,8 @@ import java.util.Objects;
 
 public class Stub {
 
-    private Request request;
-    private Response response;
+    private final Request request;
+    private final Response response;
 
     public Stub(Request request, Response response) {
         this.request = request;
@@ -16,18 +16,8 @@ public class Stub {
         return request;
     }
 
-    public Stub setRequest(Request request) {
-        this.request = request;
-        return this;
-    }
-
     public Response getResponse() {
         return response;
-    }
-
-    public Stub setResponse(Response response) {
-        this.response = response;
-        return this;
     }
 
     @Override
