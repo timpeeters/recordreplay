@@ -1,27 +1,69 @@
 package be.xplore.recordreplayjetty;
 
 import be.xplore.recordreplay.service.DefaultHttpServlet;
+import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.ServletHandler;
+import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.handler.HandlerList;
+import org.eclipse.jetty.servlet.ServletContextHandler;
 
 public class RecordReplayJetty {
     private final Server server;
 
-    public RecordReplayJetty(int port, String path) {
-        this.server = new Server(port);
-        ServletHandler handler = new ServletHandler();
-        handler.addServletWithMapping(DefaultHttpServlet.class, path);
-        this.server.setHandler(handler);
+    public RecordReplayJetty(int port) {
+        this.server = new Server();
+        this.server.addConnector(newConnector(port));
+        ServletContextHandler context = newContextHandler();
+        this.server.setHandler(getHandlerList(context));
     }
 
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    public void start() throws InterruptedException {
+    public void start() {
         try {
             server.start();
+          //  tryJoinThreads();
         } catch (Exception e) {
             throw new IllegalStateException("Jetty-server couldn't start", e);
-        } finally {
-            server.join();
         }
+    }
+
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
+    public void stop() {
+        try {
+            server.stop();
+            tryJoinThreads();
+        } catch (Exception e) {
+            throw new IllegalStateException("Jetty-server couldn't stop", e);
+        }
+    }
+
+    private void tryJoinThreads() {
+        try {
+            server.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IllegalStateException("Thread interrupted", e);
+        }
+    }
+
+    private Connector newConnector(int port) {
+        ServerConnector connector = new ServerConnector(this.server, new HttpConnectionFactory());
+        connector.setPort(port);
+        connector.setIdleTimeout(2);
+        return connector;
+    }
+
+    private ServletContextHandler newContextHandler() {
+        ServletContextHandler context = new ServletContextHandler();
+        context.setContextPath("/*");
+        context.addServlet(DefaultHttpServlet.class, "/*");
+        return context;
+    }
+
+    private HandlerList getHandlerList(ServletContextHandler context) {
+        HandlerList handlers = new HandlerList();
+        handlers.addHandler(context);
+        return handlers;
     }
 }
