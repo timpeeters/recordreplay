@@ -13,9 +13,10 @@ public class RecordUseCase {
         this.repository = repository;
     }
 
-    public void record(Request request, Response response) {
+    public Stub record(Request request, Response response) {
         Stub recordedStub = new Stub(request,response);
         repository.add(recordedStub);
+        return recordedStub;
     }
 
 }
