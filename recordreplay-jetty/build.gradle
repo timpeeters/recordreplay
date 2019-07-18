@@ -4,4 +4,6 @@ dependencies {
     implementation project(':recordreplay-servlet')
     implementation 'org.eclipse.jetty:jetty-server:9.4.19.v20190610'
     implementation 'org.eclipse.jetty:jetty-servlet:9.4.19.v20190610'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation project(':demo-rest')
 }
