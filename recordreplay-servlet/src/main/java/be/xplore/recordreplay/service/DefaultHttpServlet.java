@@ -16,10 +16,10 @@ public class DefaultHttpServlet extends HttpServlet {
     private final ResponseMapper<HttpServletResponse> responseMapper;
     private final HttpClient client;
 
-    public DefaultHttpServlet(ResponseMapper<HttpServletResponse> responseMapper) {
+    public DefaultHttpServlet() {
         super();
         requestMapper = new HttpServletRequestMapper();
-        this.responseMapper = responseMapper;
+        this.responseMapper = new HttpServletResponseMapper();
         client = new DefaultHttpClient();
     }
 
