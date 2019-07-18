@@ -5,6 +5,7 @@ import be.xplore.fakes.model.Response;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings({"WeakerAccess", "unused"})
 class JsonResponse {
     public int statusCode;
     public String statusText;

@@ -8,6 +8,7 @@ import be.xplore.fakes.model.RequestMethod;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings({"unused", "WeakerAccess"})
 class YamlRequest {
     public RequestMethod method;
     public String path;
