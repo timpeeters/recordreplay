@@ -2,6 +2,7 @@ package be.xplore.recordreplayjetty;
 
 import be.xplore.recordreplay.service.DefaultHttpServlet;
 import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
@@ -22,7 +23,7 @@ public class RecordReplayJetty {
     public void start() {
         try {
             server.start();
-          //  tryJoinThreads();
+            //  tryJoinThreads();
         } catch (Exception e) {
             throw new IllegalStateException("Jetty-server couldn't start", e);
         }
@@ -48,10 +49,18 @@ public class RecordReplayJetty {
     }
 
     private Connector newConnector(int port) {
-        ServerConnector connector = new ServerConnector(this.server, new HttpConnectionFactory());
+        ServerConnector connector = new ServerConnector(this.server, new HttpConnectionFactory(getHttpConfiguration()));
         connector.setPort(port);
         connector.setIdleTimeout(2);
         return connector;
+    }
+
+    private HttpConfiguration getHttpConfiguration() {
+        HttpConfiguration configuration = new HttpConfiguration();
+        configuration.setSendServerVersion(false);
+        configuration.setSendDateHeader(false);
+        configuration.setSendXPoweredBy(false);
+        return configuration;
     }
 
     private ServletContextHandler newContextHandler() {
