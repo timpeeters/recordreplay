@@ -17,7 +17,7 @@ import java.nio.file.Path;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
-public class FileRepositoryTests<M extends Marshaller> {
+public class FileRepositoryTests {
 
     private static final Stub STUB = new Stub(Request.Builder.get("").build(), Response.ok());
 
@@ -97,6 +97,11 @@ public class FileRepositoryTests<M extends Marshaller> {
         var repo = new FileRepository<>(tempDirPath(), BrokenMarshaller.class);
         repo.add(STUB);
         repo.find();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void marshallerNoDefConstructor() {
+        new FileRepository<>(tempDirPath(), InconstructibleMarshaller.class);
     }
 
     private FileRepository<? extends Marshaller> createTestFileRepository() {
