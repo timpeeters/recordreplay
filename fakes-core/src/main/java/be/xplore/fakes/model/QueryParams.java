@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class QueryParams {
@@ -57,10 +58,6 @@ public class QueryParams {
         return this.toStringList().size();
     }
 
-    public QueryParams copyOf() {
-        return QueryParams.builder().params(this.getParams()).build();
-    }
-
     public boolean isEmpty() {
         return params.isEmpty();
     }
@@ -70,6 +67,25 @@ public class QueryParams {
         return "QueryParams{" +
                 "queryParams=" + params +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        QueryParams otherParams = (QueryParams) o;
+        return this.params.entrySet().stream()
+                .allMatch(entry -> entry.getValue().equals(otherParams.getParams().get(entry.getKey()))
+                );
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(params);
     }
 
     public static class Builder {

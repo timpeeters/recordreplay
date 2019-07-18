@@ -7,7 +7,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ResponseTest {
 
     private static final Response.Builder RESPONSE_BUILDER_1 = Response.Builder.ok();
-    private static final Response.Builder RESPONSE_BUILDER_2 = Response.Builder.notFound();
 
     @Test
 
@@ -34,13 +33,11 @@ public class ResponseTest {
                 .isNotEqualTo(RESPONSE_BUILDER_1.statusText("xyz").build());
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Test
     public void checkNullAndOtherClass() {
         Response response = getNewExampleResponse1();
-        Response nullResponse = null;
-        assertThat(nullResponse).isNotEqualTo(response);
-        assertThat(5).isNotEqualTo(response);
+        assertThat(response).isNotEqualTo(null);
+        assertThat(response).isNotEqualTo("I'm not a response");
     }
 
     @Test
@@ -51,11 +48,11 @@ public class ResponseTest {
 
 
     private Response getNewExampleResponse1() {
-        return RESPONSE_BUILDER_1.build();
+        return Response.ok();
     }
 
 
     private Response getNewExampleResponse2() {
-        return RESPONSE_BUILDER_2.build();
+        return Response.notFound();
     }
 }

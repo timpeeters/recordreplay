@@ -5,6 +5,7 @@ import be.xplore.fakes.model.Response;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings({"unused", "WeakerAccess"})
 class YamlResponse {
     public int statusCode;
     public String statusText;

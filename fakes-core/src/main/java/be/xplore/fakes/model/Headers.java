@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class Headers {
@@ -56,16 +57,35 @@ public class Headers {
         return headerList.toArray(String[]::new);
     }
 
-    public Headers copyOf() {
-        return Headers.builder().headerMap(this.headerMap).build();
-    }
-
     public int size() {
-        return toStringList().size();
+        return headerMap.values().stream().mapToInt(List::size).sum();
     }
 
     public boolean isEmpty() {
         return headerMap.isEmpty();
+    }
+
+    @SuppressWarnings("checkstyle:ExecutableStatementCount")
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Headers headers = (Headers) o;
+        if (this.size() != headers.size()){
+            return false;
+        }
+        return headerMap.entrySet().stream()
+                .allMatch(entry -> entry.getValue().equals(headers.getHeaderMap().get(entry.getKey()))
+                );
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(headerMap);
     }
 
     @Override
