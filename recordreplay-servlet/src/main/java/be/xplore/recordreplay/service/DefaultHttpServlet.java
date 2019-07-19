@@ -2,7 +2,6 @@ package be.xplore.recordreplay.service;
 
 import be.xplore.fakes.model.Request;
 import be.xplore.fakes.model.Response;
-import be.xplore.fakes.service.DefaultHttpClient;
 import be.xplore.fakes.service.HttpClient;
 
 import javax.servlet.http.HttpServlet;
@@ -16,11 +15,11 @@ public class DefaultHttpServlet extends HttpServlet {
     private final ResponseMapper<HttpServletResponse> responseMapper;
     private final HttpClient client;
 
-    public DefaultHttpServlet(ResponseMapper<HttpServletResponse> responseMapper) {
+    public DefaultHttpServlet() {
         super();
         requestMapper = new HttpServletRequestMapper();
-        this.responseMapper = responseMapper;
-        client = new DefaultHttpClient();
+        this.responseMapper = new HttpServletResponseMapper();
+        client = new OkHttpClient();
     }
 
     @Override
