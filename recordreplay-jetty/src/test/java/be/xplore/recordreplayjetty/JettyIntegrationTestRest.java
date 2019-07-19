@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+@SuppressWarnings("PMD.AvoidUsingHardCodedIP")
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes =
         be.xplore.demorest.DemoRestApplication.class)
@@ -27,7 +28,7 @@ public class JettyIntegrationTestRest {
     public void initJetty() {
         int jettyPort = port + 1;
         recordReplayJetty = new RecordReplayJetty(jettyPort);
-        client = new DefaultHttpClient("localhost", jettyPort);
+        client = new DefaultHttpClient("0.0.0.0", jettyPort);
         recordReplayJetty.start();
     }
 
@@ -38,7 +39,7 @@ public class JettyIntegrationTestRest {
 
     @Test
     public void sendRequest() {
-        Request getUsersRequest = Request.Builder.get(String.format("http://localhost:%d%s", port, "/user/list"))
+        Request getUsersRequest = Request.Builder.get(String.format("http://0.0.0.0:%d%s", port, "/user/list"))
                 .headers(Headers.builder().applicationJson().build())
                 .build();
         var response = client.execute(getUsersRequest);
