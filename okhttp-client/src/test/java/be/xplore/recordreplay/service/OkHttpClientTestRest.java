@@ -1,9 +1,10 @@
-package be.xplore.fakes.service;
+package be.xplore.recordreplay.service;
 
 import be.xplore.fakes.model.Headers;
 import be.xplore.fakes.model.Request;
 import be.xplore.fakes.model.RequestMethod;
 import be.xplore.fakes.model.Response;
+import be.xplore.fakes.service.HttpClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,17 +13,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes =
         be.xplore.demorest.DemoRestApplication.class)
-public class DefaultHttpClientTestRest {
+public class OkHttpClientTestRest {
 
     @Autowired
     private Environment environment;
     private String host;
-    private final HttpClient client = new DefaultHttpClient();
+    private final HttpClient client = new OkHttpClient();
 
     @Before
     public void initContext() {
@@ -88,4 +89,5 @@ public class DefaultHttpClientTestRest {
         Response response = client.execute(getUsersRequest);
         assertThat(response.getStatusCode()).isEqualTo(405);
     }
+
 }

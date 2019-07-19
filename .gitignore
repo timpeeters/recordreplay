@@ -39,3 +39,4 @@ gradle-app.setting
 
 .idea
 .attach_pid*
+*.iml
