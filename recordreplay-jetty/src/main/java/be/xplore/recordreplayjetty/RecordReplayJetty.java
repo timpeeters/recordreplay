@@ -23,7 +23,6 @@ public class RecordReplayJetty {
     public void start() {
         try {
             server.start();
-            //  tryJoinThreads();
         } catch (Exception e) {
             throw new IllegalStateException("Jetty-server couldn't start", e);
         }
@@ -65,7 +64,6 @@ public class RecordReplayJetty {
 
     private ServletContextHandler newContextHandler() {
         ServletContextHandler context = new ServletContextHandler();
-        context.setContextPath("/*");
         context.addServlet(DefaultHttpServlet.class, "/*");
         return context;
     }

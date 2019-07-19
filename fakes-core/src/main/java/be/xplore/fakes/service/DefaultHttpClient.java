@@ -6,6 +6,7 @@ import be.xplore.fakes.model.Response;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.net.InetSocketAddress;
 import java.net.ProxySelector;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -19,8 +20,10 @@ public class DefaultHttpClient implements be.xplore.fakes.service.HttpClient {
         client = HttpClient.newHttpClient();
     }
 
-    public DefaultHttpClient(ProxySelector proxySelector) {
-        client = HttpClient.newBuilder().proxy(proxySelector).build();
+    public DefaultHttpClient(String proxyHost, int proxyPort) {
+        client = HttpClient.newBuilder()
+                .proxy(ProxySelector.of(InetSocketAddress.createUnresolved(proxyHost, proxyPort)))
+                .build();
     }
 
     @Override

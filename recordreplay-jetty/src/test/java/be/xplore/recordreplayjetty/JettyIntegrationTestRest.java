@@ -25,8 +25,9 @@ public class JettyIntegrationTestRest {
 
     @Before
     public void initJetty() {
-        recordReplayJetty = new RecordReplayJetty(port + 1);
-        client = new DefaultHttpClient();
+        int jettyPort = port + 1;
+        recordReplayJetty = new RecordReplayJetty(jettyPort);
+        client = new DefaultHttpClient("localhost", jettyPort);
         recordReplayJetty.start();
     }
 
@@ -37,7 +38,7 @@ public class JettyIntegrationTestRest {
 
     @Test
     public void sendRequest() {
-        Request getUsersRequest = Request.Builder.get(String.format("http://localhost:%d%s", port+1, "/user/list"))
+        Request getUsersRequest = Request.Builder.get(String.format("http://localhost:%d%s", port, "/user/list"))
                 .headers(Headers.builder().applicationJson().build())
                 .build();
         var response = client.execute(getUsersRequest);
