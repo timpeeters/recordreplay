@@ -50,7 +50,8 @@ public class RecordReplayJetty {
     private Connector newConnector(int port) {
         ServerConnector connector = new ServerConnector(this.server, new HttpConnectionFactory(getHttpConfiguration()));
         connector.setPort(port);
-        connector.setIdleTimeout(2);
+        connector.setIdleTimeout(20_000);
+        connector.setStopTimeout(30_000);
         return connector;
     }
 
