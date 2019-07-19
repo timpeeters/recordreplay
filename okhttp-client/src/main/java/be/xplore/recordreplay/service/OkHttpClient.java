@@ -16,7 +16,7 @@ import java.net.URI;
 import java.net.URL;
 
 public class OkHttpClient implements HttpClient {
-    private okhttp3.OkHttpClient client;
+    private final okhttp3.OkHttpClient client;
 
     public OkHttpClient() {
         client = new okhttp3.OkHttpClient();
