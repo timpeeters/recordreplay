@@ -11,6 +11,12 @@ public class AssertTests {
     }
 
     @Test
+    public void testConstructor(){
+        Assert assertion = new Assert();
+        assertThat(assertion instanceof Assert).isTrue();
+    }
+
+    @Test
     public void testNotNullWithObj() {
         Integer integer = 5;
         assertThat(be.xplore.fakes.util.Assert.notNull(integer)).isSameAs(integer);

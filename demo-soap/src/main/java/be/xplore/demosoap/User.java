@@ -23,36 +23,20 @@ public class User {
         return new Builder();
     }
 
-    public Long getId() {
+    private Long getId() {
         return this.id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
+    private String getFirstName() {
         return this.firstName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
+    private String getLastName() {
         return this.lastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getRole() {
+    private String getRole() {
         return this.role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     @Override
