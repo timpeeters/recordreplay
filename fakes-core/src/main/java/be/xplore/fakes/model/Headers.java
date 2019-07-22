@@ -75,7 +75,7 @@ public class Headers {
             return false;
         }
         Headers headers = (Headers) o;
-        if (this.size() != headers.size()){
+        if (this.size() != headers.size()) {
             return false;
         }
         return headerMap.entrySet().stream()
@@ -116,6 +116,11 @@ public class Headers {
 
         public Builder applicationJson() {
             header("Content-Type", "application/json");
+            return this;
+        }
+
+        public Builder applicationXml() {
+            header("Content-Type", "application/soap+xml");
             return this;
         }
 

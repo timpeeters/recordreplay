@@ -7,4 +7,5 @@ dependencies {
     implementation 'org.eclipse.jetty.websocket:websocket-server'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation project(':demo-rest')
+    testImplementation project(':demo-soap')
 }

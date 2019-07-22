@@ -4,6 +4,7 @@ import be.xplore.fakes.util.Assert;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -93,10 +94,17 @@ public class QueryParams {
         private Map<String, List<String>> params;
 
         private Builder() {
+            params = new HashMap<>();
         }
 
         public Builder params(Map<String, List<String>> params) {
             this.params = params;
+            return this;
+        }
+
+        public Builder param(String key, String value) {
+            List<String> values = params.computeIfAbsent(key, k -> new ArrayList<>());
+            values.add(value);
             return this;
         }
 

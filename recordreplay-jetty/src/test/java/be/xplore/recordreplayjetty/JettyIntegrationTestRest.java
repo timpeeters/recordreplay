@@ -1,48 +1,44 @@
 package be.xplore.recordreplayjetty;
 
 import be.xplore.fakes.model.Headers;
+import be.xplore.fakes.model.QueryParams;
 import be.xplore.fakes.model.Request;
-import be.xplore.fakes.service.DefaultHttpClient;
-import be.xplore.fakes.service.HttpClient;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import be.xplore.fakes.model.RequestMethod;
+import be.xplore.fakes.model.Response;
+import be.xplore.fakes.model.Stub;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import java.util.List;
 
 @SuppressWarnings("PMD.AvoidUsingHardCodedIP")
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes =
         be.xplore.demorest.DemoRestApplication.class)
-public class JettyIntegrationTestRest {
-    private RecordReplayJetty recordReplayJetty;
-    private HttpClient client;
-    @LocalServerPort
-    private int port;
-
-    @Before
-    public void initJetty() {
-        int jettyPort = port + 1;
-        recordReplayJetty = new RecordReplayJetty(jettyPort);
-        client = new DefaultHttpClient("0.0.0.0", jettyPort);
-        recordReplayJetty.start();
-    }
-
-    @After
-    public void stopJetty() {
-        recordReplayJetty.stop();
-    }
-
-    @Test
-    public void sendRequest() {
-        Request getUsersRequest = Request.Builder.get(String.format("http://0.0.0.0:%d%s", port, "/user/list"))
-                .headers(Headers.builder().applicationJson().build())
-                .build();
-        var response = client.execute(getUsersRequest);
-        assertThat(response.getStatusCode()).isEqualTo(200);
+public class JettyIntegrationTestRest extends IntegrationTestBase {
+    @Override
+    protected List<Stub> stubsToTest() {
+        return List.of(
+                new Stub(Request.Builder.get(getBaseUrl() + "/user/list")
+                        .headers(Headers.builder().applicationJson().build()).build(),
+                        Response.ok()),
+                new Stub(Request.Builder.get(getBaseUrl() + "/user")
+                        .queryParams(QueryParams.builder().param("id", "0").build())
+                        .headers(Headers.builder().applicationJson().build()).build(),
+                        Response.ok()),
+                new Stub(Request.Builder.get(getBaseUrl() + "/user")
+                        .queryParams(QueryParams.builder().param("id", "500").build())
+                        .headers(Headers.builder().applicationJson().build()).build(),
+                        Response.notFound()),
+                new Stub(Request.Builder.post(getBaseUrl() + "/user/create")
+                        .body("{\"id\":0,\"firstName\":\"fvgbhj\",\"lastName\":\"dtrfuhnjk\",\"role\":\"erdtfhjkl\"}")
+                        .headers(Headers.builder().applicationJson().build()).build(),
+                        Response.ok()),
+                new Stub(Request.builder().method(RequestMethod.DELETE).path(getBaseUrl() + "/user/delete")
+                        .queryParams(QueryParams.builder().param("id", "0").build())
+                        .headers(Headers.builder().applicationJson().build()).build(),
+                        Response.ok())
+        );
     }
 }
