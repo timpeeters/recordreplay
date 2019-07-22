@@ -1,7 +1,7 @@
-package be.xplore.fakes.usecase;
+package be.xplore.usecases;
 
-import be.xplore.fakes.model.Request;
 import be.xplore.fakes.model.Response;
+import be.xplore.fakes.model.Stub;
 import be.xplore.fakes.service.Repository;
 import be.xplore.fakes.service.RequestMatcher;
 
@@ -18,7 +18,7 @@ public class ReplayUseCase {
         this.matchers = matchers;
     }
 
-    public Optional<Response> replay(Request request) {
-        return repository.findExactResponse(request, matchers);
+    public Optional<Response> execute(Stub stub) {
+        return repository.findExactResponse(stub.getRequest(), matchers);
     }
 }
