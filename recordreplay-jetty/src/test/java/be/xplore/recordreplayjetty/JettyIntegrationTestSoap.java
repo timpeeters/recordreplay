@@ -10,17 +10,22 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
-@SuppressWarnings("PMD.AvoidUsingHardCodedIP")
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes =
-        be.xplore.demorest.DemoRestApplication.class)
-public class JettyIntegrationTestRest extends IntegrationTestBase {
+        be.xplore.demosoap.DemoSoapApplication.class)
+public class JettyIntegrationTestSoap extends IntegrationTestBase {
+    private static final String USER_ENDPOINT = "/services/user";
+
     @Override
     protected List<Stub> stubsToTest() {
         return List.of(
-                new Stub(Request.Builder.get(getBaseUrl() + "/user/list")
-                        .headers(Headers.builder().applicationJson().build()).build(),
-                        Response.ok())
+                new Stub(Request.Builder.get(getBaseUrl() + "/findUsers")
+                        .headers(Headers.builder().applicationXml().build()).build(), Response.ok())
         );
+    }
+
+    @Override
+    protected String getBaseUrl() {
+        return super.getBaseUrl() + USER_ENDPOINT;
     }
 }
