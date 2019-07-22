@@ -2,6 +2,7 @@ package be.xplore.demorest.controller;
 
 import be.xplore.demorest.model.User;
 import be.xplore.demorest.service.UserService;
+import be.xplore.demorest.service.exceptions.UserNotFoundException;
 import be.xplore.demorest.service.exceptions.UserValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,7 @@ public class UserController {
         return ResponseEntity.ok().body(users);
     }
 
+    @SuppressWarnings("checkstyle:ReturnCount")
     @GetMapping("/user")
     public ResponseEntity findUserById(@RequestParam Long id) {
         User foundUser;
@@ -39,6 +41,8 @@ public class UserController {
             foundUser = userService.searchUserById(id);
         } catch (UserValidationException uve) {
             return ResponseEntity.badRequest().body(uve.getMessage());
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(foundUser);
     }

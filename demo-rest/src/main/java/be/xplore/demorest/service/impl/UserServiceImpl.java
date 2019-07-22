@@ -3,6 +3,7 @@ package be.xplore.demorest.service.impl;
 import be.xplore.demorest.model.User;
 import be.xplore.demorest.repository.UserRepo;
 import be.xplore.demorest.service.UserService;
+import be.xplore.demorest.service.exceptions.UserNotFoundException;
 import be.xplore.demorest.service.exceptions.UserValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class UserServiceImpl implements UserService {
     public User searchUserById(Long id) throws UserValidationException {
         Optional<User> userOptional = userRepo.findById(id);
         if (userOptional.isEmpty()) {
-            throw new UserValidationException("User not found for given id");
+            throw new UserNotFoundException(id);
         }
         return userOptional.get();
     }
