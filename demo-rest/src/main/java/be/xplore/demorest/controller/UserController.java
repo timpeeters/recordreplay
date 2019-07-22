@@ -33,6 +33,7 @@ public class UserController {
         return ResponseEntity.ok().body(users);
     }
 
+    @SuppressWarnings("checkstyle:ReturnCount")
     @GetMapping("/user")
     public ResponseEntity findUserById(@RequestParam Long id) {
         User foundUser;
