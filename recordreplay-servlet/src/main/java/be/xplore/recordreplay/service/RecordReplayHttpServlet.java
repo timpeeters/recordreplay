@@ -2,21 +2,30 @@ package be.xplore.recordreplay.service;
 
 import be.xplore.fakes.model.Response;
 import be.xplore.fakes.model.Stub;
-import be.xplore.fakes.service.*;
+import be.xplore.fakes.service.HttpClient;
+import be.xplore.fakes.service.MemoryRepository;
+import be.xplore.fakes.service.Repository;
+import be.xplore.fakes.service.RequestBodyMatcher;
+import be.xplore.fakes.service.RequestHeaderMatcher;
+import be.xplore.fakes.service.RequestMatcher;
+import be.xplore.fakes.service.RequestMethodMatcher;
+import be.xplore.fakes.service.RequestParamMatcher;
+import be.xplore.fakes.service.RequestPathMatcher;
 import be.xplore.usecases.ForwardRequestUseCase;
 import be.xplore.usecases.RecordReplayUseCase;
 import be.xplore.usecases.RecordUseCase;
 import be.xplore.usecases.ReplayUseCase;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class RecordReplayHttpServlet extends DefaultHttpServlet {
+public class RecordReplayHttpServlet extends AbstractHttpServlet {
 
-    private RecordReplayUseCase useCase;
+    private static final long serialVersionUID = 4496621486970431156L;
+    private final RecordReplayUseCase useCase;
 
     public RecordReplayHttpServlet() {
+        super();
         HttpClient httpClient = new OkHttpClient();
         Repository repo = new MemoryRepository();
         List<RequestMatcher> matchers = initMatchers();
@@ -31,13 +40,13 @@ public class RecordReplayHttpServlet extends DefaultHttpServlet {
     }
 
     private List<RequestMatcher> initMatchers() {
-        List<RequestMatcher> matchers = new ArrayList<>();
-        matchers.add(new RequestBodyMatcher());
-        matchers.add(new RequestHeaderMatcher());
-        matchers.add(new RequestMethodMatcher());
-        matchers.add(new RequestParamMatcher());
-        matchers.add(new RequestPathMatcher());
-        return matchers;
+        return List.of(
+                new RequestBodyMatcher(),
+                new RequestHeaderMatcher(),
+                new RequestMethodMatcher(),
+                new RequestParamMatcher(),
+                new RequestPathMatcher()
+        );
     }
 
 }

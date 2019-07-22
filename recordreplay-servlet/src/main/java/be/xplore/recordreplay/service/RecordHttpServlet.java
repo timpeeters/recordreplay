@@ -7,11 +7,13 @@ import be.xplore.usecases.RecordUseCase;
 
 import java.util.Optional;
 
-public class RecordHttpServlet extends DefaultHttpServlet {
+public class RecordHttpServlet extends AbstractHttpServlet {
 
+    private static final long serialVersionUID = 5440889442582869400L;
     private final RecordUseCase useCase;
 
     public RecordHttpServlet(){
+        super();
         this.useCase = new RecordUseCase(new MemoryRepository());
     }
 

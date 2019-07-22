@@ -3,6 +3,7 @@ package be.xplore.recordreplayjetty;
 import be.xplore.fakes.model.Stub;
 import be.xplore.fakes.service.DefaultHttpClient;
 import be.xplore.fakes.service.HttpClient;
+import be.xplore.recordreplay.service.RecordReplayHttpServlet;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +26,7 @@ public abstract class IntegrationTestBase {
     @Before
     public void initContext() {
         int jettyPort = port + 1;
-        recordReplayJetty = new RecordReplayJetty(jettyPort);
+        recordReplayJetty = new RecordReplayJetty<>(jettyPort, RecordReplayHttpServlet.class);
         client = new DefaultHttpClient(HOST, jettyPort);
         recordReplayJetty.start();
     }
