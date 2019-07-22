@@ -19,6 +19,9 @@ public class UserRepoImpl implements UserRepo {
 
     @Override
     public Optional<User> findById(long id) {
+        if (id >= users.size()) {
+            return Optional.empty();
+        }
         return Optional.of(users.get((int) id));
     }
 

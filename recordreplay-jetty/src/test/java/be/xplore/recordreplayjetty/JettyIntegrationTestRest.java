@@ -1,7 +1,9 @@
 package be.xplore.recordreplayjetty;
 
 import be.xplore.fakes.model.Headers;
+import be.xplore.fakes.model.QueryParams;
 import be.xplore.fakes.model.Request;
+import be.xplore.fakes.model.RequestMethod;
 import be.xplore.fakes.model.Response;
 import be.xplore.fakes.model.Stub;
 import org.junit.runner.RunWith;
@@ -19,6 +21,22 @@ public class JettyIntegrationTestRest extends IntegrationTestBase {
     protected List<Stub> stubsToTest() {
         return List.of(
                 new Stub(Request.Builder.get(getBaseUrl() + "/user/list")
+                        .headers(Headers.builder().applicationJson().build()).build(),
+                        Response.ok()),
+                new Stub(Request.Builder.get(getBaseUrl() + "/user")
+                        .queryParams(QueryParams.builder().param("id", "0").build())
+                        .headers(Headers.builder().applicationJson().build()).build(),
+                        Response.ok()),
+                new Stub(Request.Builder.get(getBaseUrl() + "/user")
+                        .queryParams(QueryParams.builder().param("id", "500").build())
+                        .headers(Headers.builder().applicationJson().build()).build(),
+                        Response.notFound()),
+                new Stub(Request.Builder.post(getBaseUrl() + "/user/create")
+                        .body("{\"id\":0,\"firstName\":\"fvgbhj\",\"lastName\":\"dtrfuhnjk\",\"role\":\"erdtfhjkl\"}")
+                        .headers(Headers.builder().applicationJson().build()).build(),
+                        Response.ok()),
+                new Stub(Request.builder().method(RequestMethod.DELETE).path(getBaseUrl() + "/user/delete")
+                        .queryParams(QueryParams.builder().param("id", "0").build())
                         .headers(Headers.builder().applicationJson().build()).build(),
                         Response.ok())
         );
