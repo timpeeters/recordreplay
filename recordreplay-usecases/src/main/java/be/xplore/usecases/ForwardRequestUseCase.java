@@ -17,7 +17,7 @@ public class ForwardRequestUseCase {
         this.httpClient = httpClient;
     }
 
-    Response execute(Stub stub) {
+    public Response execute(Stub stub) {
         return httpClient.execute(stub.getRequest());
     }
 

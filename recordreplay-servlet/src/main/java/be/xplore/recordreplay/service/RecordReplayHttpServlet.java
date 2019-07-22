@@ -2,7 +2,6 @@ package be.xplore.recordreplay.service;
 
 import be.xplore.fakes.model.Response;
 import be.xplore.fakes.model.Stub;
-import be.xplore.fakes.service.HttpClient;
 import be.xplore.fakes.service.MemoryRepository;
 import be.xplore.fakes.service.Repository;
 import be.xplore.fakes.service.RequestBodyMatcher;
@@ -26,11 +25,10 @@ public class RecordReplayHttpServlet extends AbstractHttpServlet {
 
     public RecordReplayHttpServlet() {
         super();
-        HttpClient httpClient = new OkHttpClient();
         Repository repo = new MemoryRepository();
         List<RequestMatcher> matchers = initMatchers();
         this.useCase = new RecordReplayUseCase(new ReplayUseCase(repo, matchers),
-                new ForwardRequestUseCase(httpClient),
+                new ForwardRequestUseCase(new OkHttpClient()),
                 new RecordUseCase(repo));
     }
 
