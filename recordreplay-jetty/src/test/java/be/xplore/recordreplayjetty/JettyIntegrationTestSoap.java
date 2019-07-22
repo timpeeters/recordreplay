@@ -20,7 +20,8 @@ public class JettyIntegrationTestSoap extends IntegrationTestBase {
     protected List<Stub> stubsToTest() {
         return List.of(
                 new Stub(Request.Builder.get(getBaseUrl() + "/findUsers")
-                        .headers(Headers.builder().applicationXml().build()).build(), Response.ok())
+                        .headers(Headers.builder().applicationXml().build()).build(),
+                        Response.ok())
         );
     }
 

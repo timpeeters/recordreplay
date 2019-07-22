@@ -84,7 +84,7 @@ public class HeadersTests {
     @Test
     public void checkNullAndOtherClass() {
         assertThat(headers).isNotEqualTo(null);
-        assertThat(headers).isNotEqualTo("I'm not a Request");
+        assertThat(headers).isNotEqualTo("I'm a String");
     }
 
 }

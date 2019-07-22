@@ -23,22 +23,35 @@ public class JettyIntegrationTestRest extends IntegrationTestBase {
                 new Stub(Request.Builder.get(getBaseUrl() + "/user/list")
                         .headers(Headers.builder().applicationJson().build()).build(),
                         Response.ok()),
+
                 new Stub(Request.Builder.get(getBaseUrl() + "/user")
-                        .queryParams(QueryParams.builder().param("id", "0").build())
+                        .queryParams(idZeroParams())
                         .headers(Headers.builder().applicationJson().build()).build(),
                         Response.ok()),
+
                 new Stub(Request.Builder.get(getBaseUrl() + "/user")
-                        .queryParams(QueryParams.builder().param("id", "500").build())
+                        .queryParams(QueryParams.builder().param("id", "999").build())
                         .headers(Headers.builder().applicationJson().build()).build(),
                         Response.notFound()),
+
                 new Stub(Request.Builder.post(getBaseUrl() + "/user/create")
                         .body("{\"id\":0,\"firstName\":\"fvgbhj\",\"lastName\":\"dtrfuhnjk\",\"role\":\"erdtfhjkl\"}")
                         .headers(Headers.builder().applicationJson().build()).build(),
                         Response.ok()),
+
                 new Stub(Request.builder().method(RequestMethod.DELETE).path(getBaseUrl() + "/user/delete")
-                        .queryParams(QueryParams.builder().param("id", "0").build())
+                        .queryParams(idZeroParams())
                         .headers(Headers.builder().applicationJson().build()).build(),
-                        Response.ok())
+                        Response.ok()),
+
+                new Stub(Request.builder().method(RequestMethod.DELETE).path(getBaseUrl() + "/user/delete")
+                        .headers(Headers.builder().applicationJson().build())
+                        .queryParams(QueryParams.builder().param("id", "999").build()).build(),
+                        Response.builder().statusCode(400).build())
         );
+    }
+
+    private QueryParams idZeroParams() {
+        return QueryParams.builder().param("id", "0").build();
     }
 }
