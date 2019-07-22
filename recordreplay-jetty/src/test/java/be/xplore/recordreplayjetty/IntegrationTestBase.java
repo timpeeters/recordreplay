@@ -5,7 +5,9 @@ import be.xplore.fakes.service.DefaultHttpClient;
 import be.xplore.fakes.service.HttpClient;
 import be.xplore.recordreplay.service.AbstractHttpServlet;
 import be.xplore.recordreplay.service.ForwardingHttpServlet;
+import be.xplore.recordreplay.service.RecordHttpServlet;
 import be.xplore.recordreplay.service.RecordReplayHttpServlet;
+import be.xplore.recordreplay.service.ReplayHttpServlet;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +22,7 @@ public abstract class IntegrationTestBase {
     private static final String HOST = "localhost";
 
     @LocalServerPort
-    protected int port;
+    private int port;
     private HttpClient client;
     private RecordReplayJetty recordReplayJetty;
     private int jettyPort;
@@ -47,17 +49,33 @@ public abstract class IntegrationTestBase {
     }
 
     @Test
+    public void recordTest() {
+        initJetty(RecordHttpServlet.class);
+        for (Stub stub : stubsToTest()) {
+            var response = client.execute(stub.getRequest());
+            assertThat(response.getStatusCode()).isEqualTo(stub.getResponse().getStatusCode());
+        }
+    }
+
+    @Test
+    public void replayEmptyRepoTest() {
+        initJetty(ReplayHttpServlet.class);
+        for (Stub stub : stubsToTest()) {
+            assertThat(client.execute(stub.getRequest()).getStatusCode()).isEqualTo(500);
+        }
+    }
+
+    @Test
     public void recordReplayTest() {
         initJetty(RecordReplayHttpServlet.class);
         for (Stub stub : stubsToTest()) {
             assertThat(client.execute(stub.getRequest()))
                     .isEqualTo(client.execute(stub.getRequest()));
         }
-
     }
 
     private void initJetty(Class<? extends AbstractHttpServlet> servlet) {
-        recordReplayJetty = new RecordReplayJetty<>(jettyPort, servlet);
+        recordReplayJetty = new RecordReplayJetty(jettyPort, servlet);
         recordReplayJetty.start();
     }
 

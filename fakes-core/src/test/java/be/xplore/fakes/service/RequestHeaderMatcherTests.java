@@ -34,10 +34,14 @@ public class RequestHeaderMatcherTests {
 
     @Test
     public void requestParamMatcherShouldReturnOneOnEmptyHeaders() {
-        assertThat(matcher.matches(Request.Builder
+        Request emptyHeadersRequest = Request.Builder
                 .post("")
                 .headers(Headers.EMPTY)
-                .build(), sameRequest1).getDistance())
+                .build();
+        assertThat(matcher.matches(emptyHeadersRequest, sameRequest1).getDistance())
+                .as("Correct result distance not calculated on single empty param\"")
+                .isEqualTo(1);
+        assertThat(matcher.matches(sameRequest1, emptyHeadersRequest).getDistance())
                 .as("Correct result distance not calculated on single empty param\"")
                 .isEqualTo(1);
     }

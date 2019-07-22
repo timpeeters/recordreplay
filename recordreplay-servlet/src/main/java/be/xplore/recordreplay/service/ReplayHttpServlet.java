@@ -11,7 +11,6 @@ import be.xplore.fakes.service.RequestParamMatcher;
 import be.xplore.fakes.service.RequestPathMatcher;
 import be.xplore.usecases.ReplayUseCase;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,13 +21,14 @@ public class ReplayHttpServlet extends AbstractHttpServlet {
 
     public ReplayHttpServlet() {
         super();
-        List<RequestMatcher> matchers = new ArrayList<>();
-        matchers.add(new RequestBodyMatcher());
-        matchers.add(new RequestHeaderMatcher());
-        matchers.add(new RequestMethodMatcher());
-        matchers.add(new RequestParamMatcher());
-        matchers.add(new RequestPathMatcher());
-        this.useCase = new ReplayUseCase(new MemoryRepository(),matchers);
+        List<RequestMatcher> matchers = List.of(
+                new RequestBodyMatcher(),
+                new RequestHeaderMatcher(),
+                new RequestMethodMatcher(),
+                new RequestParamMatcher(),
+                new RequestPathMatcher()
+        );
+        this.useCase = new ReplayUseCase(new MemoryRepository(), matchers);
     }
 
     @Override

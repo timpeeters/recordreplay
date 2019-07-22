@@ -9,10 +9,10 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 
-public class RecordReplayJetty<U extends AbstractHttpServlet> {
+public class RecordReplayJetty {
     private final Server server;
 
-    public RecordReplayJetty(int port, Class<U> servletType) {
+    public RecordReplayJetty(int port, Class<? extends AbstractHttpServlet> servletType) {
         this.server = new Server();
         this.server.addConnector(newConnector(port));
         ServletContextHandler context = newContextHandler(servletType);
@@ -63,7 +63,7 @@ public class RecordReplayJetty<U extends AbstractHttpServlet> {
         return configuration;
     }
 
-    private ServletContextHandler newContextHandler(Class<U> servletType) {
+    private ServletContextHandler newContextHandler(Class<? extends AbstractHttpServlet> servletType) {
         ServletContextHandler context = new ServletContextHandler();
         context.addServlet(servletType, "/*");
         return context;
