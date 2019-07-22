@@ -1,9 +1,10 @@
-package be.xplore.fakes.usecase;
+package be.xplore.usecases;
 
-import be.xplore.fakes.model.Request;
 import be.xplore.fakes.model.Response;
 import be.xplore.fakes.model.Stub;
 import be.xplore.fakes.service.Repository;
+
+import java.util.Optional;
 
 public class RecordUseCase {
 
@@ -13,10 +14,9 @@ public class RecordUseCase {
         this.repository = repository;
     }
 
-    public Stub record(Request request, Response response) {
-        Stub recordedStub = new Stub(request,response);
-        repository.add(recordedStub);
-        return recordedStub;
+    public Optional<Response> execute(Stub stub) {
+        repository.add(stub);
+        return  Optional.of(stub.getResponse());
     }
 
 }

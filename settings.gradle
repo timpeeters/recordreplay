@@ -9,3 +9,5 @@ include 'yaml-marshaller'
 include 'recordreplay-jetty'
 include 'recordreplay-servlet'
 include 'okhttp-client'
+include 'recordreplay-usecases'
+

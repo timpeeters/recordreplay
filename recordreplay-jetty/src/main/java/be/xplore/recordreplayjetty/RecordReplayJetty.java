@@ -1,6 +1,6 @@
 package be.xplore.recordreplayjetty;
 
-import be.xplore.recordreplay.service.DefaultHttpServlet;
+import be.xplore.recordreplay.service.AbstractHttpServlet;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
@@ -9,13 +9,13 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 
-public class RecordReplayJetty {
+public class RecordReplayJetty<U extends AbstractHttpServlet> {
     private final Server server;
 
-    public RecordReplayJetty(int port) {
+    public RecordReplayJetty(int port, Class<U> servletType) {
         this.server = new Server();
         this.server.addConnector(newConnector(port));
-        ServletContextHandler context = newContextHandler();
+        ServletContextHandler context = newContextHandler(servletType);
         this.server.setHandler(getHandlerList(context));
     }
 
@@ -63,9 +63,9 @@ public class RecordReplayJetty {
         return configuration;
     }
 
-    private ServletContextHandler newContextHandler() {
+    private ServletContextHandler newContextHandler(Class<U> servletType) {
         ServletContextHandler context = new ServletContextHandler();
-        context.addServlet(DefaultHttpServlet.class, "/*");
+        context.addServlet(servletType, "/*");
         return context;
     }
 
