@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.io.Writer;
 
-public class HttpServletResponseMapper {
+class HttpServletResponseMapper {
     void map(Response response, HttpServletResponse httpServletResponse) {
         httpServletResponse.setStatus(response.getStatusCode());
         convertHeaders(response, httpServletResponse);
