@@ -10,4 +10,5 @@ include 'recordreplay-jetty'
 include 'recordreplay-servlet'
 include 'okhttp-client'
 include 'recordreplay-usecases'
+include 'recordreplay-junit4'
 
