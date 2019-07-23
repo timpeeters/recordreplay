@@ -10,10 +10,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class HttpServletRequestMapper {
+class HttpServletRequestMapper {
 
     Request map(HttpServletRequest servletRequest) {
         return Request.builder().method(convertMethod(servletRequest.getMethod()))
@@ -35,9 +36,8 @@ public class HttpServletRequestMapper {
         return "";
     }
 
-    @SuppressWarnings("PMD.UseLocaleWithCaseConversions")
     private RequestMethod convertMethod(String method) {
-        return RequestMethod.valueOf(method.toUpperCase());
+        return RequestMethod.valueOf(method.toUpperCase(Locale.ENGLISH));
     }
 
     private QueryParams convertParams(Map<String, String[]> params) {
