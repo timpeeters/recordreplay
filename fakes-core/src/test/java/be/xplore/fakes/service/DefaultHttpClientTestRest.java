@@ -7,9 +7,8 @@ import be.xplore.fakes.model.Response;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.env.Environment;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
@@ -19,14 +18,13 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
         be.xplore.demorest.DemoRestApplication.class)
 public class DefaultHttpClientTestRest {
 
-    @Autowired
-    private Environment environment;
+    @LocalServerPort
+    private String port;
     private String host;
     private final HttpClient client = new DefaultHttpClient();
 
     @Before
     public void initContext() {
-        String port = environment.getProperty("local.server.port");
         this.host = String.format("http://localhost:%s", port);
 
     }
