@@ -37,17 +37,17 @@ public class FileRepositoryTests {
     public void createFileRepoFromNonExistingDir() throws IOException {
         Path deletedDir = tempDir.newFolder().toPath();
         tempDir.delete();
-        new FileRepository<>(deletedDir, mockedMarshaller.getClass());
+        new FileRepository<>(deletedDir, mockedMarshaller);
     }
 
     @Test(expected = NullPointerException.class)
     public void createFileRepoWithNullPathThrowsNullptr() {
-        new FileRepository<>(null, mockedMarshaller.getClass());
+        new FileRepository<>(null, mockedMarshaller);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void createFileRepoFromFilePathThrowsIllegalArgument() throws IOException {
-        new FileRepository<>(tempDir.newFile().toPath(), mockedMarshaller.getClass());
+        new FileRepository<>(tempDir.newFile().toPath(), mockedMarshaller);
     }
 
     @Test
@@ -89,23 +89,23 @@ public class FileRepositoryTests {
 
     @Test(expected = UncheckedIOException.class)
     public void marshallingFailureThrows() {
-        new FileRepository<>(tempDirPath(), BrokenMarshaller.class).add(STUB);
+        new FileRepository<>(tempDirPath(), new BrokenMarshaller()).add(STUB);
     }
 
     @Test(expected = UncheckedIOException.class)
     public void unmarshallingFailureThrows() {
-        var repo = new FileRepository<>(tempDirPath(), BrokenMarshaller.class);
+        var repo = new FileRepository<>(tempDirPath(), new BrokenMarshaller());
         repo.add(STUB);
         repo.find();
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void marshallerNoDefConstructor() {
-        new FileRepository<>(tempDirPath(), InconstructibleMarshaller.class);
+        new FileRepository<>(tempDirPath(), new InconstructibleMarshaller(1));
     }
 
     private FileRepository<? extends Marshaller> createTestFileRepository() {
-        return new FileRepository<>(tempDirPath(), mockedMarshaller.getClass());
+        return new FileRepository<>(tempDirPath(), mockedMarshaller);
     }
 
     private Path tempDirPath() {

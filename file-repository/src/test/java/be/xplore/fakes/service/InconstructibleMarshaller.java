@@ -9,6 +9,7 @@ import java.io.Writer;
 public class InconstructibleMarshaller implements Marshaller {
 
     public InconstructibleMarshaller(int i) {
+        throw new IllegalArgumentException();
     }
 
     @Override
