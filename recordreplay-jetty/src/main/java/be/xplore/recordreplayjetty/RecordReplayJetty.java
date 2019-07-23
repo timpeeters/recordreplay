@@ -1,6 +1,7 @@
 package be.xplore.recordreplayjetty;
 
 import be.xplore.recordreplay.service.RecordReplayHttpServlet;
+import be.xplore.recordreplay.usecase.StubHandler;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
@@ -12,11 +13,11 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 public class RecordReplayJetty {
     private final Server server;
 
-    public RecordReplayJetty(int port) {
+    public RecordReplayJetty(int port, StubHandler stubHandler) {
+        StubHandler.setCurrent(stubHandler);
         this.server = new Server();
         this.server.addConnector(newConnector(port));
-        ServletContextHandler context = newContextHandler();
-        this.server.setHandler(getHandlerList(context));
+        this.server.setHandler(getHandlerList(newContextHandler()));
     }
 
     @SuppressWarnings("PMD.AvoidCatchingGenericException")

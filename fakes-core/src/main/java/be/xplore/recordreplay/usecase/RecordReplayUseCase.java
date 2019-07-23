@@ -11,7 +11,7 @@ public class RecordReplayUseCase implements UseCase {
     private final RecordUseCase record;
     private final ReplayUseCase replay;
 
-    public RecordReplayUseCase(ReplayUseCase replay, RecordUseCase record) {
+    public RecordReplayUseCase(RecordUseCase record, ReplayUseCase replay) {
         this.record = Assert.notNull(record);
         this.replay = Assert.notNull(replay);
     }
