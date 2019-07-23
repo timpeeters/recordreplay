@@ -10,14 +10,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-public abstract class AbstractHttpServlet extends HttpServlet {
+public class RecordReplayHttpServlet extends HttpServlet {
     private static final long serialVersionUID = 7825358410575851102L;
 
     private final HttpServletRequestMapper requestMapper;
     private final HttpServletResponseMapper responseMapper;
     private final StubHandler stubHandler;
 
-    AbstractHttpServlet() {
+    RecordReplayHttpServlet() {
         super();
         this.requestMapper = new HttpServletRequestMapper();
         this.responseMapper = new HttpServletResponseMapper();

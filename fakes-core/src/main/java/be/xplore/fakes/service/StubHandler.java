@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public class StubHandler {
     private static StubHandler currentConfig;
-    private UseCase useCase;
+    private final UseCase useCase;
 
     public StubHandler(UseCase useCase) {
         this.useCase = useCase;
