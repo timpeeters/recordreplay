@@ -5,11 +5,16 @@ import be.xplore.fakes.model.Stub;
 
 import java.util.Optional;
 
-public class UseCaseDelegator {
+public class StubHandler {
+    private static StubHandler currentConfig;
     private UseCase useCase;
 
-    public UseCaseDelegator(UseCase useCase) {
+    public StubHandler(UseCase useCase) {
         this.useCase = useCase;
+    }
+
+    public static StubHandler getCurrent() {
+        return currentConfig;
     }
 
     public Optional<Response> handle(Stub stub) {

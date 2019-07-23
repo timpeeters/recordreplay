@@ -2,6 +2,7 @@ package be.xplore.recordreplay.service;
 
 import be.xplore.fakes.model.Response;
 import be.xplore.fakes.model.Stub;
+import be.xplore.fakes.service.StubHandler;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,22 +15,22 @@ public abstract class AbstractHttpServlet extends HttpServlet {
 
     private final HttpServletRequestMapper requestMapper;
     private final HttpServletResponseMapper responseMapper;
+    private final StubHandler stubHandler;
 
     AbstractHttpServlet() {
         super();
-        requestMapper = new HttpServletRequestMapper();
+        this.requestMapper = new HttpServletRequestMapper();
         this.responseMapper = new HttpServletResponseMapper();
+        stubHandler = StubHandler.getCurrent();
     }
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) {
         Stub stub = new Stub(requestMapper.map(req), null);
-        Optional<Response> response = executeUseCase(stub);
+        Optional<Response> response = stubHandler.handle(stub);
         response.ifPresentOrElse(value -> responseMapper.map(value, resp), () -> {
             throw new NoSuchElementException(String
                     .format("No response available for request: %s", stub.getRequest().toString()));
         });
     }
-
-    protected abstract Optional<Response> executeUseCase(Stub stub);
 }
