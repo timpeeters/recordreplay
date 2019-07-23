@@ -24,8 +24,7 @@ public class OkHttpClient implements HttpClient {
 
     @Override
     public Response execute(Request request) {
-        try {
-            okhttp3.Response response = client.newCall(toOkHttpRequest(request)).execute();
+        try (okhttp3.Response response = client.newCall(toOkHttpRequest(request)).execute()) {
             return toResponse(response);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
