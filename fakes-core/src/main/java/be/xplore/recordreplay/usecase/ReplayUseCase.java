@@ -18,6 +18,7 @@ public class ReplayUseCase implements UseCase{
         this.matchers = matchers;
     }
 
+    @Override
     public Optional<Response> execute(Stub stub) {
         return repository.findExactResponse(stub.getRequest(), matchers);
     }

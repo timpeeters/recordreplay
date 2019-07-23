@@ -19,6 +19,7 @@ public class ForwardRequestUseCase implements UseCase{
         return httpClient.execute(request);
     }
 
+    @Override
     public Optional<Response> execute(Stub stub) {
         return Optional.of(forward(stub.getRequest()));
     }

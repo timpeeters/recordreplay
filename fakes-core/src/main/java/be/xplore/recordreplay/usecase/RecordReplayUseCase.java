@@ -16,6 +16,7 @@ public class RecordReplayUseCase implements UseCase {
         this.replay = Assert.notNull(replay);
     }
 
+    @Override
     public Optional<Response> execute(Stub stub) {
         Optional<Response> foundResp = replay.execute(stub);
         if (foundResp.isPresent()) {

@@ -17,6 +17,7 @@ public class RecordUseCase implements UseCase {
         this.forward = new ForwardRequestUseCase(client);
     }
 
+    @Override
     public Optional<Response> execute(Stub stub) {
         Response response = forward.forward(stub.getRequest());
         repository.add(new Stub(stub.getRequest(), response));
