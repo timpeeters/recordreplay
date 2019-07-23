@@ -13,21 +13,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class HttpServletRequestMapper<R extends HttpServletRequest> implements RequestMapper<R> {
+public class HttpServletRequestMapper {
 
-    public Request map(HttpServletRequest servletRequest) {
-        MappingRequest r = new MappingRequest();
-        map(servletRequest, r);
-        return r.toRequest();
-    }
-
-    @Override
-    public void map(HttpServletRequest servletRequest, MappingRequest request) {
-        request.setMethod(convertMethod(servletRequest.getMethod()));
-        request.setPath(servletRequest.getRequestURL().toString());
-        request.setQueryParams(convertParams(servletRequest.getParameterMap()));
-        request.setHeaders(convertHeaders(servletRequest));
-        request.setBody(tryReadBody(servletRequest));
+    Request map(HttpServletRequest servletRequest) {
+        return Request.builder().method(convertMethod(servletRequest.getMethod()))
+                .path(servletRequest.getRequestURL().toString())
+                .queryParams(convertParams(servletRequest.getParameterMap()))
+                .headers(convertHeaders(servletRequest))
+                .body(tryReadBody(servletRequest))
+                .build();
     }
 
     private String tryReadBody(HttpServletRequest request) {
