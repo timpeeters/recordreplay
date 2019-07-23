@@ -17,7 +17,7 @@ public class RecordReplayHttpServlet extends HttpServlet {
     private final HttpServletResponseMapper responseMapper;
     private final StubHandler stubHandler;
 
-    RecordReplayHttpServlet() {
+    public RecordReplayHttpServlet() {
         super();
         this.requestMapper = new HttpServletRequestMapper();
         this.responseMapper = new HttpServletResponseMapper();
