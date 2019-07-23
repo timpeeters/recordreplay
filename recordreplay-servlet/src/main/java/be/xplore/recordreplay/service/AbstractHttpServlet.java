@@ -13,7 +13,7 @@ public abstract class AbstractHttpServlet extends HttpServlet {
     private static final long serialVersionUID = 7825358410575851102L;
 
     private final HttpServletRequestMapper requestMapper;
-    private final ResponseMapper<HttpServletResponse> responseMapper;
+    private final HttpServletResponseMapper responseMapper;
 
     AbstractHttpServlet() {
         super();
