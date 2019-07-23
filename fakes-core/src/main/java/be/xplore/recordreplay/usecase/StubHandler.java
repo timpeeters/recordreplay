@@ -6,6 +6,7 @@ import be.xplore.fakes.model.Stub;
 import java.util.Optional;
 
 public class StubHandler {
+    private static final Object MUTEX = new Object();
     private static StubHandler currentConfig;
     private final UseCase useCase;
 
@@ -14,7 +15,15 @@ public class StubHandler {
     }
 
     public static StubHandler getCurrent() {
-        return currentConfig;
+        synchronized (MUTEX) {
+            return currentConfig;
+        }
+    }
+
+    public static void setCurrent(StubHandler stubHandler) {
+        synchronized (MUTEX) {
+            currentConfig = stubHandler;
+        }
     }
 
     public Optional<Response> handle(Stub stub) {
