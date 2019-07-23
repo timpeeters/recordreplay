@@ -2,7 +2,7 @@ package be.xplore.recordreplay.service;
 
 import be.xplore.fakes.model.Response;
 import be.xplore.fakes.model.Stub;
-import be.xplore.fakes.service.StubHandler;
+import be.xplore.recordreplay.usecase.StubHandler;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
