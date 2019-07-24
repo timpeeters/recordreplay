@@ -2,6 +2,7 @@ package be.xplore.recordreplay.junit5;
 
 import be.xplore.recordreplay.config.Configuration;
 import be.xplore.recordreplay.usecase.ForwardRequestUseCase;
+import be.xplore.recordreplay.usecase.RecordReplayUseCase;
 import be.xplore.recordreplay.usecase.RecordUseCase;
 import be.xplore.recordreplay.usecase.ReplayUseCase;
 import be.xplore.recordreplay.usecase.StubHandler;
@@ -46,6 +47,14 @@ public class RecordReplayExtension implements BeforeAllCallback, AfterAllCallbac
 
     public RecordReplayExtension replay() {
         StubHandler.setCurrent(new StubHandler(new ReplayUseCase(configuration.repository(), configuration.matchers())));
+        return this;
+    }
+
+    public RecordReplayExtension recordReplay() {
+        StubHandler.setCurrent(new StubHandler(new RecordReplayUseCase(
+                new RecordUseCase(configuration.repository(), configuration.client()),
+                new ReplayUseCase(configuration.repository(), configuration.matchers())
+        )));
         return this;
     }
 }
