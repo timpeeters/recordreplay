@@ -13,38 +13,38 @@ import org.junit.runners.model.Statement;
 
 public class RecordReplayRule implements TestRule {
 
-    private final Configuration CONFIG;
-    private final RecordReplayJetty RECORDREPLAY;
+    private final Configuration config;
+    private final RecordReplayJetty recordReplay;
 
 
     public RecordReplayRule(Configuration config) {
-        this.CONFIG = config;
-        this.RECORDREPLAY = new RecordReplayJetty(config.port());
+        this.config = config;
+        this.recordReplay = new RecordReplayJetty(config.port());
     }
 
     public RecordReplayRule forward() {
         StubHandler.setCurrent(new StubHandler(
-                new ForwardRequestUseCase(CONFIG.client())));
+                new ForwardRequestUseCase(config.client())));
         return this;
     }
 
     public RecordReplayRule record() {
         StubHandler.setCurrent(new StubHandler(
-                new RecordUseCase(CONFIG.repository(), CONFIG.client())));
+                new RecordUseCase(config.repository(), config.client())));
         return this;
     }
 
     public RecordReplayRule replay() {
         StubHandler.setCurrent(new StubHandler(
-                new ReplayUseCase(CONFIG.repository(), CONFIG.matchers())));
+                new ReplayUseCase(config.repository(), config.matchers())));
         return this;
     }
 
     public RecordReplayRule recordReplay() {
         StubHandler.setCurrent(new StubHandler(
                 new RecordReplayUseCase(
-                        new RecordUseCase(CONFIG.repository(), CONFIG.client()),
-                        new ReplayUseCase(CONFIG.repository(), CONFIG.matchers()))));
+                        new RecordUseCase(config.repository(), config.client()),
+                        new ReplayUseCase(config.repository(), config.matchers()))));
         return this;
     }
 
@@ -53,11 +53,11 @@ public class RecordReplayRule implements TestRule {
         return new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                RECORDREPLAY.start();
+                recordReplay.start();
                 try {
                     base.evaluate();
                 } finally {
-                    RECORDREPLAY.stop();
+                    recordReplay.stop();
                 }
             }
         };
