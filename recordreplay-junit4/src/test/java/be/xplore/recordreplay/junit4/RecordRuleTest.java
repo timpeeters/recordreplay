@@ -15,7 +15,7 @@ public class RecordRuleTest extends AbstractRuleTest {
     public void testRule() {
         Response response = executeRequest();
         assertThat(response.getStatusCode()).isEqualTo(200);
-        assertThat(REPO.find().size()).isEqualTo(1);
+        assertThat(CONFIG.repository().find().size()).isEqualTo(1);
     }
 
 }
