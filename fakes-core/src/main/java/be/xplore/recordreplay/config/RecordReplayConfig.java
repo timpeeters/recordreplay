@@ -21,7 +21,7 @@ public class RecordReplayConfig implements Configuration {
     private List<RequestMatcher> matchers;
 
     public RecordReplayConfig() {
-        host = "0.0.0.0";
+        host = DEFAULT_LISTEN_ADDRESS;
         port = DEFAULT_PORT;
     }
 
