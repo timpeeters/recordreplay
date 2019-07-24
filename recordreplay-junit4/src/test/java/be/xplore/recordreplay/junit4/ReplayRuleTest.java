@@ -1,22 +1,26 @@
 package be.xplore.recordreplay.junit4;
 
 import be.xplore.fakes.model.Response;
+import be.xplore.fakes.service.MemoryRepository;
 import org.junit.ClassRule;
 import org.junit.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class ReplayRuleTest extends AbstractRuleTest {
+public class ReplayRuleTest extends RuleTestBase {
+
+    private static final MemoryRepository REPO = new MemoryRepository();
 
     @ClassRule
-    public static final RecordReplayRule RULE = new RecordReplayRule(CONFIG).replay();
+    public static final RecordReplayRule RULE =
+            new RecordReplayRule(CONFIG.repository(REPO)).replay();
 
     @Test
-    void testRule() {
+    public void testRule() {
         Response response = executeRequest();
         assertThat(response.getStatusCode()).isEqualTo(500);
         assertThat(response.getBody()).contains("NoSuchElement");
-        assertThat(CONFIG.repository().find().size()).isEqualTo(0);
+        assertThat(REPO.find().size()).isEqualTo(0);
     }
 
 }
