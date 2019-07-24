@@ -2,12 +2,20 @@ package be.xplore.recordreplayjetty;
 
 import be.xplore.fakes.model.Stub;
 import be.xplore.fakes.service.DefaultHttpClient;
-import be.xplore.fakes.service.HttpClient;
-import be.xplore.recordreplay.service.AbstractHttpServlet;
-import be.xplore.recordreplay.service.ForwardingHttpServlet;
-import be.xplore.recordreplay.service.RecordHttpServlet;
-import be.xplore.recordreplay.service.RecordReplayHttpServlet;
-import be.xplore.recordreplay.service.ReplayHttpServlet;
+import be.xplore.fakes.service.MemoryRepository;
+import be.xplore.fakes.service.Repository;
+import be.xplore.fakes.service.RequestBodyMatcher;
+import be.xplore.fakes.service.RequestHeaderMatcher;
+import be.xplore.fakes.service.RequestMatcher;
+import be.xplore.fakes.service.RequestMethodMatcher;
+import be.xplore.fakes.service.RequestParamMatcher;
+import be.xplore.fakes.service.RequestPathMatcher;
+import be.xplore.recordreplay.service.OkHttpClient;
+import be.xplore.recordreplay.usecase.ForwardRequestUseCase;
+import be.xplore.recordreplay.usecase.RecordReplayUseCase;
+import be.xplore.recordreplay.usecase.RecordUseCase;
+import be.xplore.recordreplay.usecase.ReplayUseCase;
+import be.xplore.recordreplay.usecase.StubHandler;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,21 +25,36 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@SuppressWarnings("PMD.AvoidUsingHardCodedIP")
+@SuppressWarnings({"PMD.AvoidUsingHardCodedIP",
+        "checkstyle:ClassFanOutComplexity" //this one is temporary, until we have a proper configuration class
+})
 public abstract class IntegrationTestBase {
     private static final String HOST = "localhost";
 
     @LocalServerPort
     private int port;
-    private HttpClient client;
+    private DefaultHttpClient client;
     private RecordReplayJetty recordReplayJetty;
     private int jettyPort;
+    private RecordUseCase recordUseCase;
+    private ReplayUseCase replayUseCase;
+    private RecordReplayUseCase recordReplayUseCase;
+    private ForwardRequestUseCase forwardUseCase;
 
 
     @Before
     public void initContext() {
         this.jettyPort = port + 1;
         this.client = new DefaultHttpClient(HOST, jettyPort);
+    }
+
+    @Before
+    public void initUseCases() {
+        Repository repo = new MemoryRepository();
+        this.forwardUseCase = new ForwardRequestUseCase(new OkHttpClient());
+        this.recordUseCase = new RecordUseCase(repo, new OkHttpClient());
+        this.replayUseCase = new ReplayUseCase(repo, getMatchers());
+        this.recordReplayUseCase = new RecordReplayUseCase(recordUseCase, replayUseCase);
     }
 
     @After
@@ -41,7 +64,7 @@ public abstract class IntegrationTestBase {
 
     @Test
     public void forwardRequestTest() {
-        initJetty(ForwardingHttpServlet.class);
+        initJetty(new StubHandler(forwardUseCase));
         for (Stub stub : stubsToTest()) {
             var response = client.execute(stub.getRequest());
             assertThat(response.getStatusCode()).isEqualTo(stub.getResponse().getStatusCode());
@@ -50,7 +73,7 @@ public abstract class IntegrationTestBase {
 
     @Test
     public void recordTest() {
-        initJetty(RecordHttpServlet.class);
+        initJetty(new StubHandler(recordUseCase));
         for (Stub stub : stubsToTest()) {
             var response = client.execute(stub.getRequest());
             assertThat(response.getStatusCode()).isEqualTo(stub.getResponse().getStatusCode());
@@ -59,7 +82,7 @@ public abstract class IntegrationTestBase {
 
     @Test
     public void replayEmptyRepoTest() {
-        initJetty(ReplayHttpServlet.class);
+        initJetty(new StubHandler(replayUseCase));
         for (Stub stub : stubsToTest()) {
             assertThat(client.execute(stub.getRequest()).getStatusCode()).isEqualTo(500);
         }
@@ -67,20 +90,29 @@ public abstract class IntegrationTestBase {
 
     @Test
     public void recordReplayTest() {
-        initJetty(RecordReplayHttpServlet.class);
+        initJetty(new StubHandler(recordReplayUseCase));
         for (Stub stub : stubsToTest()) {
             assertThat(client.execute(stub.getRequest()))
                     .isEqualTo(client.execute(stub.getRequest()));
         }
     }
 
-    private void initJetty(Class<? extends AbstractHttpServlet> servlet) {
-        recordReplayJetty = new RecordReplayJetty(jettyPort, servlet);
+    private void initJetty(StubHandler handler) {
+        recordReplayJetty = new RecordReplayJetty(jettyPort, handler);
         recordReplayJetty.start();
     }
 
     protected String getBaseUrl() {
         return String.format("http://%s:%d", HOST, port);
+    }
+
+    private List<RequestMatcher> getMatchers() {
+        return List.of(
+                new RequestMethodMatcher(),
+                new RequestPathMatcher(),
+                new RequestHeaderMatcher(),
+                new RequestParamMatcher(),
+                new RequestBodyMatcher());
     }
 
     protected abstract List<Stub> stubsToTest();

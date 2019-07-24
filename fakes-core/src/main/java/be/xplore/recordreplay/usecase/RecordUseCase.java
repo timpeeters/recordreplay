@@ -1,24 +1,25 @@
-package be.xplore.usecases;
+package be.xplore.recordreplay.usecase;
 
 import be.xplore.fakes.model.Response;
 import be.xplore.fakes.model.Stub;
+import be.xplore.fakes.service.HttpClient;
 import be.xplore.fakes.service.Repository;
-import be.xplore.recordreplay.service.OkHttpClient;
 
 import java.util.Optional;
 
-public class RecordUseCase {
+public class RecordUseCase implements UseCase {
 
     private final Repository repository;
     private final ForwardRequestUseCase forward;
 
-    public RecordUseCase(Repository repository) {
+    public RecordUseCase(Repository repository, HttpClient client) {
         this.repository = repository;
-        forward = new ForwardRequestUseCase(new OkHttpClient());
+        this.forward = new ForwardRequestUseCase(client);
     }
 
+    @Override
     public Optional<Response> execute(Stub stub) {
-        Response response = forward.execute(stub);
+        Response response = forward.forward(stub.getRequest());
         repository.add(new Stub(stub.getRequest(), response));
         return Optional.of(response);
     }

@@ -6,6 +6,7 @@ dependencies {
     implementation 'org.eclipse.jetty:jetty-proxy'
     implementation 'org.eclipse.jetty.websocket:websocket-server'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation project(':okhttp-client')
     testImplementation project(':demo-rest')
     testImplementation project(':demo-soap')
 }

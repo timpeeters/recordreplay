@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.io.Writer;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -20,12 +19,12 @@ public class FileRepository<M extends Marshaller> implements Repository {
     private final Marshaller marshaller;
     private int size;
 
-    public FileRepository(Path targetDir, Class<M> marshallerType) {
+    public FileRepository(Path targetDir, Marshaller marshaller) {
         if (!validatePath(targetDir)) {
             createDir(targetDir);
         }
         this.targetDir = targetDir.toAbsolutePath();
-        this.marshaller = constructMarshaller(marshallerType);
+        this.marshaller = marshaller;
         this.size = 0;
     }
 
@@ -92,18 +91,6 @@ public class FileRepository<M extends Marshaller> implements Repository {
             Files.createDirectories(dir.toAbsolutePath());
         } catch (IOException e) {
             throw new UncheckedIOException(e);
-        }
-    }
-
-    private static Marshaller constructMarshaller(Class<? extends Marshaller> marshallerType) {
-        try {
-            return marshallerType.getConstructor().newInstance();
-        } catch (InstantiationException
-                | InvocationTargetException
-                | NoSuchMethodException
-                | IllegalAccessException e) {
-            throw new IllegalArgumentException(String.format("Can not instantiate Marshaller of type %s, does it have" +
-                    " a public default constructor?", marshallerType.getName()), e);
         }
     }
 }

@@ -64,19 +64,21 @@ public class JsonMarshallerTests {
 
     @Test(expected = UncheckedIOException.class)
     public void marshallerShouldThrowExceptionOnMockWriter() throws IOException {
-        Writer mockedWriter = mock(Writer.class);
-        when(mockedWriter.append(anyString())).thenThrow(IOException.class);
-        marshaller.marshal(stub, mockedWriter);
+        try (Writer mockedWriter = mock(Writer.class)) {
+            when(mockedWriter.append(anyString())).thenThrow(IOException.class);
+            marshaller.marshal(stub, mockedWriter);
+        }
     }
 
     @Test(expected = UncheckedIOException.class)
     public void unmarshallerShouldThrowExceptionOnMockReader() throws IOException {
-        Reader reader = mock(Reader.class);
-        when(reader.read(any(char[].class),
-                anyInt(),
-                anyInt()))
-                .thenThrow(IOException.class);
-        marshaller.unMarshal(reader);
+        try (Reader reader = mock(Reader.class)) {
+            when(reader.read(any(char[].class),
+                    anyInt(),
+                    anyInt()))
+                    .thenThrow(IOException.class);
+            marshaller.unMarshal(reader);
+        }
     }
 
 }

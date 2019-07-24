@@ -1,5 +1,9 @@
 
 dependencies {
     implementation project(':fakes-core')
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation project(':recordreplay-jetty')
+    implementation group: 'junit', name: 'junit', version: '4.12'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation project(':demo-rest')
+    testImplementation project(':okhttp-client')
 }

@@ -7,9 +7,8 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.io.Writer;
 
-public class HttpServletResponseMapper implements ResponseMapper<HttpServletResponse> {
-    @Override
-    public void map(Response response, HttpServletResponse httpServletResponse) {
+class HttpServletResponseMapper {
+    void map(Response response, HttpServletResponse httpServletResponse) {
         httpServletResponse.setStatus(response.getStatusCode());
         convertHeaders(response, httpServletResponse);
         convertBody(response, httpServletResponse);
