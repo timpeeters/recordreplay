@@ -16,8 +16,9 @@ public class RecordReplayConfig implements Configuration {
     private List<RequestMatcher> matchers;
 
     public RecordReplayConfig() {
-        host = DEFAULT_LISTEN_ADDRESS;
-        port = DEFAULT_PORT;
+        this.host = DEFAULT_LISTEN_ADDRESS;
+        this.port = DEFAULT_PORT;
+        this.matchers = DEFAULT_MATCHERS;
     }
 
     public RecordReplayConfig host(String host) {
@@ -62,7 +63,7 @@ public class RecordReplayConfig implements Configuration {
     }
 
     public RecordReplayConfig matchers(List<RequestMatcher> matchers) {
-        this.matchers = matchers;
+        this.matchers = notNull(matchers);
         return this;
     }
 
