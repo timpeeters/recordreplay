@@ -18,14 +18,15 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes =
         be.xplore.demorest.DemoRestApplication.class)
 public class RecRepExtensionTest {
+    private static final Configuration CONFIG = new RecordReplayConfig().client(new OkHttpClient());
+    @RegisterExtension
+    static RecordReplayExtension recordReplay = new RecordReplayExtension(CONFIG).forward();
+
     @LocalServerPort
     private int port;
 
-    private static final Configuration CONFIG = new RecordReplayConfig().client(new OkHttpClient());
-    private HttpClient client = new DefaultHttpClient(CONFIG.host(), CONFIG.port());
+    private final HttpClient client = new DefaultHttpClient(CONFIG.host(), CONFIG.port());
 
-    @RegisterExtension
-    static RecordReplayExtension recordReplay = new RecordReplayExtension(CONFIG).forward();
 
     @Test
     void testIntercept() {
