@@ -1,6 +1,7 @@
 package be.xplore.recordreplay.config;
 
 import be.xplore.fakes.service.HttpClient;
+import be.xplore.fakes.service.MemoryRepository;
 import be.xplore.fakes.service.Repository;
 import be.xplore.fakes.service.RequestMatcher;
 
@@ -16,8 +17,10 @@ public class RecordReplayConfig implements Configuration {
     private List<RequestMatcher> matchers;
 
     public RecordReplayConfig() {
-        host = DEFAULT_LISTEN_ADDRESS;
-        port = DEFAULT_PORT;
+        this.host = DEFAULT_LISTEN_ADDRESS;
+        this.port = DEFAULT_PORT;
+        this.matchers = DEFAULT_MATCHERS;
+        this.repository = new MemoryRepository();
     }
 
     public RecordReplayConfig host(String host) {
@@ -62,7 +65,7 @@ public class RecordReplayConfig implements Configuration {
     }
 
     public RecordReplayConfig matchers(List<RequestMatcher> matchers) {
-        this.matchers = matchers;
+        this.matchers = notNull(matchers);
         return this;
     }
 
