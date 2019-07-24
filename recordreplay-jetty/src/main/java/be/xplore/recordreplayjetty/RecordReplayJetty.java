@@ -1,7 +1,6 @@
 package be.xplore.recordreplayjetty;
 
 import be.xplore.recordreplay.service.RecordReplayHttpServlet;
-import be.xplore.recordreplay.usecase.StubHandler;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
@@ -13,8 +12,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 public class RecordReplayJetty {
     private final Server server;
 
-    public RecordReplayJetty(int port, StubHandler stubHandler) {
-        StubHandler.setCurrent(stubHandler);
+    public RecordReplayJetty(int port) {
         this.server = new Server();
         this.server.addConnector(newConnector(port));
         this.server.setHandler(getHandlerList(newContextHandler()));

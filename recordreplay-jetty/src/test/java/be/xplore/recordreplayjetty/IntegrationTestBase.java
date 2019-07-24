@@ -98,7 +98,8 @@ public abstract class IntegrationTestBase {
     }
 
     private void initJetty(StubHandler handler) {
-        recordReplayJetty = new RecordReplayJetty(jettyPort, handler);
+        StubHandler.setCurrent(handler);
+        recordReplayJetty = new RecordReplayJetty(jettyPort);
         recordReplayJetty.start();
     }
 
