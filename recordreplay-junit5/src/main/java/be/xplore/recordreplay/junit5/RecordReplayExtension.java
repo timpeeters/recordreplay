@@ -24,7 +24,6 @@ public class RecordReplayExtension implements BeforeAllCallback, AfterAllCallbac
     }
 
 
-
     @Override
     public void beforeAll(ExtensionContext context) {
         recordReplayJetty.start();
@@ -46,7 +45,8 @@ public class RecordReplayExtension implements BeforeAllCallback, AfterAllCallbac
     }
 
     public RecordReplayExtension replay() {
-        StubHandler.setCurrent(new StubHandler(new ReplayUseCase(configuration.repository(), configuration.matchers())));
+        StubHandler
+                .setCurrent(new StubHandler(new ReplayUseCase(configuration.repository(), configuration.matchers())));
         return this;
     }
 
