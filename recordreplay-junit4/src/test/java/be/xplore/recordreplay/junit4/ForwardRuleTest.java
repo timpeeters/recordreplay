@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class ForwardRuleTests extends  AbstractRuleTest{
+public class ForwardRuleTest extends  AbstractRuleTest{
 
     @ClassRule
     public static final RecordReplayRule RULE = new RecordReplayRule(CONFIG).forward();
