@@ -12,7 +12,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes =
         be.xplore.demorest.DemoRestApplication.class)
-abstract class ExtensionTestBase {
+class ExtensionTestBase {
     static final RecordReplayConfig CONFIG = new RecordReplayConfig().client(new OkHttpClient());
     private final HttpClient client = new DefaultHttpClient(CONFIG.host(), CONFIG.port());
 
