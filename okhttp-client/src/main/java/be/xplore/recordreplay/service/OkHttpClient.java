@@ -45,7 +45,7 @@ public class OkHttpClient implements HttpClient {
         if (request.getMethod() == RequestMethod.GET) {
             return null;
         }
-        String contentType = request.getHeaders().getHeaderMap().get("Content-Type").get(0);
+        String contentType = request.getHeaders().getModifiableHeaderMap().get("Content-Type").get(0);
         return RequestBody.create(request.getBody(), MediaType.parse(contentType));
     }
 

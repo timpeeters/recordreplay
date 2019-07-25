@@ -16,10 +16,8 @@ public interface Repository {
 
     default Optional<Response> findExactResponse(Request request, List<RequestMatcher> matchers) {
         Optional<Result> result = findBestMatch(request, matchers);
-        if (result.isPresent()) {
-            if (result.get().getDistance() == 0) {
-                return Optional.of(result.get().getStub().getResponse());
-            }
+        if (result.isPresent() && result.get().getDistance() == 0) {
+            return Optional.of(result.get().getStub().getResponse());
         }
         return Optional.empty();
     }
