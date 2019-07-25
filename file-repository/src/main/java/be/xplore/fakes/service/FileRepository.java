@@ -7,8 +7,10 @@ import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.io.Writer;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -30,7 +32,10 @@ public class FileRepository<M extends Marshaller> implements Repository {
 
     @Override
     public void add(Stub stub) {
-        try (Writer w = Files.newBufferedWriter(Paths.get(targetDir.toString(), getUniqueStubFileName(stub)))) {
+        OpenOption[] options = {StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE,
+                StandardOpenOption.TRUNCATE_EXISTING};
+        try (Writer w = Files
+                .newBufferedWriter(Paths.get(targetDir.toString(), getUniqueStubFileName(stub)), options)) {
             marshaller.marshal(stub, w);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
@@ -82,7 +87,7 @@ public class FileRepository<M extends Marshaller> implements Repository {
     private static String getUniqueStubFileName(Stub stub) {
         var req = stub.getRequest();
         return req.getMethod().toString() + "_" +
-                req.getPath() +
+                req.getPath().replace('/', '_') +
                 UUID.randomUUID().toString();
     }
 
