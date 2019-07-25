@@ -17,11 +17,11 @@ public class RecordReplayHttpServlet extends HttpServlet {
     private final HttpServletResponseMapper responseMapper;
     private final StubHandler stubHandler;
 
-    public RecordReplayHttpServlet() {
+    public RecordReplayHttpServlet(StubHandler stubHandler) {
         super();
         this.requestMapper = new HttpServletRequestMapper();
         this.responseMapper = new HttpServletResponseMapper();
-        stubHandler = StubHandler.getCurrent();
+        this.stubHandler = stubHandler;
     }
 
     @Override

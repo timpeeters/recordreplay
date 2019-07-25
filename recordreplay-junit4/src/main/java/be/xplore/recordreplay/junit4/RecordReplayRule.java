@@ -6,6 +6,7 @@ import be.xplore.recordreplay.usecase.RecordReplayUseCase;
 import be.xplore.recordreplay.usecase.RecordUseCase;
 import be.xplore.recordreplay.usecase.ReplayUseCase;
 import be.xplore.recordreplay.usecase.StubHandler;
+import be.xplore.recordreplay.usecase.UseCase;
 import be.xplore.recordreplayjetty.RecordReplayJetty;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
@@ -14,37 +15,30 @@ import org.junit.runners.model.Statement;
 public class RecordReplayRule implements TestRule {
 
     private final Configuration config;
-    private final RecordReplayJetty recordReplay;
+    private RecordReplayJetty recordReplay;
 
 
     public RecordReplayRule(Configuration config) {
         this.config = config;
-        this.recordReplay = new RecordReplayJetty(config.port());
     }
 
     public RecordReplayRule forward() {
-        StubHandler.setCurrent(new StubHandler(
-                new ForwardRequestUseCase(config.client())));
+        createRecordReplay(new ForwardRequestUseCase(config.client()));
         return this;
     }
 
     public RecordReplayRule record() {
-        StubHandler.setCurrent(new StubHandler(
-                new RecordUseCase(config.repository(), config.client())));
+        createRecordReplay(new RecordUseCase(config.repository(), config.client()));
         return this;
     }
 
     public RecordReplayRule replay() {
-        StubHandler.setCurrent(new StubHandler(
-                new ReplayUseCase(config.repository(), config.matchers())));
+        createRecordReplay(new ReplayUseCase(config.repository(), config.matchers()));
         return this;
     }
 
     public RecordReplayRule recordReplay() {
-        StubHandler.setCurrent(new StubHandler(
-                new RecordReplayUseCase(
-                        new RecordUseCase(config.repository(), config.client()),
-                        new ReplayUseCase(config.repository(), config.matchers()))));
+        createRecordReplay(new RecordReplayUseCase(config.repository(), config.client(), config.matchers()));
         return this;
     }
 
@@ -57,9 +51,20 @@ public class RecordReplayRule implements TestRule {
                 try {
                     base.evaluate();
                 } finally {
-                    recordReplay.stop();
+                    stop();
                 }
             }
         };
+    }
+
+    private void createRecordReplay(UseCase useCase) {
+        stop();
+        this.recordReplay = new RecordReplayJetty(config.port(), new StubHandler(useCase));
+    }
+
+    private void stop() {
+        if (this.recordReplay != null) {
+            this.recordReplay.stop();
+        }
     }
 }

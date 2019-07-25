@@ -1,6 +1,8 @@
 package be.xplore.recordreplayjetty;
 
+import be.xplore.recordreplay.proxy.ProxyManager;
 import be.xplore.recordreplay.service.RecordReplayHttpServlet;
+import be.xplore.recordreplay.usecase.StubHandler;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
@@ -8,33 +10,46 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 
 public class RecordReplayJetty {
     private final Server server;
+    private final ProxyManager proxyManager;
+    private boolean running;
 
-    public RecordReplayJetty(int port) {
+    public RecordReplayJetty(int port, StubHandler stubHandler) {
         this.server = new Server();
         this.server.addConnector(newConnector(port));
-        this.server.setHandler(getHandlerList(newContextHandler()));
+        this.server.setHandler(getHandlerList(newContextHandler(stubHandler)));
+        this.proxyManager = new ProxyManager();
     }
 
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public void start() {
         try {
-            server.start();
+            if (!running) {
+                server.start();
+            }
         } catch (Exception e) {
             throw new IllegalStateException("Jetty-server couldn't start", e);
         }
+        proxyManager.activate(server.getURI().getHost(), server.getURI().getPort());
+        running = true;
     }
 
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public void stop() {
         try {
-            server.stop();
-            tryJoinThreads();
+            if (running) {
+                server.stop();
+                tryJoinThreads();
+            }
         } catch (Exception e) {
             throw new IllegalStateException("Jetty-server couldn't stop", e);
+        } finally {
+            proxyManager.deActivate();
         }
+        running = false;
     }
 
     private void tryJoinThreads() {
@@ -62,9 +77,10 @@ public class RecordReplayJetty {
         return configuration;
     }
 
-    private ServletContextHandler newContextHandler() {
+    private ServletContextHandler newContextHandler(StubHandler stubHandler) {
         ServletContextHandler context = new ServletContextHandler();
-        context.addServlet(RecordReplayHttpServlet.class, "/*");
+        ServletHolder servlet = new ServletHolder(new RecordReplayHttpServlet(stubHandler));
+        context.addServlet(servlet, "/*");
         return context;
     }
 
