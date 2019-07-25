@@ -1,4 +1,4 @@
-package be.xplore.recordreplayjetty;
+package be.xplore.recordreplay;
 
 import be.xplore.fakes.model.Headers;
 import be.xplore.fakes.model.QueryParams;

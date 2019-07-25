@@ -11,4 +11,4 @@ include 'recordreplay-servlet'
 include 'okhttp-client'
 include 'recordreplay-usecases'
 include 'recordreplay-junit4'
-
+include 'recordreplay-integrationtest'

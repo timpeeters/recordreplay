@@ -6,4 +6,5 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation project(':demo-rest')
     testImplementation project(':okhttp-client')
+    testImplementation project(':recordreplay-junit4')
 }
