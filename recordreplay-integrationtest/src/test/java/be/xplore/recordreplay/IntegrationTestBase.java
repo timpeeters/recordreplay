@@ -22,9 +22,8 @@ public abstract class IntegrationTestBase {
 
     @Rule
     public RecordReplayRule recordReplayRule = new RecordReplayRule(new RecordReplayConfig()
-            .client(new OkHttpClient())
-            .port(port))
-            .recordReplay();
+            .client(OkHttpClient.noProxy()))
+            .replay();
 
     @Before
     public void initContext() {
@@ -33,6 +32,7 @@ public abstract class IntegrationTestBase {
 
     @Test
     public void forwardRequestTest() {
+        recordReplayRule.forward();
         for (Stub stub : stubsToTest()) {
             var response = client.execute(stub.getRequest());
             AssertionsForClassTypes.assertThat(response.getStatusCode()).isEqualTo(stub.getResponse().getStatusCode());
@@ -41,6 +41,7 @@ public abstract class IntegrationTestBase {
 
     @Test
     public void recordTest() {
+        recordReplayRule.record();
         for (Stub stub : stubsToTest()) {
             var response = client.execute(stub.getRequest());
             AssertionsForClassTypes.assertThat(response.getStatusCode()).isEqualTo(stub.getResponse().getStatusCode());
@@ -49,6 +50,7 @@ public abstract class IntegrationTestBase {
 
     @Test
     public void replayEmptyRepoTest() {
+        recordReplayRule.replay();
         for (Stub stub : stubsToTest()) {
             AssertionsForClassTypes.assertThat(client.execute(stub.getRequest()).getStatusCode()).isEqualTo(500);
         }
@@ -56,6 +58,7 @@ public abstract class IntegrationTestBase {
 
     @Test
     public void recordReplayTest() {
+        recordReplayRule.recordReplay();
         for (Stub stub : stubsToTest()) {
             AssertionsForClassTypes.assertThat(client.execute(stub.getRequest()))
                     .isEqualTo(client.execute(stub.getRequest()));

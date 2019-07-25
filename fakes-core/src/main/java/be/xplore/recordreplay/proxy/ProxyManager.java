@@ -1,53 +1,46 @@
 package be.xplore.recordreplay.proxy;
 
 import java.net.InetSocketAddress;
+import java.net.ProxySelector;
 
 public class ProxyManager {
-    private static final String PROXY_HOST = "http.proxyHost";
-    private static final String PROXY_PORT = "http.proxyPort";
+    public static final String PROXY_HOST_PROP = "http.proxyHost";
+    public static final String PROXY_PORT_PROP = "http.proxyPort";
     private final InetSocketAddress originalProxy;
-//    private final Set<String> originalNonProxyHosts;
 
     public ProxyManager() {
         this.originalProxy = getCurrentProxy();
-        //  this.originalNonProxyHosts = getCurrentNonProxyHosts();
     }
 
 
     public void activate(String host, int port) {
-        System.setProperty(PROXY_HOST, new InetSocketAddress(host, port).getHostName());
-        System.setProperty(PROXY_PORT, String.valueOf(port));
+        var address = new InetSocketAddress(host, port);
+        ProxySelector.setDefault(ProxySelector.of(address));
+        System.setProperty(PROXY_HOST_PROP, address.getHostString());
+        System.setProperty(PROXY_PORT_PROP, String.valueOf(address.getPort()));
     }
 
-
     public void deActivate() {
+        setOriginalProxyProperty();
+        ProxySelector.setDefault(ProxySelector.of(originalProxy));
+    }
+
+    private void setOriginalProxyProperty() {
         if (originalProxy == null) {
-            System.clearProperty(PROXY_HOST);
-            System.clearProperty(PROXY_PORT);
+            System.clearProperty(PROXY_HOST_PROP);
+            System.clearProperty(PROXY_PORT_PROP);
         } else {
-            System.setProperty(PROXY_HOST, originalProxy.getHostName());
-            System.setProperty(PROXY_PORT, String.valueOf(originalProxy.getPort()));
+            System.setProperty(PROXY_HOST_PROP, originalProxy.getHostName());
+            System.setProperty(PROXY_PORT_PROP, String.valueOf(originalProxy.getPort()));
         }
     }
 
     private static InetSocketAddress getCurrentProxy() {
-        String host = System.getProperty(PROXY_HOST);
-        String port = System.getProperty(PROXY_PORT);
+        String host = System.getProperty(PROXY_HOST_PROP);
         if (host == null) {
             return null;
         }
+        String port = System.getProperty(PROXY_PORT_PROP);
         return new InetSocketAddress(host, Integer.parseInt(port));
     }
-
-   /* private static Set<String> getCurrentNonProxyHosts() {
-        String hosts = System.getProperty("http.nonProxyHosts");
-        if (hosts == null) {
-            return Collections.emptySet();
-        }
-        Set<String> hostSet = new HashSet<>();
-        Collections.addAll(hostSet, hosts.split("|"));
-        return hostSet;
-
-    }
-*/
 }

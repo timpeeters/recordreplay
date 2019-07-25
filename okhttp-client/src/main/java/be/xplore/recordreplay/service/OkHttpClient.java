@@ -12,6 +12,8 @@ import okhttp3.RequestBody;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
+import java.net.Proxy;
+import java.net.ProxySelector;
 import java.net.URI;
 import java.net.URL;
 
@@ -19,7 +21,15 @@ public class OkHttpClient implements HttpClient {
     private final okhttp3.OkHttpClient client;
 
     public OkHttpClient() {
-        client = new okhttp3.OkHttpClient();
+        client = new okhttp3.OkHttpClient.Builder().proxySelector(ProxySelector.getDefault()).build();
+    }
+
+    private OkHttpClient(Proxy proxy) {
+        client = new okhttp3.OkHttpClient.Builder().proxy(proxy).build();
+    }
+
+    public static OkHttpClient noProxy() {
+        return new OkHttpClient(Proxy.NO_PROXY);
     }
 
     @Override

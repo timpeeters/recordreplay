@@ -1,6 +1,7 @@
 package be.xplore.recordreplay.junit4;
 
 import be.xplore.recordreplay.config.Configuration;
+import be.xplore.recordreplay.proxy.ProxyManager;
 import be.xplore.recordreplay.usecase.ForwardRequestUseCase;
 import be.xplore.recordreplay.usecase.RecordReplayUseCase;
 import be.xplore.recordreplay.usecase.RecordUseCase;
@@ -16,10 +17,12 @@ public class RecordReplayRule implements TestRule {
 
     private final Configuration config;
     private RecordReplayJetty recordReplay;
+    private final ProxyManager proxyManager;
 
 
     public RecordReplayRule(Configuration config) {
         this.config = config;
+        proxyManager = new ProxyManager();
     }
 
     public RecordReplayRule forward() {
@@ -47,7 +50,7 @@ public class RecordReplayRule implements TestRule {
         return new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                recordReplay.start();
+                start();
                 try {
                     base.evaluate();
                 } finally {
@@ -57,14 +60,24 @@ public class RecordReplayRule implements TestRule {
         };
     }
 
-    private void createRecordReplay(UseCase useCase) {
-        stop();
-        this.recordReplay = new RecordReplayJetty(config.port(), new StubHandler(useCase));
-    }
-
     private void stop() {
         if (this.recordReplay != null) {
             this.recordReplay.stop();
         }
+        proxyManager.deActivate();
+    }
+
+    private void start() {
+        stop();
+        if (this.recordReplay != null) {
+            this.recordReplay.start();
+            proxyManager.activate(recordReplay.getHost(), recordReplay.getPort());
+        }
+    }
+
+    private void createRecordReplay(UseCase useCase) {
+        stop();
+        this.recordReplay = new RecordReplayJetty(config.port(), new StubHandler(useCase));
+        start();
     }
 }

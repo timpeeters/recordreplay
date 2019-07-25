@@ -1,6 +1,5 @@
 package be.xplore.recordreplayjetty;
 
-import be.xplore.recordreplay.proxy.ProxyManager;
 import be.xplore.recordreplay.service.RecordReplayHttpServlet;
 import be.xplore.recordreplay.usecase.StubHandler;
 import org.eclipse.jetty.server.Connector;
@@ -14,14 +13,12 @@ import org.eclipse.jetty.servlet.ServletHolder;
 
 public class RecordReplayJetty {
     private final Server server;
-    private final ProxyManager proxyManager;
     private boolean running;
 
     public RecordReplayJetty(int port, StubHandler stubHandler) {
         this.server = new Server();
         this.server.addConnector(newConnector(port));
         this.server.setHandler(getHandlerList(newContextHandler(stubHandler)));
-        this.proxyManager = new ProxyManager();
     }
 
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
@@ -33,23 +30,32 @@ public class RecordReplayJetty {
         } catch (Exception e) {
             throw new IllegalStateException("Jetty-server couldn't start", e);
         }
-        proxyManager.activate(server.getURI().getHost(), server.getURI().getPort());
         running = true;
     }
 
-    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public void stop() {
+        tryStop();
+        tryJoinThreads();
+        running = false;
+    }
+
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
+    private void tryStop() {
         try {
             if (running) {
                 server.stop();
-                tryJoinThreads();
             }
         } catch (Exception e) {
             throw new IllegalStateException("Jetty-server couldn't stop", e);
-        } finally {
-            proxyManager.deActivate();
         }
-        running = false;
+    }
+
+    public String getHost() {
+        return server.getURI().getHost();
+    }
+
+    public int getPort() {
+        return server.getURI().getPort();
     }
 
     private void tryJoinThreads() {
