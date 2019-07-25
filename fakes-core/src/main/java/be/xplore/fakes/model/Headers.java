@@ -24,8 +24,8 @@ public class Headers {
         this.headerMap = Collections.unmodifiableMap(headers.map());
     }
 
-    public Map<String, List<String>> getHeaderMap() {
-        return headerMap;
+    public Map<String, List<String>> getModifiableHeaderMap() {
+        return new HashMap<>(headerMap);
     }
 
     public static Builder builder() {
@@ -79,7 +79,7 @@ public class Headers {
             return false;
         }
         return headerMap.entrySet().stream()
-                .allMatch(entry -> entry.getValue().equals(headers.getHeaderMap().get(entry.getKey()))
+                .allMatch(entry -> entry.getValue().equals(headers.getModifiableHeaderMap().get(entry.getKey()))
                 );
     }
 

@@ -18,7 +18,7 @@ class JsonResponse {
     JsonResponse(Response response) {
         this.statusCode = response.getStatusCode();
         this.statusText = response.getStatusText();
-        this.headers = response.getHeaders().getHeaderMap();
+        this.headers = response.getHeaders().getModifiableHeaderMap();
         this.body = response.getBody();
     }
 

@@ -23,8 +23,8 @@ class JsonRequest {
     JsonRequest(Request request) {
         this.method = request.getMethod();
         this.path = request.getPath();
-        this.queryParams = request.getQueryParams().getParams();
-        this.headers = request.getHeaders().getHeaderMap();
+        this.queryParams = request.getQueryParams().getModifiableParamMap();
+        this.headers = request.getHeaders().getModifiableHeaderMap();
         this.body = request.getBody();
     }
 

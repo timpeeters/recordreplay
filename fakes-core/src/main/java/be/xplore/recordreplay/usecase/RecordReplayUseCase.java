@@ -2,8 +2,11 @@ package be.xplore.recordreplay.usecase;
 
 import be.xplore.fakes.model.Response;
 import be.xplore.fakes.model.Stub;
-import be.xplore.fakes.util.Assert;
+import be.xplore.fakes.service.HttpClient;
+import be.xplore.fakes.service.Repository;
+import be.xplore.fakes.service.RequestMatcher;
 
+import java.util.List;
 import java.util.Optional;
 
 public class RecordReplayUseCase implements UseCase {
@@ -11,9 +14,9 @@ public class RecordReplayUseCase implements UseCase {
     private final RecordUseCase record;
     private final ReplayUseCase replay;
 
-    public RecordReplayUseCase(RecordUseCase record, ReplayUseCase replay) {
-        this.record = Assert.notNull(record);
-        this.replay = Assert.notNull(replay);
+    public RecordReplayUseCase(Repository repository, HttpClient client, List<RequestMatcher> matchers) {
+        this.record = new RecordUseCase(repository, client);
+        this.replay = new ReplayUseCase(repository, matchers);
     }
 
     @Override

@@ -1,0 +1,8 @@
+dependencies {
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation project(':fakes-core')
+    testImplementation project(':okhttp-client')
+    testImplementation project(':demo-rest')
+    testImplementation project(':demo-soap')
+    testImplementation project(':recordreplay-junit4')
+}

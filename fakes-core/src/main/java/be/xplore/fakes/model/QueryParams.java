@@ -20,8 +20,8 @@ public class QueryParams {
         this.params = Collections.unmodifiableMap(Assert.notNull(builder.params));
     }
 
-    public Map<String, List<String>> getParams() {
-        return params;
+    public Map<String, List<String>> getModifiableParamMap() {
+        return new HashMap<>(params);
     }
 
     public static Builder builder() {
@@ -80,7 +80,7 @@ public class QueryParams {
         }
         QueryParams otherParams = (QueryParams) o;
         return this.params.entrySet().stream()
-                .allMatch(entry -> entry.getValue().equals(otherParams.getParams().get(entry.getKey()))
+                .allMatch(entry -> entry.getValue().equals(otherParams.getModifiableParamMap().get(entry.getKey()))
                 );
     }
 
