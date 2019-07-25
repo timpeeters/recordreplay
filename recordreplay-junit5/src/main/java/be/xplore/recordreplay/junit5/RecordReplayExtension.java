@@ -1,11 +1,13 @@
 package be.xplore.recordreplay.junit5;
 
 import be.xplore.recordreplay.config.Configuration;
+import be.xplore.recordreplay.proxy.ProxyManager;
 import be.xplore.recordreplay.usecase.ForwardRequestUseCase;
 import be.xplore.recordreplay.usecase.RecordReplayUseCase;
 import be.xplore.recordreplay.usecase.RecordUseCase;
 import be.xplore.recordreplay.usecase.ReplayUseCase;
 import be.xplore.recordreplay.usecase.StubHandler;
+import be.xplore.recordreplay.usecase.UseCase;
 import be.xplore.recordreplayjetty.RecordReplayJetty;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
@@ -15,46 +17,72 @@ import static be.xplore.fakes.util.Assert.notNull;
 
 public class RecordReplayExtension implements BeforeAllCallback, AfterAllCallback {
 
-    private final RecordReplayJetty recordReplayJetty;
+    private RecordReplayJetty recordReplay;
     private final Configuration configuration;
+    private final ProxyManager proxyManager;
 
     public RecordReplayExtension(Configuration configuration) {
         this.configuration = notNull(configuration);
-        recordReplayJetty = new RecordReplayJetty(configuration.port());
+        this.recordReplay = new RecordReplayJetty(configuration
+                .port(), new StubHandler(new RecordReplayUseCase(configuration.repository(), configuration
+                .client(), configuration.matchers())));
+        this.proxyManager = new ProxyManager();
     }
 
 
-    @Override
-    public void beforeAll(ExtensionContext context) {
-        recordReplayJetty.start();
-    }
-
-    @Override
-    public void afterAll(ExtensionContext context) {
-        recordReplayJetty.stop();
-    }
-
-    public RecordReplayExtension record() {
-        StubHandler.setCurrent(new StubHandler(new RecordUseCase(configuration.repository(), configuration.client())));
+    public RecordReplayExtension forward() {
+        createRecordReplay(new ForwardRequestUseCase(configuration.client()));
+        start();
         return this;
     }
 
-    public RecordReplayExtension forward() {
-        StubHandler.setCurrent(new StubHandler(new ForwardRequestUseCase(configuration.client())));
+    public RecordReplayExtension record() {
+        createRecordReplay(new RecordUseCase(configuration.repository(), configuration.client()));
+        start();
         return this;
     }
 
     public RecordReplayExtension replay() {
-        StubHandler
-                .setCurrent(new StubHandler(new ReplayUseCase(configuration.repository(), configuration.matchers())));
+        createRecordReplay(new ReplayUseCase(configuration.repository(), configuration.matchers()));
+        start();
         return this;
     }
 
     public RecordReplayExtension recordReplay() {
-        StubHandler.setCurrent(new StubHandler(new RecordReplayUseCase(
-                new RecordUseCase(configuration.repository(), configuration.client()),
-                new ReplayUseCase(configuration.repository(), configuration.matchers())
-        )));
+        createRecordReplay(new RecordReplayUseCase(configuration.repository(), configuration.client(), configuration
+                .matchers()));
+        start();
         return this;
+    }
+
+    @Override
+    public void beforeAll(ExtensionContext context) {
+        recordReplay.start();
+    }
+
+    @Override
+    public void afterAll(ExtensionContext context) {
+        recordReplay.stop();
+    }
+
+
+    private void stop() {
+        if (this.recordReplay != null) {
+            this.recordReplay.stop();
+        }
+        proxyManager.deActivate();
+    }
+
+    private void start() {
+        stop();
+        if (this.recordReplay != null) {
+            this.recordReplay.start();
+            proxyManager.activate(recordReplay.getHost(), recordReplay.getPort());
+        }
+    }
+
+    private void createRecordReplay(UseCase useCase) {
+        stop();
+        this.recordReplay = new RecordReplayJetty(configuration.port(), new StubHandler(useCase));
     }
 }
