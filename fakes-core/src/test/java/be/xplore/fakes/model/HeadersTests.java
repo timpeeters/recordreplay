@@ -20,7 +20,7 @@ public class HeadersTests {
 
     @Test
     public void getHeadersShouldReturnMapOfHeaders() {
-        assertThat(headers.getHeaderMap())
+        assertThat(headers.getModifiableHeaderMap())
                 .as("doesn't return correct map of headerMap")
                 .isEqualTo(headerMap);
     }

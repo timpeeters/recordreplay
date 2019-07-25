@@ -4,25 +4,50 @@ import be.xplore.fakes.model.Headers;
 import be.xplore.fakes.model.Request;
 import be.xplore.fakes.model.Result;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 public class RequestHeaderMatcher implements RequestMatcher {
+
+    private final List<String> headersToIgnore = new ArrayList<>();
+
+    public RequestHeaderMatcher() {
+        this.headersToIgnore.addAll(List.of("User-Agent", "Connection", "Date"));
+    }
+
+    public RequestHeaderMatcher(List<String> headersToIgnore) {
+        this.headersToIgnore.addAll(List.of("User-Agent", "Connection", "Date"));
+        this.headersToIgnore.addAll(headersToIgnore);
+    }
 
     @Override
     public Result matches(Request request, Request otherRequest) {
-        return new Result(calculateDistance(request.getHeaders(), otherRequest.getHeaders()));
+        return calculateDistance(request.getHeaders(), otherRequest.getHeaders());
     }
 
-    private double calculateDistance(Headers headers, Headers otherHeaders) {
-        double distance;
+    private Result calculateDistance(Headers headers, Headers otherHeaders) {
+        Result result;
         if (headers.isEmpty() && otherHeaders.isEmpty()) {
-            distance = 0;
+            result = new Result(0);
         } else if (headers.isEmpty() || otherHeaders.isEmpty()) {
-            distance = 1;
+            result = new Result(1);
         } else {
-            distance = largest(headers, otherHeaders)
-                .returnMismatchingHeaders(smallest(headers, otherHeaders))
-                    .size() * (1D / largest(headers, otherHeaders).size());
+            result = distanceAfterIgnoreHeaders(
+                    largest(headers, otherHeaders),
+                    smallest(headers, otherHeaders));
         }
-        return distance;
+        return result;
+    }
+
+    private Result distanceAfterIgnoreHeaders(Headers largest, Headers smallest) {
+        Map<String, List<String>> largestMap = largest.getModifiableHeaderMap();
+        Map<String, List<String>> smallestMap = smallest.getModifiableHeaderMap();
+        headersToIgnore.forEach(largestMap::remove);
+        headersToIgnore.forEach(smallestMap::remove);
+        return new Result(Headers.builder().headerMap(largestMap).build()
+                .returnMismatchingHeaders(Headers.builder().headerMap(smallestMap).build())
+                .size() * (1D / Headers.builder().headerMap(largestMap).build().size()));
     }
 
     private Headers largest(Headers headers, Headers otherHeaders) {
