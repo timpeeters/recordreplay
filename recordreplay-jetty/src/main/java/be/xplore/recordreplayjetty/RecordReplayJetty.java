@@ -9,34 +9,53 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 
 public class RecordReplayJetty {
     private final Server server;
+    private boolean running;
 
     public RecordReplayJetty(int port, StubHandler stubHandler) {
-        StubHandler.setCurrent(stubHandler);
         this.server = new Server();
         this.server.addConnector(newConnector(port));
-        this.server.setHandler(getHandlerList(newContextHandler()));
+        this.server.setHandler(getHandlerList(newContextHandler(stubHandler)));
     }
 
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public void start() {
         try {
-            server.start();
+            if (!running) {
+                server.start();
+            }
         } catch (Exception e) {
             throw new IllegalStateException("Jetty-server couldn't start", e);
         }
+        running = true;
+    }
+
+    public void stop() {
+        tryStop();
+        tryJoinThreads();
+        running = false;
     }
 
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    public void stop() {
+    private void tryStop() {
         try {
-            server.stop();
-            tryJoinThreads();
+            if (running) {
+                server.stop();
+            }
         } catch (Exception e) {
             throw new IllegalStateException("Jetty-server couldn't stop", e);
         }
+    }
+
+    public String getHost() {
+        return server.getURI().getHost();
+    }
+
+    public int getPort() {
+        return server.getURI().getPort();
     }
 
     private void tryJoinThreads() {
@@ -64,9 +83,10 @@ public class RecordReplayJetty {
         return configuration;
     }
 
-    private ServletContextHandler newContextHandler() {
+    private ServletContextHandler newContextHandler(StubHandler stubHandler) {
         ServletContextHandler context = new ServletContextHandler();
-        context.addServlet(RecordReplayHttpServlet.class, "/*");
+        ServletHolder servlet = new ServletHolder(new RecordReplayHttpServlet(stubHandler));
+        context.addServlet(servlet, "/*");
         return context;
     }
 

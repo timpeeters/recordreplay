@@ -5,6 +5,6 @@ import be.xplore.fakes.model.Stub;
 
 import java.util.Optional;
 
-interface UseCase {
+public interface UseCase {
     Optional<Response> execute(Stub stub);
 }
