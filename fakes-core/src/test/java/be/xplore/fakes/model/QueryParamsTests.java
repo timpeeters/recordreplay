@@ -18,7 +18,7 @@ public class QueryParamsTests {
 
     @Test
     public void getParams() {
-        assertThat(queryParams.getParams())
+        assertThat(queryParams.getModifiableParamMap())
                 .as("Doesn't return a paramMap")
                 .isEqualTo(paramMap);
     }
@@ -27,12 +27,6 @@ public class QueryParamsTests {
     public void buildingQueryWithNullShouldThrow() {
         QueryParams.builder().params(null).build();
     }
-
-    @Test(expected = UnsupportedOperationException.class)
-    public void changingParamMapShoudlThrow() {
-        QueryParams.builder().params(new HashMap<>()).build().getParams().remove("Key");
-    }
-
 
     @Test
     public void isEmptyShouldReturnTrueOnEmptyMap() {

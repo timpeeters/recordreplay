@@ -46,8 +46,8 @@ public class RequestHeaderMatcher implements RequestMatcher {
         headersToIgnore.forEach(largestMap::remove);
         headersToIgnore.forEach(smallestMap::remove);
         return new Result(Headers.builder().headerMap(largestMap).build()
-                        .returnMismatchingHeaders(Headers.builder().headerMap(smallestMap).build())
-                        .size() * (1D / Headers.builder().headerMap(largestMap).build().size()));
+                .returnMismatchingHeaders(Headers.builder().headerMap(smallestMap).build())
+                .size() * (1D / Headers.builder().headerMap(largestMap).build().size()));
     }
 
     private Headers largest(Headers headers, Headers otherHeaders) {
