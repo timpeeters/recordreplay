@@ -3,7 +3,7 @@ package be.xplore.recordreplay.usecase;
 import be.xplore.recordreplay.model.Response;
 import be.xplore.recordreplay.model.Stub;
 import be.xplore.recordreplay.http.HttpClient;
-import be.xplore.recordreplay.service.Repository;
+import be.xplore.recordreplay.repository.Repository;
 import be.xplore.recordreplay.service.RequestMatcher;
 
 import java.util.List;

@@ -6,7 +6,7 @@ import be.xplore.recordreplay.model.QueryParams;
 import be.xplore.recordreplay.model.Request;
 import be.xplore.recordreplay.model.Response;
 import be.xplore.recordreplay.model.Stub;
-import be.xplore.recordreplay.repo.Marshaller;
+import be.xplore.recordreplay.repository.Marshaller;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

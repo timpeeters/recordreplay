@@ -1,4 +1,4 @@
-package be.xplore.recordreplay.service;
+package be.xplore.recordreplay.repository;
 
 import be.xplore.recordreplay.model.Stub;
 

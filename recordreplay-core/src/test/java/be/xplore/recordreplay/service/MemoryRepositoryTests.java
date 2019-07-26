@@ -5,6 +5,8 @@ import be.xplore.recordreplay.model.RequestMethod;
 import be.xplore.recordreplay.model.Response;
 import be.xplore.recordreplay.model.Stub;
 
+import be.xplore.recordreplay.repository.MemoryRepository;
+import be.xplore.recordreplay.repository.Repository;
 import org.junit.Before;
 import org.junit.Test;
 

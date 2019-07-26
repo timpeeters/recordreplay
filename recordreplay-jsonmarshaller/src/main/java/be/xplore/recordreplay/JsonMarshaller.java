@@ -1,7 +1,7 @@
 package be.xplore.recordreplay;
 
 import be.xplore.recordreplay.model.Stub;
-import be.xplore.recordreplay.repo.Marshaller;
+import be.xplore.recordreplay.repository.Marshaller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
