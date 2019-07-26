@@ -16,7 +16,7 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes =
         be.xplore.demorest.DemoRestApplication.class)
-public class JettyIntegrationTestRest extends IntegrationTestBase {
+public class IntegrationTestRest extends IntegrationTestBase {
     @Override
     protected List<Stub> stubsToTest() {
         return List.of(
