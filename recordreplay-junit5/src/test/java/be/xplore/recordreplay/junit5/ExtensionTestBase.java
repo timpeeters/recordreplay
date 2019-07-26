@@ -6,7 +6,7 @@ import be.xplore.fakes.model.Response;
 import be.xplore.fakes.service.DefaultHttpClient;
 import be.xplore.fakes.service.HttpClient;
 import be.xplore.recordreplay.config.RecordReplayConfig;
-import be.xplore.recordreplay.service.OkHttpClient;
+import be.xplore.recordreplay.http.OkHttpClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 

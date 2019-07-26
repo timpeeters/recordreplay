@@ -1,4 +1,4 @@
-package be.xplore.recordreplay.service;
+package be.xplore.recordreplay.http;
 
 import be.xplore.fakes.model.Headers;
 import be.xplore.fakes.model.QueryParams;
@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.Proxy;
-import java.net.ProxySelector;
 import java.net.URI;
 import java.net.URL;
 
@@ -21,7 +20,7 @@ public class OkHttpClient implements HttpClient {
     private final okhttp3.OkHttpClient client;
 
     public OkHttpClient() {
-        client = new okhttp3.OkHttpClient.Builder().proxySelector(ProxySelector.getDefault()).build();
+        client = new okhttp3.OkHttpClient();
     }
 
     private OkHttpClient(Proxy proxy) {
@@ -42,8 +41,8 @@ public class OkHttpClient implements HttpClient {
     }
 
     private okhttp3.Request toOkHttpRequest(Request request) {
-        RequestBody body = getRequestBody(request);
-        URL url = getUrl(request.getPath(), request.getQueryParams());
+        RequestBody body = convertRequestBody(request);
+        URL url = toUrl(request.getPath(), request.getQueryParams());
         return new okhttp3.Request.Builder()
                 .method(request.getMethod().name(), body)
                 .url(url)
@@ -51,7 +50,7 @@ public class OkHttpClient implements HttpClient {
                 .build();
     }
 
-    private RequestBody getRequestBody(Request request) {
+    private RequestBody convertRequestBody(Request request) {
         if (request.getMethod() == RequestMethod.GET) {
             return null;
         }
@@ -59,7 +58,7 @@ public class OkHttpClient implements HttpClient {
         return RequestBody.create(request.getBody(), MediaType.parse(contentType));
     }
 
-    private URL getUrl(String baseUrl, QueryParams params) {
+    private URL toUrl(String baseUrl, QueryParams params) {
         try {
             return URI.create(baseUrl + params.getQueryString()).toURL();
         } catch (MalformedURLException e) {
@@ -71,7 +70,7 @@ public class OkHttpClient implements HttpClient {
         return Response.builder()
                 .statusCode(response.code())
                 .statusText(response.message())
-                .body(getResponseBody(response))
+                .body(convertResponseBody(response))
                 .headers(convertHeaders(response.headers()))
                 .build();
     }
@@ -80,7 +79,7 @@ public class OkHttpClient implements HttpClient {
         return Headers.builder().headerMap(headers.toMultimap()).build();
     }
 
-    private String getResponseBody(okhttp3.Response response) {
+    private String convertResponseBody(okhttp3.Response response) {
         var body = response.body();
         if (body == null) {
             return "";
