@@ -1,4 +1,4 @@
-package be.xplore.recordreplay.service;
+package be.xplore.recordreplay.http;
 
 import be.xplore.recordreplay.DemoRestApplication;
 import be.xplore.recordreplay.http.DefaultHttpClient;

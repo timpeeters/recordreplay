@@ -1,4 +1,4 @@
-package be.xplore.recordreplay.service;
+package be.xplore.recordreplay.repository;
 
 import be.xplore.recordreplay.matcher.RequestBodyMatcher;
 import be.xplore.recordreplay.matcher.RequestHeaderMatcher;
@@ -10,9 +10,6 @@ import be.xplore.recordreplay.model.Request;
 import be.xplore.recordreplay.model.RequestMethod;
 import be.xplore.recordreplay.model.Response;
 import be.xplore.recordreplay.model.Stub;
-
-import be.xplore.recordreplay.repository.MemoryRepository;
-import be.xplore.recordreplay.repository.Repository;
 import org.junit.Before;
 import org.junit.Test;
 

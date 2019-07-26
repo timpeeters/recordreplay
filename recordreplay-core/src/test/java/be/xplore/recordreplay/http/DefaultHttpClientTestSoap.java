@@ -1,13 +1,10 @@
-package be.xplore.recordreplay.service;
+package be.xplore.recordreplay.http;
 
 import be.xplore.recordreplay.DemoSoapApplication;
-import be.xplore.recordreplay.http.DefaultHttpClient;
-import be.xplore.recordreplay.http.HttpClient;
 import be.xplore.recordreplay.model.Headers;
 import be.xplore.recordreplay.model.Request;
 import be.xplore.recordreplay.model.RequestMethod;
 import be.xplore.recordreplay.model.Response;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

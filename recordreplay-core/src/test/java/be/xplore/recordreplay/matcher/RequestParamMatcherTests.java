@@ -1,4 +1,4 @@
-package be.xplore.recordreplay.service;
+package be.xplore.recordreplay.matcher;
 
 import be.xplore.recordreplay.matcher.RequestMatcher;
 import be.xplore.recordreplay.matcher.RequestParamMatcher;
