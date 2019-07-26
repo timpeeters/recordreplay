@@ -5,7 +5,6 @@ import be.xplore.recordreplay.model.Headers;
 import be.xplore.recordreplay.model.Request;
 import be.xplore.recordreplay.model.RequestMethod;
 import be.xplore.recordreplay.model.Response;
-import be.xplore.recordreplay.service.HttpClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

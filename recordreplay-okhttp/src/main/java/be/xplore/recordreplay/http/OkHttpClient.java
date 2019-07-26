@@ -5,7 +5,6 @@ import be.xplore.recordreplay.model.QueryParams;
 import be.xplore.recordreplay.model.Request;
 import be.xplore.recordreplay.model.RequestMethod;
 import be.xplore.recordreplay.model.Response;
-import be.xplore.recordreplay.service.HttpClient;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 

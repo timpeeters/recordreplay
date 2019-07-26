@@ -1,6 +1,8 @@
 package be.xplore.recordreplay.service;
 
 import be.xplore.recordreplay.DemoRestApplication;
+import be.xplore.recordreplay.http.DefaultHttpClient;
+import be.xplore.recordreplay.http.HttpClient;
 import be.xplore.recordreplay.model.Headers;
 import be.xplore.recordreplay.model.Request;
 import be.xplore.recordreplay.model.RequestMethod;

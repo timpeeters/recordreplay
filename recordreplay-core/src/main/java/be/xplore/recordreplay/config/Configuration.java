@@ -1,6 +1,6 @@
 package be.xplore.recordreplay.config;
 
-import be.xplore.recordreplay.service.HttpClient;
+import be.xplore.recordreplay.http.HttpClient;
 import be.xplore.recordreplay.service.Repository;
 import be.xplore.recordreplay.service.RequestBodyMatcher;
 import be.xplore.recordreplay.service.RequestHeaderMatcher;

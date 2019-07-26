@@ -1,4 +1,4 @@
-package be.xplore.recordreplay.service;
+package be.xplore.recordreplay.http;
 
 import be.xplore.recordreplay.model.Headers;
 import be.xplore.recordreplay.model.Request;
@@ -12,7 +12,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class DefaultHttpClient implements be.xplore.recordreplay.service.HttpClient {
+public class DefaultHttpClient implements be.xplore.recordreplay.http.HttpClient {
 
     private final HttpClient client;
 
