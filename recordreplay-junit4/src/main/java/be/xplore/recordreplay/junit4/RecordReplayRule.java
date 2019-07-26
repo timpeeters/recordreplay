@@ -1,48 +1,24 @@
 package be.xplore.recordreplay.junit4;
 
+import be.xplore.recordreplay.RecordReplay;
 import be.xplore.recordreplay.config.Configuration;
+import be.xplore.recordreplay.jetty.RecordReplayJetty;
 import be.xplore.recordreplay.proxy.ProxyManager;
-import be.xplore.recordreplay.usecase.ForwardRequestUseCase;
-import be.xplore.recordreplay.usecase.RecordReplayUseCase;
-import be.xplore.recordreplay.usecase.RecordUseCase;
-import be.xplore.recordreplay.usecase.ReplayUseCase;
 import be.xplore.recordreplay.usecase.StubHandler;
 import be.xplore.recordreplay.usecase.UseCase;
-import be.xplore.recordreplayjetty.RecordReplayJetty;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
-public class RecordReplayRule implements TestRule {
+public class RecordReplayRule extends RecordReplay<RecordReplayRule> implements TestRule {
 
-    private final Configuration config;
     private RecordReplayJetty recordReplay;
     private final ProxyManager proxyManager;
 
 
-    public RecordReplayRule(Configuration config) {
-        this.config = config;
+    public RecordReplayRule(Configuration configuration) {
+        super(configuration);
         proxyManager = new ProxyManager();
-    }
-
-    public RecordReplayRule forward() {
-        createRecordReplay(new ForwardRequestUseCase(config.client()));
-        return this;
-    }
-
-    public RecordReplayRule record() {
-        createRecordReplay(new RecordUseCase(config.repository(), config.client()));
-        return this;
-    }
-
-    public RecordReplayRule replay() {
-        createRecordReplay(new ReplayUseCase(config.repository(), config.matchers()));
-        return this;
-    }
-
-    public RecordReplayRule recordReplay() {
-        createRecordReplay(new RecordReplayUseCase(config.repository(), config.client(), config.matchers()));
-        return this;
     }
 
     @Override
@@ -75,9 +51,10 @@ public class RecordReplayRule implements TestRule {
         }
     }
 
-    private void createRecordReplay(UseCase useCase) {
+    @Override
+    protected void createRecordReplay(UseCase useCase) {
         stop();
-        this.recordReplay = new RecordReplayJetty(config.port(), new StubHandler(useCase));
+        this.recordReplay = new RecordReplayJetty(getConfig().port(), new StubHandler(useCase));
         start();
     }
 }

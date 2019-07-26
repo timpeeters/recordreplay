@@ -6,14 +6,10 @@ import java.net.ProxySelector;
 public class ProxyManager {
     public static final String PROXY_HOST_PROP = "http.proxyHost";
     public static final String PROXY_PORT_PROP = "http.proxyPort";
-    private final InetSocketAddress originalProxy;
-
-    public ProxyManager() {
-        this.originalProxy = getCurrentProxy();
-    }
-
+    private InetSocketAddress originalProxy;
 
     public void activate(String host, int port) {
+        originalProxy = getCurrentProxy();
         var address = new InetSocketAddress(host, port);
         ProxySelector.setDefault(ProxySelector.of(address));
         System.setProperty(PROXY_HOST_PROP, address.getHostString());
@@ -35,12 +31,19 @@ public class ProxyManager {
         }
     }
 
-    private static InetSocketAddress getCurrentProxy() {
+    private InetSocketAddress getCurrentProxy() {
         String host = System.getProperty(PROXY_HOST_PROP);
         if (host == null) {
             return null;
         }
         String port = System.getProperty(PROXY_PORT_PROP);
-        return new InetSocketAddress(host, Integer.parseInt(port));
+        return InetSocketAddress.createUnresolved(host, parsePort(port));
+    }
+
+    private int parsePort(String port) {
+        if (port == null){
+            return 0;
+        }
+        return Integer.parseInt(port);
     }
 }
