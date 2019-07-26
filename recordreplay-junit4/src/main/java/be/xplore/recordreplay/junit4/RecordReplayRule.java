@@ -8,7 +8,7 @@ import be.xplore.recordreplay.usecase.RecordUseCase;
 import be.xplore.recordreplay.usecase.ReplayUseCase;
 import be.xplore.recordreplay.usecase.StubHandler;
 import be.xplore.recordreplay.usecase.UseCase;
-import be.xplore.recordreplayjetty.RecordReplayJetty;
+import be.xplore.recordreplay.jetty.RecordReplayJetty;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;

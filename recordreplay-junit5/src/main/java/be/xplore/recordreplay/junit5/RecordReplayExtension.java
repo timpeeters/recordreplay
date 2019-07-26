@@ -8,7 +8,7 @@ import be.xplore.recordreplay.usecase.RecordUseCase;
 import be.xplore.recordreplay.usecase.ReplayUseCase;
 import be.xplore.recordreplay.usecase.StubHandler;
 import be.xplore.recordreplay.usecase.UseCase;
-import be.xplore.recordreplayjetty.RecordReplayJetty;
+import be.xplore.recordreplay.jetty.RecordReplayJetty;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
