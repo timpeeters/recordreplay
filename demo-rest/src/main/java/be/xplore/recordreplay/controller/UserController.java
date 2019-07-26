@@ -2,8 +2,6 @@ package be.xplore.recordreplay.controller;
 
 import be.xplore.recordreplay.model.User;
 import be.xplore.recordreplay.repo.UserService;
-import be.xplore.recordreplay.repo.exceptions.UserNotFoundException;
-import be.xplore.recordreplay.repo.exceptions.UserValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 public class UserController {
@@ -39,9 +38,9 @@ public class UserController {
         User foundUser;
         try {
             foundUser = userService.searchUserById(id);
-        } catch (UserValidationException uve) {
-            return ResponseEntity.badRequest().body(uve.getMessage());
-        } catch (UserNotFoundException e) {
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(foundUser);
@@ -52,8 +51,8 @@ public class UserController {
         User createdUser;
         try {
             createdUser = userService.createUser(user);
-        } catch (UserValidationException uve) {
-            return ResponseEntity.unprocessableEntity().body(uve.getMessage());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.unprocessableEntity().body(e.getMessage());
         }
         return ResponseEntity.ok().body(createdUser);
     }
@@ -63,8 +62,8 @@ public class UserController {
         User updatedUser;
         try {
             updatedUser = userService.updateUser(user);
-        } catch (UserValidationException uve) {
-            return ResponseEntity.unprocessableEntity().body(uve.getMessage());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.unprocessableEntity().body(e.getMessage());
         }
         return ResponseEntity.ok().body(updatedUser);
     }
@@ -73,8 +72,8 @@ public class UserController {
     public ResponseEntity deleteUser(@RequestParam Long id) {
         try {
             userService.deleteUserById(id);
-        } catch (UserValidationException uve) {
-            return ResponseEntity.badRequest().body(uve.getMessage());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
         return ResponseEntity.ok().body("User deleted successfully");
     }

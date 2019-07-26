@@ -1,14 +1,13 @@
 package be.xplore.recordreplay.repo.impl;
 
 import be.xplore.recordreplay.model.User;
-import be.xplore.recordreplay.repository.UserRepo;
 import be.xplore.recordreplay.repo.UserService;
-import be.xplore.recordreplay.repo.exceptions.UserNotFoundException;
-import be.xplore.recordreplay.repo.exceptions.UserValidationException;
+import be.xplore.recordreplay.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -27,38 +26,38 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User searchUserById(Long id) throws UserValidationException {
+    public User searchUserById(Long id) {
         Optional<User> userOptional = userRepo.findById(id);
         if (userOptional.isEmpty()) {
-            throw new UserNotFoundException(id);
+            throw new NoSuchElementException(String.valueOf(id));
         }
         return userOptional.get();
     }
 
     @Override
-    public User createUser(User user) throws UserValidationException {
+    public User createUser(User user) {
         validateUser(user);
         return userRepo.save(user);
     }
 
     @Override
-    public User updateUser(User user) throws UserValidationException {
+    public User updateUser(User user) {
         validateUser(user);
         return userRepo.save(user);
     }
 
     @Override
-    public void deleteUserById(Long id) throws UserValidationException {
+    public void deleteUserById(Long id) {
         Optional<User> userOptional = userRepo.findById(id);
         if (userOptional.isEmpty()) {
-            throw new UserValidationException("User not found for given id");
+            throw new IllegalArgumentException("User not found for given id");
         }
         userRepo.deleteById(id);
     }
 
-    private void validateUser(User user) throws UserValidationException {
+    private void validateUser(User user) {
         if (user == null) {
-            throw new UserValidationException("User passed can not be null");
+            throw new IllegalArgumentException("User passed can not be null");
         }
     }
 
