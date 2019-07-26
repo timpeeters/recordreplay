@@ -1,4 +1,4 @@
-package be.xplore.recordreplay.service;
+package be.xplore.recordreplay.servlet;
 
 import be.xplore.fakes.model.Response;
 
