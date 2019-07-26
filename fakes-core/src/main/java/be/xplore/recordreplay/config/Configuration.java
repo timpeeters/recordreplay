@@ -1,13 +1,13 @@
 package be.xplore.recordreplay.config;
 
-import be.xplore.fakes.service.HttpClient;
-import be.xplore.fakes.service.Repository;
-import be.xplore.fakes.service.RequestBodyMatcher;
-import be.xplore.fakes.service.RequestHeaderMatcher;
-import be.xplore.fakes.service.RequestMatcher;
-import be.xplore.fakes.service.RequestMethodMatcher;
-import be.xplore.fakes.service.RequestParamMatcher;
-import be.xplore.fakes.service.RequestPathMatcher;
+import be.xplore.recordreplay.service.HttpClient;
+import be.xplore.recordreplay.service.Repository;
+import be.xplore.recordreplay.service.RequestBodyMatcher;
+import be.xplore.recordreplay.service.RequestHeaderMatcher;
+import be.xplore.recordreplay.service.RequestMatcher;
+import be.xplore.recordreplay.service.RequestMethodMatcher;
+import be.xplore.recordreplay.service.RequestParamMatcher;
+import be.xplore.recordreplay.service.RequestPathMatcher;
 
 import java.util.List;
 

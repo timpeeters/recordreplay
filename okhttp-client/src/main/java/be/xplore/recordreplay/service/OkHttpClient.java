@@ -5,7 +5,6 @@ import be.xplore.fakes.model.QueryParams;
 import be.xplore.fakes.model.Request;
 import be.xplore.fakes.model.RequestMethod;
 import be.xplore.fakes.model.Response;
-import be.xplore.fakes.service.HttpClient;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 

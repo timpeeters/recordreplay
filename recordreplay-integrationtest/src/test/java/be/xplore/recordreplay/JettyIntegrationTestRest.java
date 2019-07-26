@@ -15,7 +15,7 @@ import java.util.List;
 @SuppressWarnings("PMD.AvoidUsingHardCodedIP")
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes =
-        be.xplore.demorest.DemoRestApplication.class)
+        DemoRestApplication.class)
 public class JettyIntegrationTestRest extends IntegrationTestBase {
     @Override
     protected List<Stub> stubsToTest() {

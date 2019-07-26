@@ -1,9 +1,9 @@
 package be.xplore.recordreplay.config;
 
-import be.xplore.fakes.service.HttpClient;
-import be.xplore.fakes.service.MemoryRepository;
-import be.xplore.fakes.service.Repository;
-import be.xplore.fakes.service.RequestMatcher;
+import be.xplore.recordreplay.service.HttpClient;
+import be.xplore.recordreplay.service.MemoryRepository;
+import be.xplore.recordreplay.service.Repository;
+import be.xplore.recordreplay.service.RequestMatcher;
 
 import java.util.List;
 
