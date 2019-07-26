@@ -1,8 +1,6 @@
-
 dependencies {
     implementation project(':fakes-core')
     implementation project(':recordreplay-servlet')
     implementation platform('org.eclipse.jetty:jetty-bom:9.4.19.v20190610')
     implementation 'org.eclipse.jetty.websocket:websocket-server'
-    implementation 'org.eclipse.jetty:jetty-proxy'
 }

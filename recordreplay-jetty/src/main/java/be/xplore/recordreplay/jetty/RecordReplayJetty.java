@@ -1,4 +1,4 @@
-package be.xplore.recordreplayjetty;
+package be.xplore.recordreplay.jetty;
 
 import be.xplore.recordreplay.service.RecordReplayHttpServlet;
 import be.xplore.recordreplay.usecase.StubHandler;
@@ -36,7 +36,6 @@ public class RecordReplayJetty {
     public void stop() {
         tryStop();
         tryJoinThreads();
-        running = false;
     }
 
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
@@ -44,18 +43,11 @@ public class RecordReplayJetty {
         try {
             if (running) {
                 server.stop();
+                running = false;
             }
         } catch (Exception e) {
             throw new IllegalStateException("Jetty-server couldn't stop", e);
         }
-    }
-
-    public String getHost() {
-        return server.getURI().getHost();
-    }
-
-    public int getPort() {
-        return server.getURI().getPort();
     }
 
     private void tryJoinThreads() {
@@ -65,6 +57,14 @@ public class RecordReplayJetty {
             Thread.currentThread().interrupt();
             throw new IllegalStateException("Thread interrupted", e);
         }
+    }
+
+    public String getHost() {
+        return server.getURI().getHost();
+    }
+
+    public int getPort() {
+        return server.getURI().getPort();
     }
 
     private Connector newConnector(int port) {
