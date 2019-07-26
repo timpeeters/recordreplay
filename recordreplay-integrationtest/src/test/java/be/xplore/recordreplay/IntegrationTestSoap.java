@@ -13,7 +13,7 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes =
         be.xplore.demosoap.DemoSoapApplication.class)
-public class JettyIntegrationTestSoap extends IntegrationTestBase {
+public class IntegrationTestSoap extends IntegrationTestBase {
     private static final String USER_ENDPOINT = "/services/user";
 
     @Override
