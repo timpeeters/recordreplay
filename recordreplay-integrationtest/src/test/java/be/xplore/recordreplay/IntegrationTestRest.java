@@ -1,11 +1,11 @@
 package be.xplore.recordreplay;
 
-import be.xplore.fakes.model.Headers;
-import be.xplore.fakes.model.QueryParams;
-import be.xplore.fakes.model.Request;
-import be.xplore.fakes.model.RequestMethod;
-import be.xplore.fakes.model.Response;
-import be.xplore.fakes.model.Stub;
+import be.xplore.recordreplay.model.Headers;
+import be.xplore.recordreplay.model.QueryParams;
+import be.xplore.recordreplay.model.Request;
+import be.xplore.recordreplay.model.RequestMethod;
+import be.xplore.recordreplay.model.Response;
+import be.xplore.recordreplay.model.Stub;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -15,7 +15,7 @@ import java.util.List;
 @SuppressWarnings("PMD.AvoidUsingHardCodedIP")
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes =
-        be.xplore.demorest.DemoRestApplication.class)
+        DemoRestApplication.class)
 public class IntegrationTestRest extends IntegrationTestBase {
     @Override
     protected List<Stub> stubsToTest() {

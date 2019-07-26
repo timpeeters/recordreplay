@@ -1,11 +1,11 @@
 package be.xplore.recordreplay.http;
 
-import be.xplore.fakes.model.Headers;
-import be.xplore.fakes.model.QueryParams;
-import be.xplore.fakes.model.Request;
-import be.xplore.fakes.model.RequestMethod;
-import be.xplore.fakes.model.Response;
-import be.xplore.fakes.service.HttpClient;
+import be.xplore.recordreplay.model.Headers;
+import be.xplore.recordreplay.model.QueryParams;
+import be.xplore.recordreplay.model.Request;
+import be.xplore.recordreplay.model.RequestMethod;
+import be.xplore.recordreplay.model.Response;
+import be.xplore.recordreplay.service.HttpClient;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 

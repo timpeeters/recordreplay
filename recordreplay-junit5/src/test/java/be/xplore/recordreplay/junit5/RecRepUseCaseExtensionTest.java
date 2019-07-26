@@ -1,7 +1,7 @@
 package be.xplore.recordreplay.junit5;
 
-import be.xplore.fakes.model.Response;
-import be.xplore.fakes.service.MemoryRepository;
+import be.xplore.recordreplay.model.Response;
+import be.xplore.recordreplay.service.MemoryRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 

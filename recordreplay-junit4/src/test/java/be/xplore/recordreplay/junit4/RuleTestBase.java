@@ -1,12 +1,13 @@
 package be.xplore.recordreplay.junit4;
 
-import be.xplore.fakes.model.Headers;
-import be.xplore.fakes.model.Request;
-import be.xplore.fakes.model.Response;
-import be.xplore.fakes.service.DefaultHttpClient;
-import be.xplore.fakes.service.HttpClient;
+import be.xplore.recordreplay.DemoRestApplication;
 import be.xplore.recordreplay.config.RecordReplayConfig;
 import be.xplore.recordreplay.http.OkHttpClient;
+import be.xplore.recordreplay.model.Headers;
+import be.xplore.recordreplay.model.Request;
+import be.xplore.recordreplay.model.Response;
+import be.xplore.recordreplay.service.DefaultHttpClient;
+import be.xplore.recordreplay.service.HttpClient;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -15,7 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes =
-        be.xplore.demorest.DemoRestApplication.class)
+        DemoRestApplication.class)
 abstract class RuleTestBase {
 
     static final RecordReplayConfig CONFIG = new RecordReplayConfig().client(new OkHttpClient());

@@ -1,7 +1,7 @@
 package be.xplore.recordreplay.servlet;
 
-import be.xplore.fakes.model.Response;
-import be.xplore.fakes.model.Stub;
+import be.xplore.recordreplay.model.Response;
+import be.xplore.recordreplay.model.Stub;
 import be.xplore.recordreplay.usecase.StubHandler;
 
 import javax.servlet.http.HttpServlet;

@@ -1,10 +1,11 @@
 package be.xplore.recordreplay.http;
 
-import be.xplore.fakes.model.Headers;
-import be.xplore.fakes.model.Request;
-import be.xplore.fakes.model.RequestMethod;
-import be.xplore.fakes.model.Response;
-import be.xplore.fakes.service.HttpClient;
+import be.xplore.recordreplay.DemoRestApplication;
+import be.xplore.recordreplay.model.Headers;
+import be.xplore.recordreplay.model.Request;
+import be.xplore.recordreplay.model.RequestMethod;
+import be.xplore.recordreplay.model.Response;
+import be.xplore.recordreplay.service.HttpClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +17,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes =
-        be.xplore.demorest.DemoRestApplication.class)
+        DemoRestApplication.class)
 public class OkHttpClientTestRest {
 
     @LocalServerPort

@@ -1,6 +1,6 @@
 package be.xplore.recordreplay.servlet;
 
-import be.xplore.fakes.model.Response;
+import be.xplore.recordreplay.model.Response;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
