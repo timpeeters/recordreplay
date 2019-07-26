@@ -1,12 +1,10 @@
-package be.xplore.recordreplay;
-
+package be.xplore.recordreplay.marshaller;
 
 import be.xplore.recordreplay.model.Headers;
 import be.xplore.recordreplay.model.QueryParams;
 import be.xplore.recordreplay.model.Request;
 import be.xplore.recordreplay.model.Response;
 import be.xplore.recordreplay.model.Stub;
-import be.xplore.recordreplay.repository.Marshaller;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,16 +25,22 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class JsonMarshallerTests {
+public class YamlMarshallerTests {
 
-    private final String expectedJsonString =
-            "{\"request\":{\"method\":\"GET\",\"path\":\"/test\",\"queryParams\":{}," +
-                    "\"headers\":{},\"body\":\"request body\"},\"response\":{\"statusCode\":200," +
-                    "\"statusText\":\"OK\",\"headers\":{},\"body\":\"response body\"}}";
-
+    private final String expectedYamlString = "---\n" +
+            "request:\n" +
+            "  method: \"GET\"\n" +
+            "  path: \"/test\"\n" +
+            "  queryParams: {}\n" +
+            "  headers: {}\n" +
+            "  body: \"request body\"\n" +
+            "response:\n" +
+            "  statusCode: 200\n" +
+            "  statusText: \"OK\"\n" +
+            "  headers: {}\n" +
+            "  body: \"response body\"\n";
     private Stub stub;
     private Marshaller marshaller;
-
 
     @Before
     public void setUpTest() {
@@ -45,20 +49,19 @@ public class JsonMarshallerTests {
                         .headers(Headers.EMPTY).body("request body").build(),
                 Response.Builder.ok().body("response body").build()
         );
-        marshaller = new JsonMarshaller();
+        marshaller = new YamlMarshaller();
     }
 
-
     @Test
-    public void marshallWritesJsonString() {
+    public void marshallWritesYamlString() {
         StringWriter stringWriter = new StringWriter();
         marshaller.marshal(stub, stringWriter);
-        assertThat(stringWriter.toString()).as("Json string marshalled correctly").isEqualTo(expectedJsonString);
+        assertThat(stringWriter.toString()).as("Yaml string not marshalled correctly").isEqualTo(expectedYamlString);
     }
 
     @Test
-    public void unmarshallCreatesStubFromJson() {
-        Stub unmarshalledStub = marshaller.unMarshal(new StringReader(expectedJsonString));
+    public void unmarshallCreatesStubFromYamlString() {
+        Stub unmarshalledStub = marshaller.unMarshal(new StringReader(expectedYamlString));
         assertThat(unmarshalledStub).as("No correct stub unmarshalled").isEqualTo(stub);
     }
 
@@ -75,8 +78,7 @@ public class JsonMarshallerTests {
         try (Reader reader = mock(Reader.class)) {
             when(reader.read(any(char[].class),
                     anyInt(),
-                    anyInt()))
-                    .thenThrow(IOException.class);
+                    anyInt())).thenThrow(IOException.class);
             marshaller.unMarshal(reader);
         }
     }

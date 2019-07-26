@@ -1,5 +1,6 @@
 package be.xplore.recordreplay.repository;
 
+import be.xplore.recordreplay.marshaller.Marshaller;
 import be.xplore.recordreplay.model.Request;
 import be.xplore.recordreplay.model.Response;
 import be.xplore.recordreplay.model.Stub;

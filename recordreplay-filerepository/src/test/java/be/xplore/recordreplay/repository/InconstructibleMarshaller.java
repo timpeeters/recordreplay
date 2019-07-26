@@ -1,6 +1,8 @@
 package be.xplore.recordreplay.repository;
 
+import be.xplore.recordreplay.marshaller.Marshaller;
 import be.xplore.recordreplay.model.Stub;
+
 import java.io.Reader;
 import java.io.Writer;
 

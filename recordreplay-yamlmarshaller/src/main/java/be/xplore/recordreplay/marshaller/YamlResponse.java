@@ -1,4 +1,4 @@
-package be.xplore.recordreplay;
+package be.xplore.recordreplay.marshaller;
 
 import be.xplore.recordreplay.model.Response;
 
