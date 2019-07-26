@@ -37,17 +37,17 @@ public class FileRepositoryTests {
     public void createFileRepoFromNonExistingDir() throws IOException {
         Path deletedDir = tempDir.newFolder().toPath();
         tempDir.delete();
-        new FileRepository<>(deletedDir, mockedMarshaller);
+        new FileRepository(deletedDir, mockedMarshaller);
     }
 
     @Test(expected = NullPointerException.class)
     public void createFileRepoWithNullPathThrowsNullptr() {
-        new FileRepository<>(null, mockedMarshaller);
+        new FileRepository(null, mockedMarshaller);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void createFileRepoFromFilePathThrowsIllegalArgument() throws IOException {
-        new FileRepository<>(tempDir.newFile().toPath(), mockedMarshaller);
+        new FileRepository(tempDir.newFile().toPath(), mockedMarshaller);
     }
 
     @Test
@@ -59,7 +59,7 @@ public class FileRepositoryTests {
 
     @Test
     public void readStubsFromFileRepo() {
-        FileRepository<? extends Marshaller> repo = createTestFileRepository();
+        FileRepository repo = createTestFileRepository();
         repo.add(STUB);
         java.util.List<Stub> result = repo.find();
         assertThat(result).isNotNull();
@@ -89,23 +89,23 @@ public class FileRepositoryTests {
 
     @Test(expected = UncheckedIOException.class)
     public void marshallingFailureThrows() {
-        new FileRepository<>(tempDirPath(), new BrokenMarshaller()).add(STUB);
+        new FileRepository(tempDirPath(), new BrokenMarshaller()).add(STUB);
     }
 
     @Test(expected = UncheckedIOException.class)
     public void unmarshallingFailureThrows() {
-        var repo = new FileRepository<>(tempDirPath(), new BrokenMarshaller());
+        var repo = new FileRepository(tempDirPath(), new BrokenMarshaller());
         repo.add(STUB);
         repo.find();
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void marshallerNoDefConstructor() {
-        new FileRepository<>(tempDirPath(), new InconstructibleMarshaller(1));
+        new FileRepository(tempDirPath(), new InconstructibleMarshaller(1));
     }
 
-    private FileRepository<? extends Marshaller> createTestFileRepository() {
-        return new FileRepository<>(tempDirPath(), mockedMarshaller);
+    private FileRepository createTestFileRepository() {
+        return new FileRepository(tempDirPath(), mockedMarshaller);
     }
 
     private Path tempDirPath() {

@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-public class FileRepository<M extends Marshaller> implements Repository {
+public class FileRepository implements Repository {
     private final Path targetDir;
     private final Marshaller marshaller;
     private int size;
