@@ -1,4 +1,4 @@
-package be.xplore.recordreplay.service;
+package be.xplore.recordreplay.servlet;
 
 import be.xplore.fakes.model.Headers;
 import be.xplore.fakes.model.QueryParams;
@@ -53,6 +53,10 @@ class HttpServletRequestMapper {
         if (servletRequest.getHeaderNames() == null) {
             return Headers.EMPTY;
         }
+        return convertHeadersNotNull(servletRequest);
+    }
+
+    private Headers convertHeadersNotNull(HttpServletRequest servletRequest) {
         var builder = Headers.builder();
         servletRequest.getHeaderNames().asIterator().forEachRemaining(
                 key -> servletRequest.getHeaders(key).asIterator().forEachRemaining(
