@@ -29,12 +29,12 @@ public class RecordReplayExtension extends RecordReplay<RecordReplayExtension> i
 
     @Override
     public void beforeAll(ExtensionContext context) {
-        recordReplay.start();
+        start();
     }
 
     @Override
     public void afterAll(ExtensionContext context) {
-        recordReplay.stop();
+        stop();
     }
 
 
