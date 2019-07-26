@@ -6,7 +6,7 @@ import be.xplore.fakes.model.QueryParams;
 import be.xplore.fakes.model.Request;
 import be.xplore.fakes.model.Response;
 import be.xplore.fakes.model.Stub;
-import be.xplore.recordreplay.service.Marshaller;
+import be.xplore.recordreplay.repo.Marshaller;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,7 +1,7 @@
 package be.xplore.recordreplay;
 
 import be.xplore.fakes.model.Stub;
-import be.xplore.recordreplay.service.Marshaller;
+import be.xplore.recordreplay.repo.Marshaller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 

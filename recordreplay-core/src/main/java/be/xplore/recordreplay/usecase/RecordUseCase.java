@@ -2,8 +2,8 @@ package be.xplore.recordreplay.usecase;
 
 import be.xplore.fakes.model.Response;
 import be.xplore.fakes.model.Stub;
-import be.xplore.recordreplay.service.HttpClient;
-import be.xplore.recordreplay.service.Repository;
+import be.xplore.recordreplay.repo.HttpClient;
+import be.xplore.recordreplay.repo.Repository;
 
 import java.util.Optional;
 

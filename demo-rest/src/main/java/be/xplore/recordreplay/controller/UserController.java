@@ -1,9 +1,9 @@
 package be.xplore.recordreplay.controller;
 
 import be.xplore.recordreplay.model.User;
-import be.xplore.recordreplay.service.UserService;
-import be.xplore.recordreplay.service.exceptions.UserNotFoundException;
-import be.xplore.recordreplay.service.exceptions.UserValidationException;
+import be.xplore.recordreplay.repo.UserService;
+import be.xplore.recordreplay.repo.exceptions.UserNotFoundException;
+import be.xplore.recordreplay.repo.exceptions.UserValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

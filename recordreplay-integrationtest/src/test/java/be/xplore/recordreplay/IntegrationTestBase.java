@@ -1,10 +1,10 @@
 package be.xplore.recordreplay;
 
 import be.xplore.fakes.model.Stub;
-import be.xplore.recordreplay.service.DefaultHttpClient;
+import be.xplore.recordreplay.repo.DefaultHttpClient;
 import be.xplore.recordreplay.config.RecordReplayConfig;
 import be.xplore.recordreplay.junit4.RecordReplayRule;
-import be.xplore.recordreplay.service.OkHttpClient;
+import be.xplore.recordreplay.repo.OkHttpClient;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.Before;
 import org.junit.Rule;
