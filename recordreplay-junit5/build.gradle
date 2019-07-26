@@ -2,7 +2,7 @@ dependencies {
     implementation project(':fakes-core')
     implementation project(':recordreplay-jetty')
     implementation 'org.junit.jupiter:junit-jupiter-engine:5.5.1'
-    testImplementation project(':okhttp-client')
+    testImplementation project(':recordreplay-okhttp')
     testImplementation project(':demo-rest')
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
