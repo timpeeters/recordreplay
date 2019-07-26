@@ -35,47 +35,41 @@ public class UserController {
     @SuppressWarnings("checkstyle:ReturnCount")
     @GetMapping("/user")
     public ResponseEntity findUserById(@RequestParam Long id) {
-        User foundUser;
         try {
-            foundUser = userService.searchUserById(id);
+            return ResponseEntity.ok(userService.searchUserById(id));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(foundUser);
     }
 
     @PostMapping("/user/create")
     public ResponseEntity createUser(@Valid @RequestBody User user) {
-        User createdUser;
         try {
-            createdUser = userService.createUser(user);
+            return ResponseEntity.ok().body(userService.createUser(user));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.unprocessableEntity().body(e.getMessage());
         }
-        return ResponseEntity.ok().body(createdUser);
     }
 
     @PutMapping("/user/update")
-    public ResponseEntity updateUser(@Valid @RequestBody(required = true) User user) {
-        User updatedUser;
+    public ResponseEntity updateUser(@Valid @RequestBody User user) {
         try {
-            updatedUser = userService.updateUser(user);
+            return ResponseEntity.ok().body(userService.updateUser(user));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.unprocessableEntity().body(e.getMessage());
         }
-        return ResponseEntity.ok().body(updatedUser);
     }
 
     @DeleteMapping("/user/delete")
     public ResponseEntity deleteUser(@RequestParam Long id) {
         try {
             userService.deleteUserById(id);
+            return ResponseEntity.ok().body("User deleted successfully");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.ok().body("User deleted successfully");
     }
 
 }

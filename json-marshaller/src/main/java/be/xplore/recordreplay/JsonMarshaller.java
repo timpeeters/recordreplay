@@ -4,12 +4,10 @@ import be.xplore.recordreplay.model.Stub;
 import be.xplore.recordreplay.repo.Marshaller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
 import java.io.IOException;
 import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.io.Writer;
-
 
 public class JsonMarshaller implements Marshaller {
 

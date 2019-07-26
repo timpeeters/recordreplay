@@ -1,6 +1,7 @@
-package be.xplore.recordreplay.repository;
+package be.xplore.recordreplay.repository.impl;
 
 import be.xplore.recordreplay.model.User;
+import be.xplore.recordreplay.repository.UserRepo;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class UserRepoImpl implements UserRepo {
     @Override
     public User save(User user) {
         users.add(new User(user)
-                .setId((long) users.size()));
+                .setId(users.size()));
         return new User(users.get(users.size() - 1));
     }
 

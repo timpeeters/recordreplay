@@ -1,7 +1,6 @@
 package be.xplore.recordreplay;
 
 import javax.jws.WebService;
-
 import java.util.List;
 
 @WebService(

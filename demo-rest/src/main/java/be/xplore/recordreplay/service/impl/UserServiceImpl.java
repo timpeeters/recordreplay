@@ -1,7 +1,8 @@
-package be.xplore.recordreplay.service;
+package be.xplore.recordreplay.service.impl;
 
 import be.xplore.recordreplay.model.User;
 import be.xplore.recordreplay.repository.UserRepo;
+import be.xplore.recordreplay.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
