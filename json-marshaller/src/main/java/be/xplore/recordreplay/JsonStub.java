@@ -1,6 +1,6 @@
 package be.xplore.recordreplay;
 
-import be.xplore.fakes.model.Stub;
+import be.xplore.recordreplay.model.Stub;
 
 class JsonStub {
     public JsonRequest request;

@@ -1,7 +1,7 @@
 package be.xplore.recordreplay.usecase;
 
-import be.xplore.fakes.model.Response;
-import be.xplore.fakes.model.Stub;
+import be.xplore.recordreplay.model.Response;
+import be.xplore.recordreplay.model.Stub;
 
 import java.util.Optional;
 

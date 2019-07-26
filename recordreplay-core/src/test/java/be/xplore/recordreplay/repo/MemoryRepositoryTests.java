@@ -1,9 +1,17 @@
 package be.xplore.recordreplay.repo;
 
-import be.xplore.fakes.model.Request;
-import be.xplore.fakes.model.RequestMethod;
-import be.xplore.fakes.model.Response;
-import be.xplore.fakes.model.Stub;
+import be.xplore.recordreplay.model.Request;
+import be.xplore.recordreplay.model.RequestMethod;
+import be.xplore.recordreplay.model.Response;
+import be.xplore.recordreplay.model.Stub;
+import be.xplore.recordreplay.service.MemoryRepository;
+import be.xplore.recordreplay.service.Repository;
+import be.xplore.recordreplay.service.RequestBodyMatcher;
+import be.xplore.recordreplay.service.RequestHeaderMatcher;
+import be.xplore.recordreplay.service.RequestMatcher;
+import be.xplore.recordreplay.service.RequestMethodMatcher;
+import be.xplore.recordreplay.service.RequestParamMatcher;
+import be.xplore.recordreplay.service.RequestPathMatcher;
 import org.junit.Before;
 import org.junit.Test;
 

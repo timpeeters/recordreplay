@@ -1,6 +1,6 @@
 package be.xplore.recordreplay.junit4;
 
-import be.xplore.fakes.model.Response;
+import be.xplore.recordreplay.model.Response;
 import org.junit.ClassRule;
 import org.junit.Test;
 

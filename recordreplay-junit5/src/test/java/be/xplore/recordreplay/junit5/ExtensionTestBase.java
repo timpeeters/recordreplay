@@ -1,10 +1,10 @@
 package be.xplore.recordreplay.junit5;
 
-import be.xplore.fakes.model.Headers;
-import be.xplore.fakes.model.Request;
-import be.xplore.fakes.model.Response;
-import be.xplore.recordreplay.repo.DefaultHttpClient;
-import be.xplore.recordreplay.repo.HttpClient;
+import be.xplore.recordreplay.model.Headers;
+import be.xplore.recordreplay.model.Request;
+import be.xplore.recordreplay.model.Response;
+import be.xplore.recordreplay.service.DefaultHttpClient;
+import be.xplore.recordreplay.service.HttpClient;
 import be.xplore.recordreplay.DemoRestApplication;
 import be.xplore.recordreplay.config.RecordReplayConfig;
 import be.xplore.recordreplay.repo.OkHttpClient;

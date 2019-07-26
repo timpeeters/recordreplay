@@ -1,7 +1,9 @@
 package be.xplore.recordreplay.repo;
 
-import be.xplore.fakes.model.QueryParams;
-import be.xplore.fakes.model.Request;
+import be.xplore.recordreplay.model.QueryParams;
+import be.xplore.recordreplay.model.Request;
+import be.xplore.recordreplay.service.RequestMatcher;
+import be.xplore.recordreplay.service.RequestParamMatcher;
 import org.junit.Test;
 
 import java.util.List;

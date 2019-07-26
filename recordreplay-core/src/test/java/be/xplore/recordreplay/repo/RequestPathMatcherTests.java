@@ -1,6 +1,8 @@
 package be.xplore.recordreplay.repo;
 
-import be.xplore.fakes.model.Request;
+import be.xplore.recordreplay.model.Request;
+import be.xplore.recordreplay.service.RequestMatcher;
+import be.xplore.recordreplay.service.RequestPathMatcher;
 import org.junit.Before;
 import org.junit.Test;
 

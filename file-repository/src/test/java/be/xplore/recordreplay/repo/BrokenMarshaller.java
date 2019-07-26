@@ -1,6 +1,6 @@
 package be.xplore.recordreplay.repo;
 
-import be.xplore.fakes.model.Stub;
+import be.xplore.recordreplay.model.Stub;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.UncheckedIOException;

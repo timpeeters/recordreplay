@@ -13,7 +13,7 @@ import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
-import static be.xplore.fakes.util.Assert.notNull;
+import static be.xplore.recordreplay.util.Assert.notNull;
 
 public class RecordReplayExtension implements BeforeAllCallback, AfterAllCallback {
 

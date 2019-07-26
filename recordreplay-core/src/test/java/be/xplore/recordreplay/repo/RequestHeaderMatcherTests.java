@@ -1,7 +1,9 @@
 package be.xplore.recordreplay.repo;
 
-import be.xplore.fakes.model.Headers;
-import be.xplore.fakes.model.Request;
+import be.xplore.recordreplay.model.Headers;
+import be.xplore.recordreplay.model.Request;
+import be.xplore.recordreplay.service.RequestHeaderMatcher;
+import be.xplore.recordreplay.service.RequestMatcher;
 import org.junit.Test;
 
 import java.util.List;

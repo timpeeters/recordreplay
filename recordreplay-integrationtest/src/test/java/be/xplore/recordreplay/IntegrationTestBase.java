@@ -1,7 +1,7 @@
 package be.xplore.recordreplay;
 
-import be.xplore.fakes.model.Stub;
-import be.xplore.recordreplay.repo.DefaultHttpClient;
+import be.xplore.recordreplay.model.Stub;
+import be.xplore.recordreplay.service.DefaultHttpClient;
 import be.xplore.recordreplay.config.RecordReplayConfig;
 import be.xplore.recordreplay.junit4.RecordReplayRule;
 import be.xplore.recordreplay.repo.OkHttpClient;

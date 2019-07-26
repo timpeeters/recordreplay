@@ -1,8 +1,9 @@
 package be.xplore.recordreplay.repo;
 
-import be.xplore.fakes.model.Request;
-import be.xplore.fakes.model.Response;
-import be.xplore.fakes.model.Stub;
+import be.xplore.recordreplay.model.Request;
+import be.xplore.recordreplay.model.Response;
+import be.xplore.recordreplay.model.Stub;
+import be.xplore.recordreplay.service.Repository;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;

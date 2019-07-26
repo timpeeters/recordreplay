@@ -1,7 +1,7 @@
 package be.xplore.recordreplay.controller;
 
 import be.xplore.recordreplay.model.User;
-import be.xplore.recordreplay.repo.UserService;
+import be.xplore.recordreplay.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

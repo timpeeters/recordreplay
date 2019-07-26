@@ -1,6 +1,6 @@
 package be.xplore.recordreplay;
 
-import be.xplore.fakes.model.Response;
+import be.xplore.recordreplay.model.Response;
 
 import java.util.List;
 import java.util.Map;

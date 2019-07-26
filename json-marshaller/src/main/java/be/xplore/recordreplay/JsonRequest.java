@@ -1,9 +1,9 @@
 package be.xplore.recordreplay;
 
-import be.xplore.fakes.model.Headers;
-import be.xplore.fakes.model.QueryParams;
-import be.xplore.fakes.model.Request;
-import be.xplore.fakes.model.RequestMethod;
+import be.xplore.recordreplay.model.Headers;
+import be.xplore.recordreplay.model.QueryParams;
+import be.xplore.recordreplay.model.Request;
+import be.xplore.recordreplay.model.RequestMethod;
 
 import java.util.List;
 import java.util.Map;

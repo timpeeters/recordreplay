@@ -1,9 +1,9 @@
 package be.xplore.recordreplay;
 
-import be.xplore.fakes.model.Headers;
-import be.xplore.fakes.model.Request;
-import be.xplore.fakes.model.Response;
-import be.xplore.fakes.model.Stub;
+import be.xplore.recordreplay.model.Headers;
+import be.xplore.recordreplay.model.Request;
+import be.xplore.recordreplay.model.Response;
+import be.xplore.recordreplay.model.Stub;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;

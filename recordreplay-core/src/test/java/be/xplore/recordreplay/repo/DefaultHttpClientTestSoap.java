@@ -1,10 +1,12 @@
 package be.xplore.recordreplay.repo;
 
-import be.xplore.fakes.model.Headers;
-import be.xplore.fakes.model.Request;
-import be.xplore.fakes.model.RequestMethod;
-import be.xplore.fakes.model.Response;
+import be.xplore.recordreplay.model.Headers;
+import be.xplore.recordreplay.model.Request;
+import be.xplore.recordreplay.model.RequestMethod;
+import be.xplore.recordreplay.model.Response;
 import be.xplore.recordreplay.DemoSoapApplication;
+import be.xplore.recordreplay.service.DefaultHttpClient;
+import be.xplore.recordreplay.service.HttpClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
