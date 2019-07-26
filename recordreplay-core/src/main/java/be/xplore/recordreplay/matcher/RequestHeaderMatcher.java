@@ -1,4 +1,4 @@
-package be.xplore.recordreplay.service;
+package be.xplore.recordreplay.matcher;
 
 import be.xplore.recordreplay.model.Headers;
 import be.xplore.recordreplay.model.Request;

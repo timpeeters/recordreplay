@@ -1,5 +1,7 @@
 package be.xplore.recordreplay.service;
 
+import be.xplore.recordreplay.matcher.RequestHeaderMatcher;
+import be.xplore.recordreplay.matcher.RequestMatcher;
 import be.xplore.recordreplay.model.Headers;
 import be.xplore.recordreplay.model.Request;
 

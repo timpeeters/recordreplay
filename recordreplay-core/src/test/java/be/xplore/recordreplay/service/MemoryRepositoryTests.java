@@ -1,5 +1,11 @@
 package be.xplore.recordreplay.service;
 
+import be.xplore.recordreplay.matcher.RequestBodyMatcher;
+import be.xplore.recordreplay.matcher.RequestHeaderMatcher;
+import be.xplore.recordreplay.matcher.RequestMatcher;
+import be.xplore.recordreplay.matcher.RequestMethodMatcher;
+import be.xplore.recordreplay.matcher.RequestParamMatcher;
+import be.xplore.recordreplay.matcher.RequestPathMatcher;
 import be.xplore.recordreplay.model.Request;
 import be.xplore.recordreplay.model.RequestMethod;
 import be.xplore.recordreplay.model.Response;

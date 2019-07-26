@@ -1,5 +1,7 @@
 package be.xplore.recordreplay.service;
 
+import be.xplore.recordreplay.matcher.RequestMatcher;
+import be.xplore.recordreplay.matcher.RequestMethodMatcher;
 import be.xplore.recordreplay.model.Request;
 
 import org.junit.Before;
