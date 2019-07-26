@@ -1,10 +1,7 @@
 package be.xplore.recordreplay.matcher;
 
 
-import be.xplore.recordreplay.matcher.RequestBodyMatcher;
-import be.xplore.recordreplay.matcher.RequestMatcher;
 import be.xplore.recordreplay.model.Request;
-
 import org.junit.Before;
 import org.junit.Test;
 

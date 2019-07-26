@@ -1,10 +1,7 @@
 package be.xplore.recordreplay.matcher;
 
-import be.xplore.recordreplay.matcher.RequestMatcher;
-import be.xplore.recordreplay.matcher.RequestParamMatcher;
 import be.xplore.recordreplay.model.QueryParams;
 import be.xplore.recordreplay.model.Request;
-
 import org.junit.Test;
 
 import java.util.List;
