@@ -16,7 +16,7 @@ public class RecordReplayRule implements TestRule {
     }
 
     public RecordReplayRule(Configuration configuration) {
-        recordReplay = new RecordReplay(configuration);
+        recordReplay = new RecordReplay(configuration).recordReplay();
     }
 
     @Override
