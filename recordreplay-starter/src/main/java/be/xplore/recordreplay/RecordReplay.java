@@ -9,7 +9,7 @@ import be.xplore.recordreplay.usecase.RecordUseCase;
 import be.xplore.recordreplay.usecase.ReplayUseCase;
 import be.xplore.recordreplay.usecase.StubHandler;
 
-public class RecordReplay {
+public final class RecordReplay {
     private final Configuration configuration;
     private RecordReplayJetty recordReplayServer;
     private final ProxyManager proxyManager;
