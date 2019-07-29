@@ -2,7 +2,6 @@ package be.xplore.recordreplay.junit4;
 
 import be.xplore.recordreplay.DemoRestApplication;
 import be.xplore.recordreplay.config.RecordReplayConfig;
-import be.xplore.recordreplay.http.OkHttpClient;
 import be.xplore.recordreplay.model.Headers;
 import be.xplore.recordreplay.model.Request;
 import be.xplore.recordreplay.model.Response;
@@ -19,7 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
         DemoRestApplication.class)
 abstract class RuleTestBase {
 
-    static final RecordReplayConfig CONFIG = new RecordReplayConfig().client(new OkHttpClient());
+    static final RecordReplayConfig CONFIG = new RecordReplayConfig();
     private final HttpClient client = new DefaultHttpClient(CONFIG.host(), CONFIG.port());
 
     @LocalServerPort

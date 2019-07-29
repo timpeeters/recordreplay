@@ -1,5 +1,6 @@
 package be.xplore.recordreplay.config;
 
+import be.xplore.recordreplay.http.OkHttpClient;
 import be.xplore.recordreplay.service.HttpClient;
 import be.xplore.recordreplay.service.MemoryRepository;
 import be.xplore.recordreplay.service.Repository;
@@ -21,6 +22,7 @@ public class RecordReplayConfig implements Configuration {
         this.port = DEFAULT_PORT;
         this.matchers = DEFAULT_MATCHERS;
         this.repository = new MemoryRepository();
+        this.client = OkHttpClient.noProxy();
     }
 
     public RecordReplayConfig host(String host) {
@@ -52,11 +54,6 @@ public class RecordReplayConfig implements Configuration {
     @Override
     public Repository repository() {
         return repository;
-    }
-
-    public RecordReplayConfig client(HttpClient client) {
-        this.client = client;
-        return this;
     }
 
     @Override
