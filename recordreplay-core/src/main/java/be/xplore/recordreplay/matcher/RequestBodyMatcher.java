@@ -2,8 +2,7 @@ package be.xplore.recordreplay.matcher;
 
 import be.xplore.recordreplay.model.Request;
 import be.xplore.recordreplay.model.Result;
-
-import static be.xplore.recordreplay.util.StringDistance.computeLevenshteinDistance;
+import be.xplore.recordreplay.util.StringDistance;
 
 public class RequestBodyMatcher implements RequestMatcher {
 
@@ -20,7 +19,7 @@ public class RequestBodyMatcher implements RequestMatcher {
         } else if (exactMatch) {
             throw new NoExactMatchFoundException("No match found for an exact body-matcher");
         } else {
-            return new Result(computeLevenshteinDistance(request.getBody(), otherRequest.getBody()));
+            return new Result(StringDistance.calculate(request.getBody(), otherRequest.getBody()));
         }
     }
 }

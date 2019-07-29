@@ -16,9 +16,9 @@ public class RequestPathMatcherTests {
 
     @Before
     public void setupTest() {
-        sameRequest1 = Request.Builder.put("/same").build();
-        sameRequest2 = Request.Builder.put("/same").build();
-        diffRequest  = Request.Builder.get("/diff").build();
+        sameRequest1 = Request.Builder.put("same").build();
+        sameRequest2 = Request.Builder.put("same").build();
+        diffRequest  = Request.Builder.get("diff").build();
     }
 
     @Test

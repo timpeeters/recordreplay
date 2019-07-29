@@ -1,32 +1,12 @@
 package be.xplore.recordreplay.util;
 
+import info.debatty.java.stringsimilarity.NormalizedLevenshtein;
+
 public class StringDistance {
 
-    public static double computeLevenshteinDistance(String str1, String str2) {
-        int[][] distance = initDistanceArray(str1, str2);
-        for (int i = 1; i <= str1.length(); i++) {
-            for (int j = 1; j <= str2.length(); j++) {
-                distance[i][j] = minimum(distance[i - 1][j] + 1,
-                        distance[i][j - 1] + 1,
-                        distance[i - 1][j - 1] + ((str1.charAt(i - 1) == str2.charAt(j - 1)) ? 0 : 1));
-            }
-        }
-        return str1.length() / distance[str1.length()][str2.length()];
-    }
+    private static final NormalizedLevenshtein LEVENSHTEIN = new NormalizedLevenshtein();
 
-    private static int[][] initDistanceArray(String str1, String str2) {
-        int[][] distance = new int[str1.length() + 1][str2.length() + 1];
-        for (int i = 0; i <= str1.length(); i++) {
-            distance[i][0] = i;
-        }
-        for (int j = 1; j <= str2.length(); j++) {
-            distance[0][j] = j;
-        }
-        return distance;
+    public static double calculate(String str1, String str2) {
+        return LEVENSHTEIN.distance(str1, str2);
     }
-
-    private static int minimum(int a, int b, int c) {
-        return Math.min(Math.min(a, b), c);
-    }
-
 }
