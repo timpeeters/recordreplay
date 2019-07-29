@@ -1,4 +1,5 @@
 dependencies {
     api project(':recordreplay-core')
     implementation project(':recordreplay-jetty')
+    implementation project(':recordreplay-okhttp')
 }
