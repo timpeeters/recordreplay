@@ -1,6 +1,6 @@
 package be.xplore.recordreplay.http;
 
-import be.xplore.recordreplay.DemoSoapApplication;
+import be.xplore.recordreplay.testdemo.DemoSoapApplication;
 import be.xplore.recordreplay.model.Headers;
 import be.xplore.recordreplay.model.Request;
 import be.xplore.recordreplay.model.RequestMethod;

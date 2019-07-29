@@ -1,10 +1,10 @@
-package be.xplore.recordreplay;
+package be.xplore.recordreplay.testdemo;
 
 import javax.jws.WebService;
 import java.util.List;
 
 @WebService(
-        endpointInterface = "be.xplore.recordreplay.UserService",
+        endpointInterface = "be.xplore.recordreplay.testdemo.UserService",
         portName = "UserPort",
         serviceName = "UserService",
         targetNamespace = "http://user.xplore.be")

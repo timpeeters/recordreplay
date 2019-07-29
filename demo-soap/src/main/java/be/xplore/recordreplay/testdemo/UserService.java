@@ -1,4 +1,4 @@
-package be.xplore.recordreplay;
+package be.xplore.recordreplay.testdemo;
 
 import javax.jws.WebMethod;
 import javax.jws.WebResult;
