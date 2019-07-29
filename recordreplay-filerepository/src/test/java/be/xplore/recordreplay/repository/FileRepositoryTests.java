@@ -100,11 +100,6 @@ public class FileRepositoryTests {
         repo.find();
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void marshallerNoDefConstructor() {
-        new FileRepository(tempDirPath(), new InconstructibleMarshaller(1));
-    }
-
     private FileRepository createTestFileRepository() {
         return new FileRepository(tempDirPath(), mockedMarshaller);
     }
