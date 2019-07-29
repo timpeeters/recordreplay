@@ -8,7 +8,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class ForwardUseCaseExtensionTest extends ExtensionTestBase {
     @RegisterExtension
-    static RecordReplayExtension recordReplay = new RecordReplayExtension(CONFIG).forward();
+    static RecordReplayExtension recordReplay = new RecordReplayExtension().forward();
 
     @Test
     void testExtension() {

@@ -1,5 +1,6 @@
 package be.xplore.recordreplay.junit5;
 
+import be.xplore.recordreplay.config.RecordReplayConfig;
 import be.xplore.recordreplay.model.Response;
 import be.xplore.recordreplay.service.MemoryRepository;
 import org.junit.jupiter.api.Test;
@@ -10,8 +11,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 class RepUseCaseExtensionTest extends ExtensionTestBase {
     private static final MemoryRepository REPO = new MemoryRepository();
     @RegisterExtension
-    static RecordReplayExtension recordReplay = new RecordReplayExtension(
-            CONFIG.repository(REPO))
+    static RecordReplayExtension recordReplay = new RecordReplayExtension(new RecordReplayConfig().repository(REPO))
             .replay();
 
     @Test
