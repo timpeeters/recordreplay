@@ -12,9 +12,9 @@ import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FileRepository implements Repository {
@@ -28,7 +28,7 @@ public class FileRepository implements Repository {
         }
         this.targetDir = targetDir.toAbsolutePath();
         this.marshaller = marshaller;
-        this.size = 0;
+        this.size = (int) contentStream().count();
     }
 
     @Override
@@ -46,13 +46,9 @@ public class FileRepository implements Repository {
 
     @Override
     public List<Stub> find() {
-        List<Stub> results = new ArrayList<>(size());
-        contentStream().forEach(path -> {
-            if (Files.isRegularFile(path)) {
-                results.add(read(path));
-            }
-        });
-        return results;
+        return contentStream()
+                .map(this::read)
+                .collect(Collectors.toList());
     }
 
     public int size() {
@@ -79,7 +75,7 @@ public class FileRepository implements Repository {
 
     private Stream<Path> contentStream() {
         try {
-            return Files.list(targetDir);
+            return Files.list(targetDir).filter(path -> Files.isRegularFile(path));
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

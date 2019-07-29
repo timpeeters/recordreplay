@@ -2,8 +2,10 @@ package be.xplore.recordreplay.repository;
 
 import be.xplore.recordreplay.marshaller.Marshaller;
 import be.xplore.recordreplay.model.Request;
+import be.xplore.recordreplay.model.RequestMethod;
 import be.xplore.recordreplay.model.Response;
 import be.xplore.recordreplay.model.Stub;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -11,11 +13,17 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.io.UncheckedIOException;
+import java.io.Writer;
 import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FileRepositoryTests {
@@ -27,6 +35,12 @@ public class FileRepositoryTests {
 
     @Mock
     private Marshaller mockedMarshaller;
+
+    @Before
+    public void mockedMarshallerImplementation() {
+        mockMarshal();
+        mockUnMarshal();
+    }
 
     @SuppressWarnings("unused")
     @Test
@@ -98,6 +112,34 @@ public class FileRepositoryTests {
         var repo = new FileRepository(tempDirPath(), new BrokenMarshaller());
         repo.add(STUB);
         repo.find();
+    }
+
+    @SuppressWarnings("checkstyle:executablestatementcount")
+    @Test
+    public void fileRepoReInitializesCorrectly() throws IOException {
+        var repo = createTestFileRepository();
+        repo.add(STUB);
+        repo = createTestFileRepository();
+        tempDir.newFolder();
+        assertThat(repo.size()).isEqualTo(1);
+        assertThat(repo.find().get(0).getRequest().getMethod()).isEqualTo(STUB.getRequest().getMethod());
+    }
+
+    private void mockMarshal() {
+        doAnswer(invocation -> {
+            Stub stub = invocation.getArgument(0);
+            Writer writer = invocation.getArgument(1);
+            writer.write(stub.getRequest().getMethod().toString());
+            return null;
+        }).when(mockedMarshaller).marshal(any(Stub.class), any(Writer.class));
+    }
+
+    private void mockUnMarshal() {
+        when(mockedMarshaller.unMarshal(any(Reader.class))).thenAnswer(invocation -> {
+            BufferedReader reader = new BufferedReader(invocation.getArgument(0));
+            return new Stub(Request.builder().method(RequestMethod.valueOf(reader.readLine())).path("").build(),
+                    Response.ok());
+        });
     }
 
     private FileRepository createTestFileRepository() {
