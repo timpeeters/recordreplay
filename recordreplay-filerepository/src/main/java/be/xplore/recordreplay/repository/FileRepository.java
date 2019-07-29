@@ -23,7 +23,7 @@ public class FileRepository implements Repository {
     private int size;
 
     public FileRepository(Path targetDir, Marshaller marshaller) {
-        if (!validatePath(targetDir)) {
+        if (!directoryExists(targetDir)) {
             createDir(targetDir);
         }
         this.targetDir = targetDir.toAbsolutePath();
@@ -63,7 +63,7 @@ public class FileRepository implements Repository {
         }
     }
 
-    private static boolean validatePath(Path path) {
+    private static boolean directoryExists(Path path) {
         if (!Files.exists(path)) {
             return false;
         }
