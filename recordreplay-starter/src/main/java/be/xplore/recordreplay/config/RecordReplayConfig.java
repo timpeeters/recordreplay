@@ -14,7 +14,7 @@ public class RecordReplayConfig implements Configuration {
     private String host;
     private int port;
     private Repository repository;
-    private HttpClient client;
+    private final HttpClient client;
     private List<RequestMatcher> matchers;
 
     public RecordReplayConfig() {
