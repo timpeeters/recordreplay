@@ -1,7 +1,8 @@
-package be.xplore.recordreplay.repository.impl;
+package be.xplore.recordreplay.testdemo.repository.impl;
 
-import be.xplore.recordreplay.model.User;
-import be.xplore.recordreplay.repository.UserRepo;
+
+import be.xplore.recordreplay.testdemo.model.User;
+import be.xplore.recordreplay.testdemo.repository.UserRepo;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
