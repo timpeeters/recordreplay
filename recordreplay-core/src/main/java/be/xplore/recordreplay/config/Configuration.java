@@ -17,11 +17,11 @@ public interface Configuration {
     String DEFAULT_LISTEN_ADDRESS = "0.0.0.0";
     int DEFAULT_PORT = 8080;
     List<RequestMatcher> DEFAULT_MATCHERS = List.of(
-            new RequestMethodMatcher(),
-            new RequestPathMatcher(),
-            new RequestHeaderMatcher(),
-            new RequestParamMatcher(),
-            new RequestBodyMatcher());
+            new RequestMethodMatcher(false),
+            new RequestPathMatcher(false),
+            new RequestHeaderMatcher(false),
+            new RequestParamMatcher(false),
+            new RequestBodyMatcher(false));
 
     String host();
 

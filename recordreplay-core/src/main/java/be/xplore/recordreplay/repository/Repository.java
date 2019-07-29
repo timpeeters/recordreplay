@@ -1,5 +1,6 @@
 package be.xplore.recordreplay.repository;
 
+import be.xplore.recordreplay.matcher.NoExactMatchFoundException;
 import be.xplore.recordreplay.matcher.RequestMatcher;
 import be.xplore.recordreplay.model.Request;
 import be.xplore.recordreplay.model.Response;
@@ -16,22 +17,20 @@ public interface Repository {
     List<Stub> find();
 
     default Optional<Response> findExactResponse(Request request, List<RequestMatcher> matchers) {
-        Optional<Result> result = findBestMatch(request, matchers);
-        if (result.isPresent() && result.get().getDistance() == 0) {
-            return Optional.of(result.get().getStub().getResponse());
+        try {
+            return find()
+                    .stream()
+                    .map(stub -> new Result(matchers
+                            .stream()
+                            .map(matcher -> matcher.matches(request, stub.getRequest()))
+                            .mapToDouble(Result::getDistance)
+                            .sum() / matchers.size(), stub))
+                    .min(Comparator.comparing(Result::getDistance))
+                    .map(rs -> rs.getStub().getResponse());
+        } catch (NoExactMatchFoundException e) {
+            return Optional.empty();
         }
-        return Optional.empty();
     }
 
-    default Optional<Result> findBestMatch(Request request, List<RequestMatcher> matchers) {
-        return find()
-                .stream()
-                .map(stub -> new Result(matchers
-                        .stream()
-                        .map(matcher -> matcher.matches(request, stub.getRequest()))
-                        .mapToDouble(Result::getDistance)
-                        .sum() / matchers.size(), stub))
-                .min(Comparator.comparing(Result::getDistance));
-    }
 
 }

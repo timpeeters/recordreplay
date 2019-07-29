@@ -34,11 +34,11 @@ public class MemoryRepositoryTests {
 
     @Before
     public void initMatchers() {
-        matchers.add(new RequestHeaderMatcher());
-        matchers.add(new RequestParamMatcher());
-        matchers.add(new RequestBodyMatcher());
-        matchers.add(new RequestMethodMatcher());
-        matchers.add(new RequestPathMatcher());
+        matchers.add(new RequestHeaderMatcher(false));
+        matchers.add(new RequestParamMatcher(false));
+        matchers.add(new RequestBodyMatcher(false));
+        matchers.add(new RequestMethodMatcher(false));
+        matchers.add(new RequestPathMatcher(false));
     }
 
     @Test

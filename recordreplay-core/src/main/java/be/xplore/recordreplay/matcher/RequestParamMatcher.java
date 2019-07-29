@@ -11,18 +11,25 @@ import java.util.Map;
 public class RequestParamMatcher implements RequestMatcher {
 
     private final List<String> paramsToIgnore = new ArrayList<>();
+    private final boolean exactMatch;
 
-    public RequestParamMatcher() {
+    public RequestParamMatcher(boolean exactMatch) {
+        this.exactMatch = exactMatch;
     }
 
-    public RequestParamMatcher(List<String> paramsToIgnore) {
+    public RequestParamMatcher(List<String> paramsToIgnore, boolean exactMatch) {
+        this(exactMatch);
         this.paramsToIgnore.addAll(paramsToIgnore);
     }
 
-
     @Override
     public Result matches(Request request, Request otherRequest) {
-        return calculateDistance(request.getQueryParams(), otherRequest.getQueryParams());
+        Result result = calculateDistance(request.getQueryParams(), otherRequest.getQueryParams());
+        if(exactMatch && result.getDistance()!=0) {
+            throw new NoExactMatchFoundException("No match found for exact param-matcher");
+        } else {
+            return result;
+        }
     }
 
     private Result calculateDistance(QueryParams params, QueryParams otherParams) {

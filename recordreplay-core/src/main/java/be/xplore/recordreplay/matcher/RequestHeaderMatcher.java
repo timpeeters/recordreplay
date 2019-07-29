@@ -11,19 +11,26 @@ import java.util.Map;
 public class RequestHeaderMatcher implements RequestMatcher {
 
     private final List<String> headersToIgnore = new ArrayList<>();
+    private final boolean exactMatch;
 
-    public RequestHeaderMatcher() {
+    public RequestHeaderMatcher(boolean exactMatch) {
         this.headersToIgnore.addAll(List.of("User-Agent", "Connection", "Date"));
+        this.exactMatch = exactMatch;
     }
 
-    public RequestHeaderMatcher(List<String> headersToIgnore) {
-        this.headersToIgnore.addAll(List.of("User-Agent", "Connection", "Date"));
+    public RequestHeaderMatcher(List<String> headersToIgnore, boolean exactMatch) {
+        this(exactMatch);
         this.headersToIgnore.addAll(headersToIgnore);
     }
 
     @Override
     public Result matches(Request request, Request otherRequest) {
-        return calculateDistance(request.getHeaders(), otherRequest.getHeaders());
+        Result result = calculateDistance(request.getHeaders(), otherRequest.getHeaders());
+        if(exactMatch && result.getDistance()!=0) {
+            throw new NoExactMatchFoundException("No match found for exact header-matcher");
+        } else {
+            return result;
+        }
     }
 
     private Result calculateDistance(Headers headers, Headers otherHeaders) {
