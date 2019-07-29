@@ -29,11 +29,6 @@ public class RecordReplayRule implements TestRule {
         };
     }
 
-    public RecordReplayRule replay() {
-        recordReplay.replay();
-        return this;
-    }
-
     public RecordReplayRule forward() {
         recordReplay.forward();
         return this;
@@ -44,8 +39,13 @@ public class RecordReplayRule implements TestRule {
         return this;
     }
 
+    public RecordReplayRule replay() {
+        recordReplay.replay();
+        return this;
+    }
+
     public RecordReplayRule recordReplay() {
-        recordReplay.record();
+        recordReplay.recordReplay();
         return this;
     }
 }

@@ -5,6 +5,6 @@ import be.xplore.recordreplay.model.Stub;
 
 import java.util.Optional;
 
-public interface UseCase {
+interface UseCase {
     Optional<Response> execute(Stub stub);
 }

@@ -8,57 +8,67 @@ import be.xplore.recordreplay.usecase.RecordReplayUseCase;
 import be.xplore.recordreplay.usecase.RecordUseCase;
 import be.xplore.recordreplay.usecase.ReplayUseCase;
 import be.xplore.recordreplay.usecase.StubHandler;
-import be.xplore.recordreplay.usecase.UseCase;
 
 public class RecordReplay {
     private final Configuration configuration;
-    private RecordReplayJetty recordReplay;
+    private RecordReplayJetty recordReplayServer;
     private final ProxyManager proxyManager;
 
     public RecordReplay(Configuration configuration) {
         this.configuration = configuration;
+        this.recordReplayServer = new RecordReplayJetty(configuration.port(),
+                new StubHandler(new RecordReplayUseCase(
+                        configuration.repository(), configuration.client(), configuration.matchers()
+                )));
+        this.proxyManager = new ProxyManager();
+    }
+
+    public RecordReplay(Configuration configuration, StubHandler stubHandler) {
+        this.configuration = configuration;
+        this.recordReplayServer = new RecordReplayJetty(configuration.port(), stubHandler);
         this.proxyManager = new ProxyManager();
     }
 
     public RecordReplay forward() {
-        createRecordReplay(new ForwardRequestUseCase(configuration.client()));
+        createRecordReplay(new StubHandler(new ForwardRequestUseCase(configuration.client())));
         return this;
     }
 
     public RecordReplay record() {
-        createRecordReplay(new RecordUseCase(configuration.repository(), configuration.client()));
+        createRecordReplay(new StubHandler(new RecordUseCase(configuration.repository(), configuration.client())));
         return this;
     }
 
     public RecordReplay replay() {
-        createRecordReplay(new ReplayUseCase(configuration.repository(), configuration.matchers()));
+        createRecordReplay(new StubHandler(new ReplayUseCase(configuration.repository(), configuration.matchers())));
         return this;
     }
 
     public RecordReplay recordReplay() {
-        createRecordReplay(new RecordReplayUseCase(configuration.repository(), configuration.client(), configuration
-                .matchers()));
+        createRecordReplay(new StubHandler(new RecordReplayUseCase(configuration.repository(), configuration
+                .client(), configuration
+                .matchers())));
         return this;
     }
 
     public void start() {
         stop();
-        if (this.recordReplay != null) {
-            this.recordReplay.start();
-            proxyManager.activate(recordReplay.getHost(), recordReplay.getPort());
+        if (this.recordReplayServer != null) {
+            this.recordReplayServer.start();
+            proxyManager.activate(recordReplayServer.getHost(), recordReplayServer.getPort());
         }
     }
 
     public void stop() {
-        if (this.recordReplay != null) {
-            this.recordReplay.stop();
-        }
         proxyManager.deActivate();
+        if (this.recordReplayServer != null) {
+            this.recordReplayServer.stop();
+        }
     }
 
-    private void createRecordReplay(UseCase useCase) {
+    private void createRecordReplay(StubHandler stubHandler) {
         stop();
-        this.recordReplay = new RecordReplayJetty(configuration.port(), new StubHandler(useCase));
+        this.recordReplayServer = new RecordReplayJetty(configuration.port(), stubHandler);
         start();
     }
 }
