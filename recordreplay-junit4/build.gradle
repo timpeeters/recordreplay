@@ -1,6 +1,6 @@
 
 dependencies {
-    implementation project(':recordreplay-starter')
+    api project(':recordreplay-starter')
     implementation group: 'junit', name: 'junit'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation project(':demo-rest')
