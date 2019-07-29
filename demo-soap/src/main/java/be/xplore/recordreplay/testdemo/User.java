@@ -1,4 +1,4 @@
-package be.xplore.recordreplay;
+package be.xplore.recordreplay.testdemo;
 
 import java.util.Objects;
 import java.util.StringJoiner;

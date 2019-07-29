@@ -1,6 +1,6 @@
-package be.xplore.recordreplay.repository;
+package be.xplore.recordreplay.testdemo.repository;
 
-import be.xplore.recordreplay.model.User;
+import be.xplore.recordreplay.testdemo.model.User;
 
 import java.util.List;
 import java.util.Optional;

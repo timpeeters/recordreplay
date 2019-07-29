@@ -1,5 +1,6 @@
 package be.xplore.recordreplay;
 
+import be.xplore.recordreplay.testdemo.User;
 import org.junit.Test;
 
 import java.util.ArrayList;

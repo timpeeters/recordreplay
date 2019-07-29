@@ -1,29 +1,25 @@
 package be.xplore.recordreplay;
 
-import be.xplore.recordreplay.config.RecordReplayConfig;
-import be.xplore.recordreplay.http.OkHttpClient;
+import be.xplore.recordreplay.http.DefaultHttpClient;
 import be.xplore.recordreplay.junit4.RecordReplayRule;
 import be.xplore.recordreplay.model.Stub;
-import be.xplore.recordreplay.http.DefaultHttpClient;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.Before;
-import org.junit.Rule;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.springframework.boot.web.server.LocalServerPort;
 
 import java.util.List;
 
 public abstract class IntegrationTestBase {
+    @ClassRule
+    public static RecordReplayRule recordReplayRule = new RecordReplayRule().replay();
     private static final String HOST = "localhost";
 
     @LocalServerPort
     private int port;
     private DefaultHttpClient client;
 
-    @Rule
-    public RecordReplayRule recordReplayRule = new RecordReplayRule(new RecordReplayConfig()
-            .client(OkHttpClient.noProxy()))
-            .replay();
 
     @Before
     public void initContext() {

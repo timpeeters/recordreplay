@@ -1,4 +1,4 @@
-package be.xplore.recordreplay.model;
+package be.xplore.recordreplay.testdemo.model;
 
 public class User {
 
