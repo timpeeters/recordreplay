@@ -1,10 +1,10 @@
 package be.xplore.recordreplay.repository;
 
+import be.xplore.recordreplay.matcher.RequestMatcher;
 import be.xplore.recordreplay.model.Request;
 import be.xplore.recordreplay.model.Response;
 import be.xplore.recordreplay.model.Result;
 import be.xplore.recordreplay.model.Stub;
-import be.xplore.recordreplay.matcher.RequestMatcher;
 
 import java.util.Comparator;
 import java.util.List;

@@ -1,6 +1,7 @@
-package be.xplore.recordreplay.service;
+package be.xplore.recordreplay.testdemo.service;
 
-import be.xplore.recordreplay.model.User;
+
+import be.xplore.recordreplay.testdemo.model.User;
 
 import java.util.List;
 

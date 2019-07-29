@@ -1,9 +1,9 @@
 package be.xplore.recordreplay.usecase;
 
+import be.xplore.recordreplay.matcher.RequestMatcher;
 import be.xplore.recordreplay.model.Response;
 import be.xplore.recordreplay.model.Stub;
 import be.xplore.recordreplay.repository.Repository;
-import be.xplore.recordreplay.matcher.RequestMatcher;
 
 import java.util.List;
 import java.util.Optional;
