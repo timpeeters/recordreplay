@@ -1,10 +1,10 @@
 package be.xplore.recordreplay.config;
 
+import be.xplore.recordreplay.http.HttpClient;
 import be.xplore.recordreplay.http.OkHttpClient;
-import be.xplore.recordreplay.service.HttpClient;
-import be.xplore.recordreplay.service.MemoryRepository;
-import be.xplore.recordreplay.service.Repository;
-import be.xplore.recordreplay.service.RequestMatcher;
+import be.xplore.recordreplay.matcher.RequestMatcher;
+import be.xplore.recordreplay.repository.MemoryRepository;
+import be.xplore.recordreplay.repository.Repository;
 
 import java.util.List;
 

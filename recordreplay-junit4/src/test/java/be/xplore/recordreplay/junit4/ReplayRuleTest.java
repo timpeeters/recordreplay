@@ -1,7 +1,7 @@
 package be.xplore.recordreplay.junit4;
 
 import be.xplore.recordreplay.model.Response;
-import be.xplore.recordreplay.service.MemoryRepository;
+import be.xplore.recordreplay.repository.MemoryRepository;
 import org.junit.ClassRule;
 import org.junit.Test;
 

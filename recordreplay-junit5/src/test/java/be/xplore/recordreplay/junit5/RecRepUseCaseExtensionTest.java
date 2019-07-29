@@ -2,7 +2,7 @@ package be.xplore.recordreplay.junit5;
 
 import be.xplore.recordreplay.config.RecordReplayConfig;
 import be.xplore.recordreplay.model.Response;
-import be.xplore.recordreplay.service.MemoryRepository;
+import be.xplore.recordreplay.repository.MemoryRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
