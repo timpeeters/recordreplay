@@ -3,6 +3,7 @@ package be.xplore.recordreplay.repository;
 import be.xplore.recordreplay.marshaller.Marshaller;
 import be.xplore.recordreplay.model.Stub;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.UncheckedIOException;
@@ -84,7 +85,7 @@ public class FileRepository implements Repository {
     private static String getUniqueStubFileName(Stub stub) {
         var req = stub.getRequest();
         return req.getMethod().toString() + "_" +
-                req.getPath().replace('/', '_') +
+                req.getPath().replace(File.separatorChar, '_') +
                 UUID.randomUUID().toString();
     }
 
