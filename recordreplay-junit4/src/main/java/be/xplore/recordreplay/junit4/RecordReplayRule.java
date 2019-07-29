@@ -2,6 +2,7 @@ package be.xplore.recordreplay.junit4;
 
 import be.xplore.recordreplay.RecordReplay;
 import be.xplore.recordreplay.config.Configuration;
+import be.xplore.recordreplay.config.RecordReplayConfig;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
@@ -9,6 +10,10 @@ import org.junit.runners.model.Statement;
 public class RecordReplayRule implements TestRule {
 
     private final RecordReplay recordReplay;
+
+    public RecordReplayRule() {
+        this(new RecordReplayConfig());
+    }
 
     public RecordReplayRule(Configuration configuration) {
         recordReplay = new RecordReplay(configuration);
