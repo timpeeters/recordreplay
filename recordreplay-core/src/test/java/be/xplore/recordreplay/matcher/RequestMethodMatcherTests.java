@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class RequestMethodMatcherTests {
 
-    private final RequestMatcher matcher = new RequestMethodMatcher();
+    private final RequestMatcher matcher = new RequestMethodMatcher(false);
 
     private Request sameRequest1;
     private Request sameRequest2;

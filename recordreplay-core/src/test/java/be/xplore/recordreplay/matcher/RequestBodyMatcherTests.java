@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class RequestBodyMatcherTests {
 
-    private final RequestMatcher matcher = new RequestBodyMatcher();
+    private final RequestMatcher matcher = new RequestBodyMatcher(false);
 
     private Request sameRequest1;
     private Request sameRequest2;

@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RequestParamMatcherTests {
 
     private static final String KEY = "Key";
-    private final RequestMatcher matcher = new RequestParamMatcher();
+    private final RequestMatcher matcher = new RequestParamMatcher(false);
 
     private final QueryParams sameQueryParams1 =
             QueryParams.builder().params(Map.of(KEY, List.of("Test1", "Test2"))).build();

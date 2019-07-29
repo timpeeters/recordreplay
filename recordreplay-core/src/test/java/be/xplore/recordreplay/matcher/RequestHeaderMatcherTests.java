@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RequestHeaderMatcherTests {
 
     private static final String KEY = "Key";
-    private final RequestMatcher matcher = new RequestHeaderMatcher();
+    private final RequestMatcher matcher = new RequestHeaderMatcher(false);
 
     private final Headers sameHeaders1 = Headers.builder().headerMap(Map.of(KEY, List.of("Test1", "Test2"))).build();
     private final Headers sameHeaders2 = Headers.builder().headerMap(Map.of(KEY, List.of("Test1", "Test2"))).build();
