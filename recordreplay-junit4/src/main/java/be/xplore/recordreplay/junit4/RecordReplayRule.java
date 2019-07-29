@@ -7,16 +7,16 @@ import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
-public class RecordReplayRule implements TestRule {
+public final class RecordReplayRule implements TestRule {
 
-    private final RecordReplay recordReplay;
+    private final RecordReplay recordReplayStarter;
 
     public RecordReplayRule() {
         this(new RecordReplayConfig());
     }
 
     public RecordReplayRule(Configuration configuration) {
-        recordReplay = new RecordReplay(configuration).recordReplay();
+        this.recordReplayStarter = new RecordReplay(configuration).recordReplay();
     }
 
     @Override
@@ -24,33 +24,33 @@ public class RecordReplayRule implements TestRule {
         return new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                recordReplay.start();
+                recordReplayStarter.start();
                 try {
                     base.evaluate();
                 } finally {
-                    recordReplay.stop();
+                    recordReplayStarter.stop();
                 }
             }
         };
     }
 
     public RecordReplayRule forward() {
-        recordReplay.forward();
+        recordReplayStarter.forward();
         return this;
     }
 
     public RecordReplayRule record() {
-        recordReplay.record();
+        recordReplayStarter.record();
         return this;
     }
 
     public RecordReplayRule replay() {
-        recordReplay.replay();
+        recordReplayStarter.replay();
         return this;
     }
 
     public RecordReplayRule recordReplay() {
-        recordReplay.recordReplay();
+        recordReplayStarter.recordReplay();
         return this;
     }
 }
