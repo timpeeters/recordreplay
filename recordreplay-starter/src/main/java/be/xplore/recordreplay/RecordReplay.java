@@ -10,12 +10,12 @@ import be.xplore.recordreplay.usecase.ReplayUseCase;
 import be.xplore.recordreplay.usecase.StubHandler;
 import be.xplore.recordreplay.usecase.UseCase;
 
-public abstract class RecordReplay {
+public class RecordReplay {
     private final Configuration configuration;
     private RecordReplayJetty recordReplay;
     private final ProxyManager proxyManager;
 
-    protected RecordReplay(Configuration configuration) {
+    public RecordReplay(Configuration configuration) {
         this.configuration = configuration;
         this.proxyManager = new ProxyManager();
     }
@@ -41,7 +41,7 @@ public abstract class RecordReplay {
         return this;
     }
 
-    private void start() {
+    public void start() {
         stop();
         if (this.recordReplay != null) {
             this.recordReplay.start();
@@ -49,7 +49,7 @@ public abstract class RecordReplay {
         }
     }
 
-    private void stop() {
+    public void stop() {
         if (this.recordReplay != null) {
             this.recordReplay.stop();
         }
