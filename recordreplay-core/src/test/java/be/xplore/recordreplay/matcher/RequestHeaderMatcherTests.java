@@ -13,6 +13,7 @@ public class RequestHeaderMatcherTests {
 
     private static final String KEY = "Key";
     private final RequestMatcher matcher = new RequestHeaderMatcher(false);
+    private final RequestMatcher exactMatcher = new RequestHeaderMatcher(true);
 
     private final Headers sameHeaders1 = Headers.builder().headerMap(Map.of(KEY, List.of("Test1", "Test2"))).build();
     private final Headers sameHeaders2 = Headers.builder().headerMap(Map.of(KEY, List.of("Test1", "Test2"))).build();
@@ -67,6 +68,12 @@ public class RequestHeaderMatcherTests {
                 .as("Correct result distance not calculated")
                 .isEqualTo(0.5);
     }
+
+    @Test(expected = NoExactMatchFoundException.class)
+    public void exactMatcherShouldThrowOnNonExactMatch() {
+        exactMatcher.matches(sameRequest1, diffRequest);
+    }
+
 
     @Test
     public void sameResultOnReversedParameters() {

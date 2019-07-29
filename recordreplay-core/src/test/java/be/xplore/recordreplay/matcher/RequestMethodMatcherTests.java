@@ -9,6 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RequestMethodMatcherTests {
 
     private final RequestMatcher matcher = new RequestMethodMatcher(false);
+    private final RequestMatcher exactMatcher = new RequestMethodMatcher(true);
 
     private Request sameRequest1;
     private Request sameRequest2;
@@ -34,5 +35,11 @@ public class RequestMethodMatcherTests {
                 .as("Correct result distance not calculated")
                 .isEqualTo(1);
     }
+
+    @Test(expected = NoExactMatchFoundException.class)
+    public void exactMatcherShouldThrowOnNonExactMatch() {
+        exactMatcher.matches(sameRequest1, diffRequest);
+    }
+
 
 }

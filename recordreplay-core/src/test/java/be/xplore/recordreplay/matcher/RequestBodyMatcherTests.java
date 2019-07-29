@@ -39,6 +39,11 @@ public class RequestBodyMatcherTests {
                 .isEqualTo(0.50);
     }
 
+    @Test(expected = NoExactMatchFoundException.class)
+    public void exactMatcherShouldThrowOnNonExactMatch() {
+        exactMatcher.matches(sameRequest1, diffRequest);
+    }
+
     @Test
     public void requestPathMatcherShouldReturnResultOneOnCompleteMismatch() {
         assertThat(bestMatcher.matches(sameRequest1, diffRequest).getDistance())
