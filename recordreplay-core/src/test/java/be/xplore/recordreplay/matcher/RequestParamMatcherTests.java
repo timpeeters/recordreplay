@@ -83,4 +83,15 @@ public class RequestParamMatcherTests {
                 .isEqualTo(1);
     }
 
+    @Test
+    public void ignoredParamsAreIgnored() {
+        RequestParamMatcher matcher = new RequestParamMatcher(List.of("key"), true);
+        QueryParams params = QueryParams.builder().param("key", "val").param("qsdfg", "gfdsq").build();
+        QueryParams params2 = QueryParams.builder().param("KEY", "val2").param("qsdfg", "gfdsq").build();
+        assertThat(matcher
+                .matches(Request.Builder.get("").queryParams(params).build(), Request.Builder.get("")
+                        .queryParams(params2).build())
+                .getDistance()).isEqualTo(0);
+    }
+
 }

@@ -9,11 +9,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-public class MatcherWrapper {
+public class MatchFinder {
 
     private final List<RequestMatcher> matchers;
 
-    public MatcherWrapper(List<RequestMatcher> matchers) {
+    public MatchFinder(List<RequestMatcher> matchers) {
         this.matchers = matchers;
     }
 

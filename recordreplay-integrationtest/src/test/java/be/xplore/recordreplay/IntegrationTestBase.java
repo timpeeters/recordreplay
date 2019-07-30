@@ -15,7 +15,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class IntegrationTestBase {
-    private static final RecordReplayConfig CONFIG = new RecordReplayConfig();
+    private static final RecordReplayConfig CONFIG = new RecordReplayConfig().port(8181).target(null);
     @ClassRule
     public static RecordReplayRule recordReplayRule = new RecordReplayRule(CONFIG);
     private static final String HOST = "localhost";

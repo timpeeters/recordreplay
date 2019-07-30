@@ -59,6 +59,10 @@ public class RecordReplayJetty {
         }
     }
 
+    public boolean isRunning() {
+        return running;
+    }
+
     public String getHost() {
         return server.getURI().getHost();
     }
