@@ -5,6 +5,7 @@ import be.xplore.recordreplay.model.Response;
 import be.xplore.recordreplay.model.Stub;
 import be.xplore.recordreplay.repository.Repository;
 
+import java.net.URL;
 import java.util.Optional;
 
 public class RecordUseCase implements UseCase {
@@ -15,6 +16,11 @@ public class RecordUseCase implements UseCase {
     public RecordUseCase(Repository repository, HttpClient client) {
         this.repository = repository;
         this.forward = new ForwardRequestUseCase(client);
+    }
+
+    public RecordUseCase(Repository repository, HttpClient client, URL target) {
+        this.repository = repository;
+        this.forward = new ForwardRequestUseCase(client, target);
     }
 
     @Override

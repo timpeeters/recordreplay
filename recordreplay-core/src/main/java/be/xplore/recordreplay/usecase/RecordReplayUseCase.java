@@ -6,6 +6,7 @@ import be.xplore.recordreplay.model.Response;
 import be.xplore.recordreplay.model.Stub;
 import be.xplore.recordreplay.repository.Repository;
 
+import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +17,10 @@ public class RecordReplayUseCase implements UseCase {
 
     public RecordReplayUseCase(Repository repository, HttpClient client, List<RequestMatcher> matchers) {
         this.record = new RecordUseCase(repository, client);
+        this.replay = new ReplayUseCase(repository, matchers);
+    }
+    public RecordReplayUseCase(Repository repository, HttpClient client, List<RequestMatcher> matchers, URL target) {
+        this.record = new RecordUseCase(repository, client, target);
         this.replay = new ReplayUseCase(repository, matchers);
     }
 

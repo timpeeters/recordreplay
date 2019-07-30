@@ -24,7 +24,8 @@ public final class RecordReplay {
     }
 
     public RecordReplay forward() {
-        createRecordReplay(new StubHandler(new ForwardRequestUseCase(configuration.client())));
+        createRecordReplay(new StubHandler(new ForwardRequestUseCase(configuration.client(), configuration
+                .target())));
         return this;
     }
 
@@ -47,10 +48,8 @@ public final class RecordReplay {
 
     public void start() {
         stop();
-        if (this.recordReplayServer != null) {
-            this.recordReplayServer.start();
-            proxyManager.activate(recordReplayServer.getHost(), recordReplayServer.getPort());
-        }
+        this.recordReplayServer.start();
+        configureProxy();
     }
 
     public void stop() {
@@ -64,5 +63,13 @@ public final class RecordReplay {
         stop();
         this.recordReplayServer = new RecordReplayJetty(configuration.port(), stubHandler);
         start();
+    }
+
+    private void configureProxy() {
+        if (configuration.target() == null) {
+            this.proxyManager.activate(configuration.host(), configuration.port());
+        } else {
+            this.proxyManager.deActivate();
+        }
     }
 }
