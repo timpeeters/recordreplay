@@ -3,8 +3,11 @@ package be.xplore.recordreplay.config;
 import be.xplore.recordreplay.http.HttpClient;
 import be.xplore.recordreplay.http.OkHttpClient;
 import be.xplore.recordreplay.matcher.MatcherWrapper;
+import be.xplore.recordreplay.matcher.RequestMatcher;
 import be.xplore.recordreplay.repository.MemoryRepository;
 import be.xplore.recordreplay.repository.Repository;
+
+import java.util.List;
 
 import static be.xplore.recordreplay.util.Assert.notNull;
 
@@ -59,8 +62,8 @@ public class RecordReplayConfig implements Configuration {
         return client;
     }
 
-    public RecordReplayConfig matcherWrapper(MatcherWrapper matcherWrapper) {
-        this.matcherWrapper = notNull(matcherWrapper);
+    public RecordReplayConfig matcherWrapper(List<RequestMatcher> matchers) {
+        this.matcherWrapper = new MatcherWrapper(notNull(matchers));
         return this;
     }
 
