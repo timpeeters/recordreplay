@@ -23,12 +23,6 @@ public final class RecordReplay {
         this.proxyManager = new ProxyManager();
     }
 
-    public RecordReplay(Configuration configuration, StubHandler stubHandler) {
-        this.configuration = configuration;
-        this.recordReplayServer = new RecordReplayJetty(configuration.port(), stubHandler);
-        this.proxyManager = new ProxyManager();
-    }
-
     public RecordReplay forward() {
         createRecordReplay(new StubHandler(new ForwardRequestUseCase(configuration.client())));
         return this;

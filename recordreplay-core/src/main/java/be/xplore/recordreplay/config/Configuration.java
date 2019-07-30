@@ -34,4 +34,6 @@ public interface Configuration {
     List<RequestMatcher> matchers();
 
     String targetHost();
+
+    int targetPort();
 }

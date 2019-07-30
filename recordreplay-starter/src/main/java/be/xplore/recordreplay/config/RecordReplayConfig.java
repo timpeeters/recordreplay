@@ -19,6 +19,7 @@ public class RecordReplayConfig implements Configuration {
     private final HttpClient client;
     private List<RequestMatcher> matchers;
     private String targetHost;
+    private int targetPort;
 
     public RecordReplayConfig() {
         this.host = DEFAULT_LISTEN_ADDRESS;
@@ -64,7 +65,7 @@ public class RecordReplayConfig implements Configuration {
         if (this.targetHost == null || this.targetHost.isEmpty()) {
             return OkHttpClient.noProxy();
         }
-        return new OkHttpClient(new Proxy(Proxy.Type.DIRECT, InetSocketAddress.createUnresolved(targetHost, 0)));
+        return new OkHttpClient(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(targetHost, targetPort)));
     }
 
     @Override
@@ -89,6 +90,11 @@ public class RecordReplayConfig implements Configuration {
 
     @Override
     public String targetHost() {
-        return targetHost;
+        return this.targetHost;
+    }
+
+    @Override
+    public int targetPort() {
+        return this.targetPort;
     }
 }
