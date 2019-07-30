@@ -16,7 +16,6 @@ public class RecordReplayConfig implements Configuration {
     private String host;
     private int port;
     private Repository repository;
-    private final HttpClient client;
     private List<RequestMatcher> matchers;
     private String targetHost;
     private int targetPort;
@@ -27,7 +26,6 @@ public class RecordReplayConfig implements Configuration {
         this.matchers = DEFAULT_MATCHERS;
         this.repository = new MemoryRepository();
         this.targetHost = null;
-        this.client = configureClient();
     }
 
     public RecordReplayConfig host(String host) {
@@ -61,16 +59,12 @@ public class RecordReplayConfig implements Configuration {
         return repository;
     }
 
-    private HttpClient configureClient() {
+    @Override
+    public HttpClient client() {
         if (this.targetHost == null || this.targetHost.isEmpty()) {
             return OkHttpClient.noProxy();
         }
         return new OkHttpClient(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(targetHost, targetPort)));
-    }
-
-    @Override
-    public HttpClient client() {
-        return client;
     }
 
     public RecordReplayConfig matchers(List<RequestMatcher> matchers) {
