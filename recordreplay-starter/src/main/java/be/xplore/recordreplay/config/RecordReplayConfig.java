@@ -6,8 +6,7 @@ import be.xplore.recordreplay.matcher.RequestMatcher;
 import be.xplore.recordreplay.repository.MemoryRepository;
 import be.xplore.recordreplay.repository.Repository;
 
-import java.net.InetSocketAddress;
-import java.net.Proxy;
+import java.net.URL;
 import java.util.List;
 
 import static be.xplore.recordreplay.util.Assert.notNull;
@@ -17,15 +16,13 @@ public class RecordReplayConfig implements Configuration {
     private int port;
     private Repository repository;
     private List<RequestMatcher> matchers;
-    private String targetHost;
-    private int targetPort;
+    private URL target;
 
     public RecordReplayConfig() {
         this.host = DEFAULT_LISTEN_ADDRESS;
         this.port = DEFAULT_PORT;
         this.matchers = DEFAULT_MATCHERS;
         this.repository = new MemoryRepository();
-        this.targetHost = null;
     }
 
     public RecordReplayConfig host(String host) {
@@ -61,10 +58,7 @@ public class RecordReplayConfig implements Configuration {
 
     @Override
     public HttpClient client() {
-        if (this.targetHost == null || this.targetHost.isEmpty()) {
-            return OkHttpClient.noProxy();
-        }
-        return new OkHttpClient(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(targetHost, targetPort)));
+        return OkHttpClient.noProxy();
     }
 
     public RecordReplayConfig matchers(List<RequestMatcher> matchers) {
@@ -77,18 +71,13 @@ public class RecordReplayConfig implements Configuration {
         return matchers;
     }
 
-    public RecordReplayConfig targetHost(String targetHost) {
-        this.targetHost = targetHost;
+    public RecordReplayConfig target(URL target) {
+        this.target = target;
         return this;
     }
 
     @Override
-    public String targetHost() {
-        return this.targetHost;
-    }
-
-    @Override
-    public int targetPort() {
-        return this.targetPort;
+    public URL target() {
+        return this.target;
     }
 }
