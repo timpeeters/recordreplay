@@ -18,7 +18,7 @@ public final class RecordReplay {
         this.configuration = configuration;
         this.recordReplayServer = new RecordReplayJetty(configuration.port(),
                 new StubHandler(new RecordReplayUseCase(
-                        configuration.repository(), configuration.client(), configuration.matchers()
+                        configuration.repository(), configuration.client(), configuration.matcherWrapper()
                 )));
         this.proxyManager = new ProxyManager();
     }
@@ -30,24 +30,31 @@ public final class RecordReplay {
     }
 
     public RecordReplay forward() {
-        createRecordReplay(new StubHandler(new ForwardRequestUseCase(configuration.client())));
+        createRecordReplay(new StubHandler(
+                new ForwardRequestUseCase(configuration.client())));
         return this;
     }
 
     public RecordReplay record() {
-        createRecordReplay(new StubHandler(new RecordUseCase(configuration.repository(), configuration.client())));
+        createRecordReplay(new StubHandler(
+                new RecordUseCase(configuration.repository(), configuration.client())));
         return this;
     }
 
     public RecordReplay replay() {
-        createRecordReplay(new StubHandler(new ReplayUseCase(configuration.repository(), configuration.matchers())));
+        createRecordReplay(new StubHandler(
+                new ReplayUseCase(
+                        configuration.repository(),
+                        configuration.matcherWrapper())));
         return this;
     }
 
     public RecordReplay recordReplay() {
-        createRecordReplay(new StubHandler(new RecordReplayUseCase(configuration.repository(), configuration
-                .client(), configuration
-                .matchers())));
+        createRecordReplay(new StubHandler(
+                new RecordReplayUseCase(
+                        configuration.repository(),
+                        configuration.client(),
+                        configuration.matcherWrapper())));
         return this;
     }
 

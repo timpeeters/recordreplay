@@ -2,11 +2,9 @@ package be.xplore.recordreplay.config;
 
 import be.xplore.recordreplay.http.HttpClient;
 import be.xplore.recordreplay.http.OkHttpClient;
-import be.xplore.recordreplay.matcher.RequestMatcher;
+import be.xplore.recordreplay.matcher.MatcherWrapper;
 import be.xplore.recordreplay.repository.MemoryRepository;
 import be.xplore.recordreplay.repository.Repository;
-
-import java.util.List;
 
 import static be.xplore.recordreplay.util.Assert.notNull;
 
@@ -15,12 +13,12 @@ public class RecordReplayConfig implements Configuration {
     private int port;
     private Repository repository;
     private final HttpClient client;
-    private List<RequestMatcher> matchers;
+    private MatcherWrapper matcherWrapper;
 
     public RecordReplayConfig() {
         this.host = DEFAULT_LISTEN_ADDRESS;
         this.port = DEFAULT_PORT;
-        this.matchers = DEFAULT_MATCHERS;
+        this.matcherWrapper = DEFAULT_MATCHERS;
         this.repository = new MemoryRepository();
         this.client = OkHttpClient.noProxy();
     }
@@ -61,13 +59,13 @@ public class RecordReplayConfig implements Configuration {
         return client;
     }
 
-    public RecordReplayConfig matchers(List<RequestMatcher> matchers) {
-        this.matchers = notNull(matchers);
+    public RecordReplayConfig matcherWrapper(MatcherWrapper matcherWrapper) {
+        this.matcherWrapper = notNull(matcherWrapper);
         return this;
     }
 
     @Override
-    public List<RequestMatcher> matchers() {
-        return matchers;
+    public MatcherWrapper matcherWrapper() {
+        return matcherWrapper;
     }
 }
