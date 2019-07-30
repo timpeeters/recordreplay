@@ -66,7 +66,12 @@ public class RecordReplayConfig implements Configuration {
     }
 
     public RecordReplayConfig matchers(List<RequestMatcher> matchers) {
-        this.matchFinder = new MatchFinder(notNull(matchers));
+        if (matchers == null || matchers.isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Using RecordReplay without matchers will result in undefined behaviour!"
+            );
+        }
+        this.matchFinder = new MatchFinder(matchers);
         return this;
     }
 
