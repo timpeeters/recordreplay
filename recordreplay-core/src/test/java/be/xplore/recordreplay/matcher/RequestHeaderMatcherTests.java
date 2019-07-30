@@ -82,4 +82,14 @@ public class RequestHeaderMatcherTests {
                 .isEqualTo(1);
     }
 
+    @Test
+    public void ignoredHeadersAreIgnored() {
+        RequestHeaderMatcher matcher = new RequestHeaderMatcher(List.of("content-type"), true);
+        Headers headers = Headers.builder().applicationJson().header("azerty", "ytreza").build();
+        Headers headers2 = Headers.builder().applicationXml().header("azerty", "ytreza").build();
+        assertThat(matcher
+                .matches(Request.Builder.get("").headers(headers).build(), Request.Builder.get("").headers(headers2)
+                        .build()).getDistance()).isEqualTo(0);
+    }
+
 }
