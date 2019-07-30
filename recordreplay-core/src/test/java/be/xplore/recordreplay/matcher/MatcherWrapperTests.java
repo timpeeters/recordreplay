@@ -18,19 +18,20 @@ public class MatcherWrapperTests {
     private Request request;
     private Response response;
     private Repository repo;
-    private MatcherWrapper matcherWrapper;
+    private MatcherWrapper bestMatcherWrapper;
+    private MatcherWrapper exactMatcherWrapper;
 
     @Before
     public void initStubRepo() {
         request = Request.Builder.get("Test").build();
         response = Response.Builder.ok().body("ikkel").build();
         repo = new MemoryRepository();
-        repo.add(new Stub(request,response));
+        repo.add(new Stub(request, response));
     }
 
     @Before
-    public void initMatcherWrapper(){
-        matcherWrapper = new MatcherWrapper(List.of(
+    public void initBestMatcherWrapper() {
+        bestMatcherWrapper = new MatcherWrapper(List.of(
                 new RequestMethodMatcher(false),
                 new RequestPathMatcher(false),
                 new RequestHeaderMatcher(false),
@@ -38,11 +39,28 @@ public class MatcherWrapperTests {
                 new RequestBodyMatcher(false)));
     }
 
+    @Before
+    public void initExactMatcherWrapper() {
+        exactMatcherWrapper = new MatcherWrapper(List.of(
+                new RequestMethodMatcher(true),
+                new RequestPathMatcher(true),
+                new RequestHeaderMatcher(true),
+                new RequestParamMatcher(true),
+                new RequestBodyMatcher(true)));
+    }
+
     @Test
     public void matcherWrapperShouldReturnOptional() {
-        assertThat(matcherWrapper.getResponse(request, repo.find()))
+        assertThat(bestMatcherWrapper.getResponse(request, repo.find()))
                 .as("MatcherWrapper doesn't return optional of response")
                 .isEqualTo(Optional.of(response));
+    }
+
+    @Test
+    public void matcherWrapperShouldReturnEmptyOptional() {
+        assertThat(exactMatcherWrapper.getResponse(Request.Builder.post("test").build(), repo.find()))
+                .as("MatcherWrapper doesn't return empty optional")
+                .isEmpty();
     }
 
 }
