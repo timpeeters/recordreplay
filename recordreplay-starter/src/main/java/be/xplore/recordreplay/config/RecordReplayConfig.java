@@ -6,6 +6,8 @@ import be.xplore.recordreplay.matcher.RequestMatcher;
 import be.xplore.recordreplay.repository.MemoryRepository;
 import be.xplore.recordreplay.repository.Repository;
 
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.util.List;
 
 import static be.xplore.recordreplay.util.Assert.notNull;
@@ -23,8 +25,8 @@ public class RecordReplayConfig implements Configuration {
         this.port = DEFAULT_PORT;
         this.matchers = DEFAULT_MATCHERS;
         this.repository = new MemoryRepository();
-        this.client = OkHttpClient.noProxy();
         this.targetHost = null;
+        this.client = configureClient();
     }
 
     public RecordReplayConfig host(String host) {
@@ -56,6 +58,13 @@ public class RecordReplayConfig implements Configuration {
     @Override
     public Repository repository() {
         return repository;
+    }
+
+    private HttpClient configureClient() {
+        if (this.targetHost == null || this.targetHost.isEmpty()) {
+            return OkHttpClient.noProxy();
+        }
+        return new OkHttpClient(new Proxy(Proxy.Type.DIRECT, InetSocketAddress.createUnresolved(targetHost, 0)));
     }
 
     @Override
