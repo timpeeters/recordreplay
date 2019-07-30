@@ -22,9 +22,10 @@ import static org.assertj.core.api.Assertions.assertThat;
         DemoRestApplication.class)
 public class RecordReplayForwardOption {
     private static final String HOST = "localhost";
+    private static RecordReplay recordReplay;
+
     private HttpClient client;
     private Configuration configuration;
-    private RecordReplay recordReplay;
 
 
     @LocalServerPort
@@ -33,14 +34,17 @@ public class RecordReplayForwardOption {
     @Before
     public void init() {
         client = new DefaultHttpClient();
-        configuration = new RecordReplayConfig().targetHost(HOST).targetPort(port);
-        recordReplay = new RecordReplay(configuration).recordReplay();
+        configuration = new RecordReplayConfig().target(String.format("http://%s:%d/user/list", HOST, port));
+        recordReplay = new RecordReplay(configuration);
     }
 
     @Test
     public void testTargetHostOption() {
-        Response r = client.execute(Request.Builder.get(String.format("http://%s:%d", HOST, configuration.port())).headers(Headers
-                .builder().applicationJson().build()).build());
+        recordReplay.forward();
+        Response r = client
+                .execute(Request.Builder.get(String.format("http://%s:%d", HOST, configuration.port())).headers(Headers
+                        .builder().applicationJson().build()).build());
         assertThat(r.getStatusCode()).isEqualTo(200);
+        assertThat(r.getBody()).containsIgnoringCase("john");
     }
 }

@@ -6,6 +6,8 @@ import be.xplore.recordreplay.matcher.RequestMatcher;
 import be.xplore.recordreplay.repository.MemoryRepository;
 import be.xplore.recordreplay.repository.Repository;
 
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.List;
 
@@ -71,8 +73,17 @@ public class RecordReplayConfig implements Configuration {
         return matchers;
     }
 
-    public RecordReplayConfig target(URL target) {
-        this.target = target;
+    @SuppressWarnings("PMD.NullAssignment")
+    public RecordReplayConfig target(String target) {
+        if (target == null || target.isEmpty()) {
+            this.target = null;
+        } else {
+            try {
+                this.target = URI.create(target).toURL();
+            } catch (MalformedURLException e) {
+                throw new IllegalArgumentException(e);
+            }
+        }
         return this;
     }
 

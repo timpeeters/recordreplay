@@ -17,9 +17,7 @@ public final class RecordReplay {
     public RecordReplay(Configuration configuration) {
         this.configuration = configuration;
         this.recordReplayServer = new RecordReplayJetty(configuration.port(),
-                new StubHandler(new RecordReplayUseCase(
-                        configuration.repository(), configuration.client(), configuration.matchers()
-                )));
+                new StubHandler(new RecordReplayUseCase(configuration)));
         this.proxyManager = new ProxyManager();
     }
 
@@ -40,9 +38,7 @@ public final class RecordReplay {
     }
 
     public RecordReplay recordReplay() {
-        createRecordReplay(new StubHandler(new RecordReplayUseCase(configuration.repository(), configuration
-                .client(), configuration
-                .matchers())));
+        createRecordReplay(new StubHandler(new RecordReplayUseCase(configuration)));
         return this;
     }
 
