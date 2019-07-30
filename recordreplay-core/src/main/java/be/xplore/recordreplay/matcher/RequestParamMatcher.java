@@ -47,8 +47,10 @@ public class RequestParamMatcher implements RequestMatcher {
     private Result distanceAfterIgnoreParams(QueryParams largest, QueryParams smallest) {
         Map<String, List<String>> largestMap = largest.getModifiableParamMap();
         Map<String, List<String>> smallestMap = smallest.getModifiableParamMap();
-        paramsToIgnore.forEach(largestMap::remove);
-        paramsToIgnore.forEach(smallestMap::remove);
+        largestMap.entrySet().removeIf(stringListEntry -> paramsToIgnore.stream()
+                .anyMatch(s -> stringListEntry.getKey().equalsIgnoreCase(s)));
+        smallestMap.entrySet().removeIf(stringListEntry -> paramsToIgnore.stream()
+                .anyMatch(s -> stringListEntry.getKey().equalsIgnoreCase(s)));
         return new Result(QueryParams.builder().params(largestMap).build()
                 .returnMismatchingQueries(QueryParams.builder().params(smallestMap).build())
                 .size() * (1D / QueryParams.builder().params(largestMap).build().size()));
