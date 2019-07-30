@@ -28,12 +28,16 @@ public final class RecordReplay {
     }
 
     public RecordReplay record() {
-        createRecordReplay(new StubHandler(new RecordUseCase(configuration.repository(), configuration.client())));
+        createRecordReplay(new StubHandler(
+                new RecordUseCase(configuration.repository(), configuration.client())));
         return this;
     }
 
     public RecordReplay replay() {
-        createRecordReplay(new StubHandler(new ReplayUseCase(configuration.repository(), configuration.matchers())));
+        createRecordReplay(new StubHandler(
+                new ReplayUseCase(
+                        configuration.repository(),
+                        configuration.matchers())));
         return this;
     }
 
@@ -50,9 +54,7 @@ public final class RecordReplay {
 
     public void stop() {
         proxyManager.deActivate();
-        if (this.recordReplayServer != null) {
-            this.recordReplayServer.stop();
-        }
+        this.recordReplayServer.stop();
     }
 
     private void createRecordReplay(StubHandler stubHandler) {
