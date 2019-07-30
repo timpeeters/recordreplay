@@ -7,6 +7,8 @@ import be.xplore.recordreplay.matcher.RequestMatcher;
 import be.xplore.recordreplay.repository.MemoryRepository;
 import be.xplore.recordreplay.repository.Repository;
 
+import java.util.List;
+
 import static be.xplore.recordreplay.util.Assert.notNull;
 
 public class RecordReplayConfig implements Configuration {
