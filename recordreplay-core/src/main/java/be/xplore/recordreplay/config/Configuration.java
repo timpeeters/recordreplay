@@ -1,7 +1,7 @@
 package be.xplore.recordreplay.config;
 
 import be.xplore.recordreplay.http.HttpClient;
-import be.xplore.recordreplay.matcher.MatcherWrapper;
+import be.xplore.recordreplay.matcher.MatchFinder;
 import be.xplore.recordreplay.matcher.RequestBodyMatcher;
 import be.xplore.recordreplay.matcher.RequestHeaderMatcher;
 import be.xplore.recordreplay.matcher.RequestMethodMatcher;
@@ -17,7 +17,7 @@ public interface Configuration {
     @SuppressWarnings("PMD.AvoidUsingHardCodedIP")
     String DEFAULT_LISTEN_ADDRESS = "0.0.0.0";
     int DEFAULT_PORT = 8080;
-    MatcherWrapper DEFAULT_MATCHERS = new MatcherWrapper(List.of(
+    MatchFinder DEFAULT_MATCHERS = new MatchFinder(List.of(
             new RequestMethodMatcher(false),
             new RequestPathMatcher(false),
             new RequestHeaderMatcher(false),
@@ -32,7 +32,7 @@ public interface Configuration {
 
     HttpClient client();
 
-    MatcherWrapper matchers();
+    MatchFinder matchers();
 
     URL target();
 }

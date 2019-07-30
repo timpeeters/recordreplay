@@ -13,13 +13,13 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class MatcherWrapperTests {
+public class MatchFinderTests {
 
     private Request request;
     private Response response;
     private Repository repo;
-    private MatcherWrapper bestMatcherWrapper;
-    private MatcherWrapper exactMatcherWrapper;
+    private MatchFinder bestMatchFinder;
+    private MatchFinder exactMatchFinder;
 
     @Before
     public void initStubRepo() {
@@ -31,7 +31,7 @@ public class MatcherWrapperTests {
 
     @Before
     public void initBestMatcherWrapper() {
-        bestMatcherWrapper = new MatcherWrapper(List.of(
+        bestMatchFinder = new MatchFinder(List.of(
                 new RequestMethodMatcher(false),
                 new RequestPathMatcher(false),
                 new RequestHeaderMatcher(false),
@@ -41,7 +41,7 @@ public class MatcherWrapperTests {
 
     @Before
     public void initExactMatcherWrapper() {
-        exactMatcherWrapper = new MatcherWrapper(List.of(
+        exactMatchFinder = new MatchFinder(List.of(
                 new RequestMethodMatcher(true),
                 new RequestPathMatcher(true),
                 new RequestHeaderMatcher(true),
@@ -51,14 +51,14 @@ public class MatcherWrapperTests {
 
     @Test
     public void matcherWrapperShouldReturnOptional() {
-        assertThat(bestMatcherWrapper.getResponse(request, repo.find()))
+        assertThat(bestMatchFinder.getResponse(request, repo.find()))
                 .as("MatcherWrapper doesn't return optional of response")
                 .isEqualTo(Optional.of(response));
     }
 
     @Test
     public void matcherWrapperShouldReturnEmptyOptional() {
-        assertThat(exactMatcherWrapper.getResponse(Request.Builder.post("test").build(), repo.find()))
+        assertThat(exactMatchFinder.getResponse(Request.Builder.post("test").build(), repo.find()))
                 .as("MatcherWrapper doesn't return empty optional")
                 .isEmpty();
     }
