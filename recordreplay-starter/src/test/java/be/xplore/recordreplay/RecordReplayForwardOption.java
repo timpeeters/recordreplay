@@ -9,6 +9,7 @@ import be.xplore.recordreplay.matcher.RequestMethodMatcher;
 import be.xplore.recordreplay.model.Headers;
 import be.xplore.recordreplay.model.Request;
 import be.xplore.recordreplay.testdemo.DemoRestApplication;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,11 +48,24 @@ public class RecordReplayForwardOption {
         recordReplay = new RecordReplay(configuration);
     }
 
+    @After
+    public void stop() {
+        recordReplay.stop();
+    }
+
     @Test
     public void testTargetHostOption() {
         recordReplay.recordReplay();
         executeRequest();
         assertThat(configuration.repository().find().size()).isEqualTo(1);
+        executeRequest();
+    }
+
+    @Test
+    public void callingStartTwiceDoesntFail() {
+        recordReplay.stop();
+        recordReplay.start();
+        recordReplay.start();
         executeRequest();
     }
 

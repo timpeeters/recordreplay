@@ -47,9 +47,10 @@ public final class RecordReplay {
     }
 
     public void start() {
-        stop();
+        if (!recordReplayServer.isRunning()) {
+            configureProxy();
+        }
         this.recordReplayServer.start();
-        configureProxy();
     }
 
     public void stop() {
