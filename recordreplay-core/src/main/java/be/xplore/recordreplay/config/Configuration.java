@@ -32,4 +32,6 @@ public interface Configuration {
     HttpClient client();
 
     List<RequestMatcher> matchers();
+
+    String targetHost();
 }
