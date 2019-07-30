@@ -26,6 +26,7 @@ public class RecordReplayConfig implements Configuration {
         this.port = DEFAULT_PORT;
         this.matcherWrapper = DEFAULT_MATCHERS;
         this.repository = new MemoryRepository();
+        target("");
     }
 
     public RecordReplayConfig host(String host) {
