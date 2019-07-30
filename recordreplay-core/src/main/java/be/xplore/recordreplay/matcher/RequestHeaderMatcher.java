@@ -26,7 +26,7 @@ public class RequestHeaderMatcher implements RequestMatcher {
     @Override
     public Result matches(Request request, Request otherRequest) {
         Result result = calculateDistance(request.getHeaders(), otherRequest.getHeaders());
-        if(exactMatch && result.getDistance()!=0) {
+        if (exactMatch && result.getDistance() != 0) {
             throw new NoExactMatchFoundException("No match found for exact header-matcher");
         } else {
             return result;
@@ -50,11 +50,17 @@ public class RequestHeaderMatcher implements RequestMatcher {
     private Result distanceAfterIgnoreHeaders(Headers largest, Headers smallest) {
         Map<String, List<String>> largestMap = largest.getModifiableHeaderMap();
         Map<String, List<String>> smallestMap = smallest.getModifiableHeaderMap();
-        headersToIgnore.forEach(largestMap::remove);
-        headersToIgnore.forEach(smallestMap::remove);
+        ignoreHeaders(largestMap, smallestMap);
         return new Result(Headers.builder().headerMap(largestMap).build()
                 .returnMismatchingHeaders(Headers.builder().headerMap(smallestMap).build())
                 .size() * (1D / Headers.builder().headerMap(largestMap).build().size()));
+    }
+
+    private void ignoreHeaders(Map<String, List<String>> largestMap, Map<String, List<String>> smallestMap) {
+        largestMap.entrySet().removeIf(stringListEntry -> headersToIgnore.stream()
+                .anyMatch(s -> stringListEntry.getKey().equalsIgnoreCase(s)));
+        smallestMap.entrySet().removeIf(stringListEntry -> headersToIgnore.stream()
+                .anyMatch(s -> stringListEntry.getKey().equalsIgnoreCase(s)));
     }
 
     private Headers largest(Headers headers, Headers otherHeaders) {
