@@ -7,6 +7,9 @@ import be.xplore.recordreplay.matcher.RequestMatcher;
 import be.xplore.recordreplay.repository.MemoryRepository;
 import be.xplore.recordreplay.repository.Repository;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 import java.util.List;
 
 import static be.xplore.recordreplay.util.Assert.notNull;
@@ -15,15 +18,14 @@ public class RecordReplayConfig implements Configuration {
     private String host;
     private int port;
     private Repository repository;
-    private final HttpClient client;
     private MatcherWrapper matcherWrapper;
+    private URL target;
 
     public RecordReplayConfig() {
         this.host = DEFAULT_LISTEN_ADDRESS;
         this.port = DEFAULT_PORT;
         this.matcherWrapper = DEFAULT_MATCHERS;
         this.repository = new MemoryRepository();
-        this.client = OkHttpClient.noProxy();
     }
 
     public RecordReplayConfig host(String host) {
@@ -59,9 +61,8 @@ public class RecordReplayConfig implements Configuration {
 
     @Override
     public HttpClient client() {
-        return client;
+        return OkHttpClient.noProxy();
     }
-
 
     public RecordReplayConfig matcherWrapper(List<RequestMatcher> matchers) {
         this.matcherWrapper = new MatcherWrapper(notNull(matchers));
@@ -69,7 +70,26 @@ public class RecordReplayConfig implements Configuration {
     }
 
     @Override
-    public MatcherWrapper matcherWrapper() {
+    public MatcherWrapper matchers() {
         return matcherWrapper;
+    }
+
+    @SuppressWarnings("PMD.NullAssignment")
+    public RecordReplayConfig target(String target) {
+        if (target == null || target.isEmpty()) {
+            this.target = null;
+        } else {
+            try {
+                this.target = URI.create(target).toURL();
+            } catch (MalformedURLException e) {
+                throw new IllegalArgumentException(e);
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public URL target() {
+        return this.target;
     }
 }

@@ -13,7 +13,7 @@ public class MatcherWrapper {
 
     private final List<RequestMatcher> matchers;
 
-    public MatcherWrapper(List <RequestMatcher> matchers) {
+    public MatcherWrapper(List<RequestMatcher> matchers) {
         this.matchers = matchers;
     }
 

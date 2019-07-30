@@ -22,7 +22,7 @@ public class OkHttpClient implements HttpClient {
         client = new okhttp3.OkHttpClient();
     }
 
-    private OkHttpClient(Proxy proxy) {
+    public OkHttpClient(Proxy proxy) {
         client = new okhttp3.OkHttpClient.Builder().proxy(proxy).build();
     }
 

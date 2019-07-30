@@ -2,7 +2,7 @@ package be.xplore.recordreplay.util;
 
 import info.debatty.java.stringsimilarity.NormalizedLevenshtein;
 
-public class StringDistance {
+public final class StringDistance {
 
     private static final NormalizedLevenshtein LEVENSHTEIN = new NormalizedLevenshtein();
 

@@ -9,6 +9,7 @@ import be.xplore.recordreplay.matcher.RequestParamMatcher;
 import be.xplore.recordreplay.matcher.RequestPathMatcher;
 import be.xplore.recordreplay.repository.Repository;
 
+import java.net.URL;
 import java.util.List;
 
 public interface Configuration {
@@ -31,5 +32,7 @@ public interface Configuration {
 
     HttpClient client();
 
-    MatcherWrapper matcherWrapper();
+    MatcherWrapper matchers();
+
+    URL target();
 }

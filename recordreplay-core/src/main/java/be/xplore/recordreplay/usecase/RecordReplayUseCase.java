@@ -1,10 +1,8 @@
 package be.xplore.recordreplay.usecase;
 
-import be.xplore.recordreplay.http.HttpClient;
-import be.xplore.recordreplay.matcher.MatcherWrapper;
+import be.xplore.recordreplay.config.Configuration;
 import be.xplore.recordreplay.model.Response;
 import be.xplore.recordreplay.model.Stub;
-import be.xplore.recordreplay.repository.Repository;
 
 import java.util.Optional;
 
@@ -13,9 +11,9 @@ public class RecordReplayUseCase implements UseCase {
     private final RecordUseCase record;
     private final ReplayUseCase replay;
 
-    public RecordReplayUseCase(Repository repository, HttpClient client, MatcherWrapper matcherWrapper) {
-        this.record = new RecordUseCase(repository, client);
-        this.replay = new ReplayUseCase(repository, matcherWrapper);
+    public RecordReplayUseCase(Configuration config) {
+        this.record = new RecordUseCase(config.repository(), config.client(), config.target());
+        this.replay = new ReplayUseCase(config.repository(), config.matchers());
     }
 
     @Override
