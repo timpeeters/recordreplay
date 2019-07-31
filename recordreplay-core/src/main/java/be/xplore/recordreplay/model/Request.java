@@ -2,6 +2,7 @@ package be.xplore.recordreplay.model;
 
 import java.net.URI;
 import java.util.Objects;
+import java.util.StringJoiner;
 
 import static be.xplore.recordreplay.util.Assert.notNull;
 
@@ -69,13 +70,13 @@ public class Request {
 
     @Override
     public String toString() {
-        return "Request{" +
-                "method=" + method +
-                ", path='" + path + '\'' +
-                ", queryParams=" + queryParams +
-                ", headers=" + headers +
-                ", body='" + body + '\'' +
-                '}';
+        return new StringJoiner(",", "Request{", "}")
+                .add("method=" + method)
+                .add("path=" + path)
+                .add("queryParams=" + queryParams)
+                .add("headers=" + headers)
+                .add("body=" + body)
+                .toString();
     }
 
     public static class Builder {
