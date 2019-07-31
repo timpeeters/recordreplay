@@ -52,4 +52,11 @@ public class RequestTest {
         assertThat(EXAMPLE_REQUEST_BUILDER_1.build().hashCode())
                 .isNotEqualTo(EXAMPLE_REQUEST_BUILDER_2.build().hashCode());
     }
+
+    @Test
+    public void checkToString() {
+        assertThat(Request.builder().method(RequestMethod.GET).path(PATH_1).build().toString())
+                .isEqualTo("Request{method=GET,path=/abc," +
+                        "queryParams=QueryParams{queryMap={}},headers=Headers{headerMap={}},body=}");
+    }
 }

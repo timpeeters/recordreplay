@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.StringJoiner;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -91,9 +92,9 @@ public class Headers {
 
     @Override
     public String toString() {
-        return "Headers{" +
-                "headerMap=" + headerMap +
-                '}';
+        return new StringJoiner(",", "Headers{", "}")
+                .add("headerMap=" + headerMap)
+                .toString();
     }
 
     public static class Builder {

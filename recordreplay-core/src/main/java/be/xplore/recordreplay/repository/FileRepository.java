@@ -1,6 +1,7 @@
 package be.xplore.recordreplay.repository;
 
 import be.xplore.recordreplay.marshaller.Marshaller;
+import be.xplore.recordreplay.marshaller.MarshallerLocator;
 import be.xplore.recordreplay.model.Stub;
 
 import java.io.File;
@@ -22,6 +23,10 @@ public class FileRepository implements Repository {
     private final Path targetDir;
     private final Marshaller marshaller;
     private int size;
+
+    public FileRepository(Path targetDir) {
+        this(targetDir, new MarshallerLocator().load());
+    }
 
     public FileRepository(Path targetDir, Marshaller marshaller) {
         if (!directoryExists(targetDir)) {

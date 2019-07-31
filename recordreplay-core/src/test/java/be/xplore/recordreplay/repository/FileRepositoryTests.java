@@ -19,6 +19,7 @@ import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.io.Writer;
 import java.nio.file.Path;
+import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -123,6 +124,11 @@ public class FileRepositoryTests {
         tempDir.newFolder();
         assertThat(repo.size()).isEqualTo(1);
         assertThat(repo.find().get(0).getRequest().getMethod()).isEqualTo(STUB.getRequest().getMethod());
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void loadDefaultMarshallerThrows() {
+        new FileRepository(tempDirPath());
     }
 
     private void mockMarshal() {

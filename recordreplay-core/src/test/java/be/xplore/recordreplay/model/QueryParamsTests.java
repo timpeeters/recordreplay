@@ -71,4 +71,10 @@ public class QueryParamsTests {
         assertThat(queryParams).isNotEqualTo(null);
         assertThat(queryParams).isNotEqualTo("I'm a String");
     }
+
+    @Test
+    public void checkToString() {
+        assertThat(queryParams.toString()).isEqualTo("QueryParams{queryMap={Key=[paramTest1, paramTest2]}}");
+    }
+
 }

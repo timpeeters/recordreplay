@@ -3,6 +3,7 @@ package be.xplore.recordreplay.model;
 import be.xplore.recordreplay.util.Assert;
 
 import java.util.Objects;
+import java.util.StringJoiner;
 
 public class Response {
 
@@ -59,12 +60,12 @@ public class Response {
 
     @Override
     public String toString() {
-        return "Response{" +
-                "statusCode=" + statusCode +
-                ", statusText='" + statusText + '\'' +
-                ", headers=" + headers +
-                ", body='" + body + '\'' +
-                '}';
+        return new StringJoiner(",", "Response{", "}")
+                .add("statusCode=" + statusCode)
+                .add("statusText=" + statusText)
+                .add("headers=" + headers)
+                .add("body=" + body)
+                .toString();
     }
 
     public Headers getHeaders() {
