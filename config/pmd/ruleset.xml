@@ -97,4 +97,10 @@
     <rule ref="category/java/performance.xml"/>
 
     <rule ref="category/java/security.xml"/>
+
+    <rule ref="category/java/errorprone.xml/AvoidLiteralsInIfCondition">
+        <properties>
+            <property name="ignoreMagicNumbers" value="-1,0,1"/>
+        </properties>
+    </rule>
 </ruleset>
