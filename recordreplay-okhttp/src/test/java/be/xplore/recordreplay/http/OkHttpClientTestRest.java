@@ -1,6 +1,7 @@
 package be.xplore.recordreplay.http;
 
 import be.xplore.recordreplay.model.Headers;
+import be.xplore.recordreplay.model.QueryParams;
 import be.xplore.recordreplay.model.Request;
 import be.xplore.recordreplay.model.RequestMethod;
 import be.xplore.recordreplay.model.Response;
@@ -63,7 +64,8 @@ public class OkHttpClientTestRest {
     public void testDeleteRequest() {
         Request getUsersRequest = Request.builder()
                 .method(RequestMethod.DELETE)
-                .path(host + "/user/delete?id=0")
+                .path(host + "/user/delete")
+                .queryParams(QueryParams.builder().param("id", "0").build())
                 .headers(Headers.builder().applicationJson().build())
                 .build();
         Response response = client.execute(getUsersRequest);
