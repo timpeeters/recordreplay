@@ -8,20 +8,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class QueryParams {
 
     public static final QueryParams EMPTY = builder().params(Collections.emptyMap()).build();
 
-    private final Map<String, List<String>> params;
+    private final Map<String, List<String>> queryMap;
 
     private QueryParams(Builder builder) {
-        this.params = Collections.unmodifiableMap(Assert.notNull(builder.params));
+        this.queryMap = Collections.unmodifiableMap(Assert.notNull(builder.queryMap));
     }
 
-    public Map<String, List<String>> getModifiableParamMap() {
-        return new HashMap<>(params);
+    public Map<String, List<String>> getModifiableQueryMap() {
+        return new HashMap<>(queryMap);
     }
 
     public static Builder builder() {
@@ -29,15 +31,16 @@ public class QueryParams {
     }
 
     public String getQueryString() {
-        StringBuilder paramString = new StringBuilder();
-        params.forEach((key, value) -> value
-                .forEach(string -> {
-                    paramString.append(key)
-                            .append('=')
-                            .append(string)
-                            .append('&');
-                }));
-        return paramString.insert(0, '?').substring(0, paramString.length() - 1);
+        return queryMap.entrySet()
+                .stream()
+                .flatMap(formatAsQuery())
+                .collect(Collectors.joining("&", "?", ""));
+    }
+
+    private Function<Map.Entry<String, List<String>>, Stream<? extends StringBuilder>> formatAsQuery() {
+        return set -> set.getValue()
+                .stream()
+                .map(value -> new StringBuilder(set.getKey() + "=" + value));
     }
 
     public List<String> returnMismatchingQueries(QueryParams params) {
@@ -47,12 +50,16 @@ public class QueryParams {
     }
 
     private List<String> toStringList() {
-        List<String> paramStrings = new ArrayList<>();
-        params.forEach((key, value1) -> value1
-                .forEach(value ->
-                        paramStrings.add(key.concat(value)
-                        )));
-        return paramStrings;
+        return queryMap.entrySet()
+                .stream()
+                .flatMap(concatKeyValue())
+                .collect(Collectors.toList());
+    }
+
+    private Function<Map.Entry<String, List<String>>, Stream<? extends String>> concatKeyValue() {
+        return set -> set.getValue()
+                .stream()
+                .map(value -> set.getKey() + value);
     }
 
     public int size() {
@@ -60,50 +67,46 @@ public class QueryParams {
     }
 
     public boolean isEmpty() {
-        return params.isEmpty();
+        return queryMap.isEmpty();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        } else {
+            QueryParams otherQuery = (QueryParams) o;
+            return Objects.equals(this.queryMap, otherQuery.queryMap);
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.queryMap);
     }
 
     @Override
     public String toString() {
         return "QueryParams{" +
-                "queryParams=" + params +
+                "queryParams=" + queryMap +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        QueryParams otherParams = (QueryParams) o;
-        return this.params.entrySet().stream()
-                .allMatch(entry -> entry.getValue().equals(otherParams.getModifiableParamMap().get(entry.getKey()))
-                );
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(params);
     }
 
     public static class Builder {
 
-        private Map<String, List<String>> params;
+        private Map<String, List<String>> queryMap;
 
         private Builder() {
-            params = new HashMap<>();
+            queryMap = new HashMap<>();
         }
 
-        public Builder params(Map<String, List<String>> params) {
-            this.params = params;
+        public Builder params(Map<String, List<String>> queryMap) {
+            this.queryMap = queryMap;
             return this;
         }
 
         public Builder param(String key, String value) {
-            List<String> values = params.computeIfAbsent(key, k -> new ArrayList<>());
+            List<String> values = queryMap.computeIfAbsent(key, k -> new ArrayList<>());
             values.add(value);
             return this;
         }

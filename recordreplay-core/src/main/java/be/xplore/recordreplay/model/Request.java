@@ -51,22 +51,32 @@ public class Request {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Request request = (Request) o;
-        return this.method == request.getMethod() &&
-                this.path.equals(request.getPath());
+        Request otherRequest = (Request) o;
+        return this.method == otherRequest.method &&
+                Objects.equals(this.path, otherRequest.path) &&
+                Objects.equals(this.queryParams, otherRequest.queryParams) &&
+                Objects.equals(this.headers, otherRequest.headers) &&
+                Objects.equals(this.body, otherRequest.body);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(method, path);
+        return Objects.hash(method, path, queryParams, headers, body);
     }
 
+    @Override
+    public String toString() {
+        return "Request{" +
+                "method=" + method +
+                ", path='" + path + '\'' +
+                ", queryParams=" + queryParams +
+                ", headers=" + headers +
+                ", body='" + body + '\'' +
+                '}';
+    }
 
     public static class Builder {
         private RequestMethod method;

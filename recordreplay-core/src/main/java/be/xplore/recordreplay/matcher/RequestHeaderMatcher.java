@@ -54,9 +54,13 @@ public class RequestHeaderMatcher implements RequestMatcher {
                 .anyMatch(s -> stringListEntry.getKey().equalsIgnoreCase(s)));
         smallestMap.entrySet().removeIf(stringListEntry -> headersToIgnore.stream()
                 .anyMatch(s -> stringListEntry.getKey().equalsIgnoreCase(s)));
-        return new Result(Headers.builder().headerMap(largestMap).build()
+        return new Result(getDistance(largestMap, smallestMap));
+    }
+
+    private double getDistance(Map<String, List<String>> largestMap, Map<String, List<String>> smallestMap) {
+        return Headers.builder().headerMap(largestMap).build()
                 .returnMismatchingHeaders(Headers.builder().headerMap(smallestMap).build())
-                .size() * (1D / Headers.builder().headerMap(largestMap).build().size()));
+                .size() * (1D / Headers.builder().headerMap(largestMap).build().size());
     }
 
     private Headers largest(Headers headers, Headers otherHeaders) {

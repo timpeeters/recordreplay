@@ -22,19 +22,25 @@ public class Stub {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
         if (o == null || getClass() != o.getClass()) {
             return false;
+        } else {
+            Stub otherStub = (Stub) o;
+            return Objects.equals(this.request, otherStub.request) &&
+                    Objects.equals(this.response, otherStub.response);
         }
-        Stub stub = (Stub) o;
-        return this.request.equals(stub.getRequest()) &&
-                this.response.equals(stub.getResponse());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(request, response);
+    }
+
+    @Override
+    public String toString() {
+        return "Stub{" +
+                "request=" + request +
+                ", response=" + response +
+                '}';
     }
 }
