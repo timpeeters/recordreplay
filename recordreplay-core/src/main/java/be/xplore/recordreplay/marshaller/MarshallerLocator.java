@@ -6,8 +6,8 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class MarshallerLocator {
-    private ServiceLoader<Marshaller> loader;
-    private long typeCount;
+    private final ServiceLoader<Marshaller> loader;
+    private final long typeCount;
 
     public MarshallerLocator() {
         loader = ServiceLoader.load(Marshaller.class);
@@ -15,7 +15,7 @@ public class MarshallerLocator {
     }
 
     public Marshaller load() {
-        if (typeCount > 1L) {
+        if (typeCount > 1) {
             throw new IllegalArgumentException(String.format("Multiple marshaller types found %s", loader.stream()
                     .map(marshallerProvider -> marshallerProvider.type().getName())
                     .collect(Collectors.joining(", ", "{", "}"))));
