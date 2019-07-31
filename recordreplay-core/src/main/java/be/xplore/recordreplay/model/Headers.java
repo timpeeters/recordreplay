@@ -74,27 +74,19 @@ public class Headers {
         return headerMap.isEmpty();
     }
 
-    @SuppressWarnings("checkstyle:ExecutableStatementCount")
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
         if (o == null || getClass() != o.getClass()) {
             return false;
+        } else {
+            Headers otherHeaders = (Headers) o;
+            return Objects.equals(this.headerMap, otherHeaders.headerMap);
         }
-        Headers headers = (Headers) o;
-        if (this.size() != headers.size()) {
-            return false;
-        }
-        return headerMap.entrySet().stream()
-                .allMatch(entry -> entry.getValue().equals(headers.getModifiableHeaderMap().get(entry.getKey()))
-                );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(headerMap);
+        return Objects.hash(this.headerMap);
     }
 
     @Override

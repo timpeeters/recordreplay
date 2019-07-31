@@ -18,7 +18,7 @@ public class QueryParamsTests {
 
     @Test
     public void getParams() {
-        assertThat(queryParams.getModifiableParamMap())
+        assertThat(queryParams.getModifiableQueryMap())
                 .as("Doesn't return a paramMap")
                 .isEqualTo(paramMap);
     }

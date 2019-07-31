@@ -45,8 +45,8 @@ public class RequestParamMatcher implements RequestMatcher {
     }
 
     private Result distanceAfterIgnoreParams(QueryParams largest, QueryParams smallest) {
-        Map<String, List<String>> largestMap = largest.getModifiableParamMap();
-        Map<String, List<String>> smallestMap = smallest.getModifiableParamMap();
+        Map<String, List<String>> largestMap = largest.getModifiableQueryMap();
+        Map<String, List<String>> smallestMap = smallest.getModifiableQueryMap();
         largestMap.entrySet().removeIf(stringListEntry -> paramsToIgnore.stream()
                 .anyMatch(s -> stringListEntry.getKey().equalsIgnoreCase(s)));
         smallestMap.entrySet().removeIf(stringListEntry -> paramsToIgnore.stream()

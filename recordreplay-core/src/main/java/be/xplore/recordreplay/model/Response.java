@@ -40,20 +40,31 @@ public class Response {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
         if (o == null || getClass() != o.getClass()) {
             return false;
+        } else {
+            Response otherResponse = (Response) o;
+            return this.statusCode == otherResponse.statusCode &&
+                    Objects.equals(this.statusText, otherResponse.statusText) &&
+                    Objects.equals(this.headers, otherResponse.headers) &&
+                    Objects.equals(this.body, otherResponse.body);
         }
-        Response response = (Response) o;
-        return this.statusCode == response.getStatusCode() &&
-                this.statusText.equals(response.getStatusText());
+
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(statusCode, statusText);
+        return Objects.hash(statusCode, statusText, headers, body);
+    }
+
+    @Override
+    public String toString() {
+        return "Response{" +
+                "statusCode=" + statusCode +
+                ", statusText='" + statusText + '\'' +
+                ", headers=" + headers +
+                ", body='" + body + '\'' +
+                '}';
     }
 
     public Headers getHeaders() {
