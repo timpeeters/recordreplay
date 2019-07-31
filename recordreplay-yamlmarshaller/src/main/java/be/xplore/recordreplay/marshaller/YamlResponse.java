@@ -1,5 +1,6 @@
 package be.xplore.recordreplay.marshaller;
 
+import be.xplore.recordreplay.model.Headers;
 import be.xplore.recordreplay.model.Response;
 
 import java.util.List;
@@ -23,6 +24,11 @@ class YamlResponse {
     }
 
     Response toResponse() {
-        return Response.builder().statusCode(statusCode).statusText(statusText).build();
+        return Response.builder()
+                .statusCode(statusCode)
+                .statusText(statusText)
+                .headers(Headers.builder().headerMap(headers).build())
+                .body(body)
+                .build();
     }
 }
