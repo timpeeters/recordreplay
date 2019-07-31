@@ -44,6 +44,16 @@ public class StubTest {
         assertThat(getNewExampleStub2().hashCode()).isNotEqualTo(getNewExampleStub1().hashCode());
     }
 
+    @Test
+    public void checkToString() {
+        assertThat(getNewExampleStub1().toString())
+                .isEqualTo("Stub{" +
+                        "request=Request{method=GET,path=/test," +
+                        "queryParams=QueryParams{queryMap={}},headers=Headers{headerMap={}},body=}," +
+                        "response=Response{statusCode=404," +
+                        "statusText=NOT FOUND,headers=Headers{headerMap={}},body=}}");
+    }
+
     private Stub getNewExampleStub1() {
         return new Stub(
                 Request.builder().method(RequestMethod.GET).path("/test").build(),

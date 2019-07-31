@@ -87,4 +87,9 @@ public class HeadersTests {
         assertThat(headers).isNotEqualTo("I'm a String");
     }
 
+    @Test
+    public void checkToString() {
+        assertThat(headers.toString()).isEqualTo("Headers{headerMap={Key=[headerTest1, headerTest2]}}");
+    }
+
 }

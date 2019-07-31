@@ -46,6 +46,13 @@ public class ResponseTest {
         assertThat(getNewExampleResponse2().hashCode()).isNotEqualTo(getNewExampleResponse1().hashCode());
     }
 
+    @Test
+    public void checkToString() {
+        assertThat(getNewExampleResponse1().toString())
+                .isEqualTo("Response{statusCode=200,statusText=OK," +
+                        "headers=Headers{headerMap={}},body=}");
+    }
+
 
     private Response getNewExampleResponse1() {
         return Response.ok();

@@ -1,6 +1,7 @@
 package be.xplore.recordreplay.model;
 
 import java.util.Objects;
+import java.util.StringJoiner;
 
 public class Stub {
 
@@ -38,9 +39,9 @@ public class Stub {
 
     @Override
     public String toString() {
-        return "Stub{" +
-                "request=" + request +
-                ", response=" + response +
-                '}';
+        return new StringJoiner(",", "Stub{", "}")
+                .add("request=" + request)
+                .add("response=" + response)
+                .toString();
     }
 }
