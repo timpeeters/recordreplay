@@ -4,12 +4,15 @@ import be.xplore.recordreplay.util.Assert;
 
 import java.net.http.HttpHeaders;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Headers {
 
@@ -39,22 +42,28 @@ public class Headers {
     }
 
     public List<String> toStringList() {
-        List<String> headerStrings = new ArrayList<>();
-        headerMap.forEach((key, value1) -> value1
-                .forEach(value ->
-                        headerStrings.add(key.concat(value)
-                        )));
-        return headerStrings;
+        return headerMap.entrySet()
+                .stream()
+                .flatMap(concatKeyValue())
+                .collect(Collectors.toList());
+    }
+
+    private Function<Map.Entry<String, List<String>>, Stream<? extends String>> concatKeyValue() {
+        return set -> set.getValue().stream()
+                .map(value -> set.getKey().concat(value));
     }
 
     public String[] toVarargs() {
-        List<String> headerList = new ArrayList<>();
-        headerMap.forEach((key, valueList) -> valueList
-                .forEach(value -> {
-                    headerList.add(key);
-                    headerList.add(value);
-                }));
-        return headerList.toArray(String[]::new);
+        return headerMap.entrySet()
+                .stream()
+                .flatMap(getKeyValueList())
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList()).toArray(String[]::new);
+    }
+
+    private Function<Map.Entry<String, List<String>>, Stream<? extends List<String>>> getKeyValueList() {
+        return set -> set.getValue().stream()
+                .map(value -> List.of(set.getKey(), value));
     }
 
     public int size() {

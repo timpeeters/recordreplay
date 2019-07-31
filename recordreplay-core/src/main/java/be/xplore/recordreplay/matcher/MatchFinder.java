@@ -8,6 +8,7 @@ import be.xplore.recordreplay.model.Stub;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 public class MatchFinder {
 
@@ -21,16 +22,20 @@ public class MatchFinder {
         try {
             return stubs
                     .stream()
-                    .map(stub -> new Result(matchers
-                            .stream()
-                            .map(matcher -> matcher.matches(request, stub.getRequest()))
-                            .mapToDouble(Result::getDistance)
-                            .sum() / matchers.size(), stub))
+                    .map(getAverageResultFromMatchers(request))
                     .min(Comparator.comparing(Result::getDistance))
                     .map(rs -> rs.getStub().getResponse());
         } catch (NoExactMatchFoundException e) {
             return Optional.empty();
         }
+    }
+
+    private Function<Stub, Result> getAverageResultFromMatchers(Request request) {
+        return stub -> new Result(matchers
+                .stream()
+                .map(matcher -> matcher.matches(request, stub.getRequest()))
+                .mapToDouble(Result::getDistance)
+                .sum() / matchers.size(), stub);
     }
 
 }

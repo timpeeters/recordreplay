@@ -8,7 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class QueryParams {
 
@@ -29,15 +31,16 @@ public class QueryParams {
     }
 
     public String getQueryString() {
-        StringBuilder paramString = new StringBuilder();
-        params.forEach((key, value) -> value
-                .forEach(string -> {
-                    paramString.append(key)
-                            .append('=')
-                            .append(string)
-                            .append('&');
-                }));
-        return paramString.insert(0, '?').substring(0, paramString.length() - 1);
+        return params.entrySet()
+                .stream()
+                .flatMap(formatAsQuery())
+                .collect(Collectors.joining("&", "?", ""));
+    }
+
+    private Function<Map.Entry<String, List<String>>, Stream<? extends StringBuilder>> formatAsQuery() {
+        return set -> set.getValue()
+                .stream()
+                .map(value -> new StringBuilder(set.getKey() + "=" + value));
     }
 
     public List<String> returnMismatchingQueries(QueryParams params) {
@@ -47,12 +50,16 @@ public class QueryParams {
     }
 
     private List<String> toStringList() {
-        List<String> paramStrings = new ArrayList<>();
-        params.forEach((key, value1) -> value1
-                .forEach(value ->
-                        paramStrings.add(key.concat(value)
-                        )));
-        return paramStrings;
+        return params.entrySet()
+                .stream()
+                .flatMap(concatKeyValue())
+                .collect(Collectors.toList());
+    }
+
+    private Function<Map.Entry<String, List<String>>, Stream<? extends String>> concatKeyValue() {
+        return set -> set.getValue()
+                .stream()
+                .map(value -> set.getKey() + value);
     }
 
     public int size() {
