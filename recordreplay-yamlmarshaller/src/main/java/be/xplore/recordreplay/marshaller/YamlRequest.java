@@ -22,7 +22,7 @@ class YamlRequest {
     YamlRequest(Request request) {
         this.method = request.getMethod();
         this.path = request.getPath();
-        this.queryParams = request.getQueryParams().getModifiableParamMap();
+        this.queryParams = request.getQueryParams().getModifiableQueryMap();
         this.headers = request.getHeaders().getModifiableHeaderMap();
         this.body = request.getBody();
     }

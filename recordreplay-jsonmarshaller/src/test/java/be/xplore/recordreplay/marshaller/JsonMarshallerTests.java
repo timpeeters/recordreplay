@@ -58,6 +58,7 @@ public class JsonMarshallerTests {
     @Test
     public void unmarshallCreatesStubFromJson() {
         Stub unmarshalledStub = marshaller.unMarshal(new StringReader(expectedJsonString));
+        System.out.println(marshaller.unMarshal(new StringReader(expectedJsonString)));
         assertThat(unmarshalledStub).as("No correct stub unmarshalled").isEqualTo(stub);
     }
 
