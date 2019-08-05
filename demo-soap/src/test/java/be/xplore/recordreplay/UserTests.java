@@ -9,24 +9,39 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserTests {
 
-    private final User user1 = User.builder().firstName("Fons").lastName("Kwanten").role("Dev").id(1L).build();
-    private final User user2 = User.builder().firstName("Fons").lastName("Kwanten").role("Dev").id(1L).build();
-    private final User user3 = User.builder().firstName("Kwons").lastName("Fanten").role("Dev").id(1L).build();
+    private static final User.Builder EXAMPLE_BUILDER =
+            User.builder().firstName("Fons").lastName("Kwanten").role("Dev").id(1L);
+
+    private final User user1 = EXAMPLE_BUILDER.build();
+    private final User user2 = EXAMPLE_BUILDER.build();
+    private final User user3 = User.builder().firstName("Kwons").lastName("Kwanten").id(1L).build();
+    private final User user4 = User.builder().firstName("Fons").lastName("Fanten").id(1L).build();
+    private final User user5 = User.builder().firstName("Fons").lastName("Kwanten").id(2L).build();
 
     @Test
-    public void testEqualsAndHashcode(){
+    public void testEqualsAndHashcode() {
         assertThat(user1.equals(user2))
                 .as("Equals method not implemented correctly ")
                 .isTrue();
+        assertThat(user1.hashCode() == user2.hashCode())
+                .as("Hashcode method not implemented correctly")
+                .isTrue();
+    }
+
+    @Test
+    public void notEquals() {
         assertThat(user1.equals(user3))
-                .as("Equals method not implemented correctly ")
+                .as("FirstName Equals method not implemented correctly ")
+                .isFalse();
+        assertThat(user1.equals(user4))
+                .as("LastName Equals method not implemented correctly ")
+                .isFalse();
+        assertThat(user1.equals(user5))
+                .as("ID Equals method not implemented correctly ")
                 .isFalse();
         assertThat(user1.equals(new ArrayList<>()))
                 .as("Equals method not implemented correctly ")
                 .isFalse();
-        assertThat(user1.hashCode() == user2.hashCode())
-                .as("Hashcode method not implemented correctly")
-                .isTrue();
     }
 
     @Test

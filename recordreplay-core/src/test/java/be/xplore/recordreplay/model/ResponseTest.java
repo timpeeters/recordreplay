@@ -31,6 +31,10 @@ public class ResponseTest {
         assertThat(getNewExampleResponse1()).isNotEqualTo(getNewExampleResponse2());
         assertThat(RESPONSE_BUILDER_1.statusText("abc").build())
                 .isNotEqualTo(RESPONSE_BUILDER_1.statusText("xyz").build());
+        assertThat(RESPONSE_BUILDER_1.headers(Headers.builder().header("key", "value").build()).build())
+                .isNotEqualTo(RESPONSE_BUILDER_1.headers(Headers.EMPTY).build());
+        assertThat(RESPONSE_BUILDER_1.body("one").build())
+                .isNotEqualTo(RESPONSE_BUILDER_1.body("two").build());
     }
 
     @Test
