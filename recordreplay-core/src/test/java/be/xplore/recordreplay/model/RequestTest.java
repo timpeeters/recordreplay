@@ -26,10 +26,17 @@ public class RequestTest {
 
     @Test
     public void checkEquality() {
-        Request request = EXAMPLE_REQUEST_BUILDER_1.build();
-        assertThat(request).isEqualTo(request);
-        assertThat(request).as("Equals method not implemented correctly")
-                .isEqualTo(EXAMPLE_REQUEST_BUILDER_1.build());
+        Request request1 = EXAMPLE_REQUEST_BUILDER_1
+                .body("testBody")
+                .headers(Headers.EMPTY)
+                .queryParams(QueryParams.EMPTY)
+                .build();
+        Request request2 = EXAMPLE_REQUEST_BUILDER_1
+                .body("testBody")
+                .headers(Headers.EMPTY)
+                .queryParams(QueryParams.EMPTY)
+                .build();
+        assertThat(request1).isEqualTo(request2);
     }
 
     @Test
@@ -37,6 +44,14 @@ public class RequestTest {
         assertThat(EXAMPLE_REQUEST_BUILDER_1.build()).isNotEqualTo(EXAMPLE_REQUEST_BUILDER_2.build());
         assertThat(EXAMPLE_REQUEST_BUILDER_1.path(PATH_1).build())
                 .isNotEqualTo(EXAMPLE_REQUEST_BUILDER_1.path(PATH_2).build());
+        assertThat(EXAMPLE_REQUEST_BUILDER_1.queryParams(QueryParams.EMPTY).build())
+                .isNotEqualTo(EXAMPLE_REQUEST_BUILDER_1.queryParams(QueryParams.builder().param("key", "value").build())
+                        .build());
+        assertThat(EXAMPLE_REQUEST_BUILDER_1.headers(Headers.EMPTY).build())
+                .isNotEqualTo(EXAMPLE_REQUEST_BUILDER_1.headers(Headers.builder().header("key", "value").build())
+                        .build());
+        assertThat(EXAMPLE_REQUEST_BUILDER_1.body("one").build())
+                .isNotEqualTo(EXAMPLE_REQUEST_BUILDER_1.body("two").build());
     }
 
     @Test
