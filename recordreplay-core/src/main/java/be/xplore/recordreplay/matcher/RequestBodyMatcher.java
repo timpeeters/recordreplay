@@ -1,8 +1,8 @@
 package be.xplore.recordreplay.matcher;
 
+import be.xplore.recordreplay.matcher.stringsimilarity.NormalizedLevenshtein;
 import be.xplore.recordreplay.model.Request;
 import be.xplore.recordreplay.model.Result;
-import be.xplore.recordreplay.util.StringDistance;
 
 public class RequestBodyMatcher implements RequestMatcher {
 
@@ -19,7 +19,7 @@ public class RequestBodyMatcher implements RequestMatcher {
         } else if (exactMatch) {
             throw new NoExactMatchFoundException("No match found for an exact body-matcher");
         } else {
-            return new Result(StringDistance.calculate(request.getBody(), otherRequest.getBody()));
+            return new Result(new NormalizedLevenshtein().distance(request.getBody(), otherRequest.getBody()));
         }
     }
 }
