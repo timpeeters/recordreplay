@@ -87,4 +87,10 @@ public class JsonMarshallerTests {
         assertThat(m).isExactlyInstanceOf(JsonMarshaller.class);
     }
 
+    @Test
+    public void foundByLoadClass() {
+        Marshaller m = new ClassLocator<>(Marshaller.class).load(JsonMarshaller.class);
+        assertThat(m).isExactlyInstanceOf(JsonMarshaller.class);
+    }
+
 }
