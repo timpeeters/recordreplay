@@ -5,6 +5,7 @@ import be.xplore.recordreplay.model.QueryParams;
 import be.xplore.recordreplay.model.Request;
 import be.xplore.recordreplay.model.Response;
 import be.xplore.recordreplay.model.Stub;
+import be.xplore.recordreplay.util.ClassLocator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -85,7 +86,7 @@ public class YamlMarshallerTests {
 
     @Test
     public void foundByLocator() {
-        Marshaller m = new MarshallerLocator().load();
+        Marshaller m = new ClassLocator<>(Marshaller.class).load();
         assertThat(m).isExactlyInstanceOf(YamlMarshaller.class);
     }
 
