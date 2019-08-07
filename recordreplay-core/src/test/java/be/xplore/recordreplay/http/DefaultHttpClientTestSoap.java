@@ -5,6 +5,7 @@ import be.xplore.recordreplay.model.Request;
 import be.xplore.recordreplay.model.RequestMethod;
 import be.xplore.recordreplay.model.Response;
 import be.xplore.recordreplay.testdemo.DemoSoapApplication;
+import be.xplore.recordreplay.util.ClassLocator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +23,7 @@ public class DefaultHttpClientTestSoap {
     @LocalServerPort
     private String port;
     private String host;
-    private final HttpClient client = new DefaultHttpClient();
+    private final HttpClient client = new ClassLocator<>(HttpClient.class).load();
 
     @Before
     public void initContext() {
