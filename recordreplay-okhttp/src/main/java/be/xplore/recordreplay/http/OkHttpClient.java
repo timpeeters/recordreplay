@@ -26,9 +26,9 @@ public class OkHttpClient implements HttpClient {
         client = new okhttp3.OkHttpClient.Builder().proxy(proxy).build();
     }
 
-    public static OkHttpClient noProxy() {
+   /* public static OkHttpClient noProxy() {
         return new OkHttpClient(Proxy.NO_PROXY);
-    }
+    } */
 
     @Override
     public Response execute(Request request) {

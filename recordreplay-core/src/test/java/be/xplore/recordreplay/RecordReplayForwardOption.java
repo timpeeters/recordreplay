@@ -2,13 +2,13 @@ package be.xplore.recordreplay;
 
 import be.xplore.recordreplay.config.Configuration;
 import be.xplore.recordreplay.config.RecordReplayConfig;
+import be.xplore.recordreplay.http.DefaultHttpClient;
 import be.xplore.recordreplay.http.HttpClient;
 import be.xplore.recordreplay.matcher.RequestBodyMatcher;
 import be.xplore.recordreplay.matcher.RequestMethodMatcher;
 import be.xplore.recordreplay.model.Headers;
 import be.xplore.recordreplay.model.Request;
 import be.xplore.recordreplay.testdemo.DemoRestApplication;
-import be.xplore.recordreplay.util.ClassLocator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +37,7 @@ public class RecordReplayForwardOption {
 
     @Before
     public void init() {
-        client = new ClassLocator<>(HttpClient.class).load();
+        client = new DefaultHttpClient();
         configuration = new RecordReplayConfig()
                 .target(String.format("http://%s:%d/user/list", HOST, port))
                 .matchers(List.of(

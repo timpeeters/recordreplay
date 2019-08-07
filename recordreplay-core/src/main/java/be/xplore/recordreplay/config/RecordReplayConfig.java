@@ -1,13 +1,14 @@
 package be.xplore.recordreplay.config;
 
 import be.xplore.recordreplay.http.HttpClient;
-import be.xplore.recordreplay.http.OkHttpClient;
 import be.xplore.recordreplay.matcher.MatchFinder;
 import be.xplore.recordreplay.matcher.RequestMatcher;
 import be.xplore.recordreplay.repository.MemoryRepository;
 import be.xplore.recordreplay.repository.Repository;
+import be.xplore.recordreplay.util.ClassLocator;
 
 import java.net.MalformedURLException;
+import java.net.Proxy;
 import java.net.URI;
 import java.net.URL;
 import java.util.List;
@@ -62,7 +63,7 @@ public class RecordReplayConfig implements Configuration {
 
     @Override
     public HttpClient client() {
-        return OkHttpClient.noProxy();
+        return new ClassLocator<>(HttpClient.class).load(HttpClient.class, Proxy.NO_PROXY);
     }
 
     public RecordReplayConfig matchers(List<RequestMatcher> matchers) {

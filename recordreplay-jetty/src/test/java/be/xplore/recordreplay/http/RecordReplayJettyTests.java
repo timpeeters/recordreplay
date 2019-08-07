@@ -18,5 +18,4 @@ public class RecordReplayJettyTests {
         HttpServer httpServer = new ClassLocator<>(HttpServer.class).load(RecordReplayJetty.class);
         assertThat(httpServer).isExactlyInstanceOf(RecordReplayJetty.class);
     }
-
 }

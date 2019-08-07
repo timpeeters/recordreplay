@@ -1,11 +1,11 @@
 package be.xplore.recordreplay;
 
 import be.xplore.recordreplay.config.RecordReplayConfig;
+import be.xplore.recordreplay.http.DefaultHttpClient;
 import be.xplore.recordreplay.http.HttpClient;
 import be.xplore.recordreplay.junit4.RecordReplayRule;
 import be.xplore.recordreplay.model.Stub;
 import be.xplore.recordreplay.repository.MemoryRepository;
-import be.xplore.recordreplay.util.ClassLocator;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -28,7 +28,7 @@ public abstract class IntegrationTestBase {
 
     @Before
     public void initContext() {
-        this.client = new ClassLocator<>(HttpClient.class).load();
+        this.client = new DefaultHttpClient();
         CONFIG.repository(new MemoryRepository());
     }
 
