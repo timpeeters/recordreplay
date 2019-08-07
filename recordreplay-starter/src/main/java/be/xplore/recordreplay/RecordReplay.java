@@ -16,7 +16,7 @@ public final class RecordReplay {
 
     public RecordReplay(Configuration configuration) {
         this.configuration = configuration;
-        this.recordReplayServer = new RecordReplayJetty(configuration.port(),
+        this.recordReplayServer = new RecordReplayJetty().init(configuration.port(),
                 new StubHandler(new RecordReplayUseCase(configuration)));
         this.proxyManager = new ProxyManager();
     }
@@ -60,7 +60,7 @@ public final class RecordReplay {
 
     private void createRecordReplay(StubHandler stubHandler) {
         stop();
-        this.recordReplayServer = new RecordReplayJetty(configuration.port(), stubHandler);
+        this.recordReplayServer = new RecordReplayJetty().init(configuration.port(), stubHandler);
         start();
     }
 

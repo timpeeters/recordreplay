@@ -12,13 +12,19 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
 public class RecordReplayJetty {
-    private final Server server;
+    private Server server;
     private boolean running;
 
-    public RecordReplayJetty(int port, StubHandler stubHandler) {
+    public RecordReplayJetty(){
+        this.server = new Server();
+    }
+
+    public RecordReplayJetty init(int port, StubHandler stubHandler) {
+        stop();
         this.server = new Server();
         this.server.addConnector(newConnector(port));
         this.server.setHandler(getHandlerList(newContextHandler(stubHandler)));
+        return this;
     }
 
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
