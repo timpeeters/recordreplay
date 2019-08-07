@@ -1,23 +1,24 @@
 package be.xplore.recordreplay;
 
 import be.xplore.recordreplay.config.Configuration;
-import be.xplore.recordreplay.jetty.RecordReplayJetty;
+import be.xplore.recordreplay.http.HttpServer;
 import be.xplore.recordreplay.proxy.ProxyManager;
 import be.xplore.recordreplay.usecase.ForwardRequestUseCase;
 import be.xplore.recordreplay.usecase.RecordReplayUseCase;
 import be.xplore.recordreplay.usecase.RecordUseCase;
 import be.xplore.recordreplay.usecase.ReplayUseCase;
 import be.xplore.recordreplay.usecase.StubHandler;
+import be.xplore.recordreplay.util.ClassLocator;
 
 public final class RecordReplay {
     private final Configuration configuration;
-    private RecordReplayJetty recordReplayServer;
+    private HttpServer recordReplayServer;
     private final ProxyManager proxyManager;
 
     public RecordReplay(Configuration configuration) {
         this.configuration = configuration;
-        this.recordReplayServer = new RecordReplayJetty().init(configuration.port(),
-                new StubHandler(new RecordReplayUseCase(configuration)));
+        this.recordReplayServer = new ClassLocator<>(HttpServer.class).load()
+                .init(configuration.port(), new StubHandler(new RecordReplayUseCase(configuration)));
         this.proxyManager = new ProxyManager();
     }
 
@@ -60,7 +61,8 @@ public final class RecordReplay {
 
     private void createRecordReplay(StubHandler stubHandler) {
         stop();
-        this.recordReplayServer = new RecordReplayJetty().init(configuration.port(), stubHandler);
+        this.recordReplayServer = new ClassLocator<>(HttpServer.class).load()
+                .init(configuration.port(), stubHandler);
         start();
     }
 

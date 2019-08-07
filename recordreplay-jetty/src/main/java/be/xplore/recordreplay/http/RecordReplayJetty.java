@@ -1,6 +1,5 @@
-package be.xplore.recordreplay.jetty;
+package be.xplore.recordreplay.http;
 
-import be.xplore.recordreplay.http.HttpServer;
 import be.xplore.recordreplay.servlet.RecordReplayHttpServlet;
 import be.xplore.recordreplay.usecase.StubHandler;
 import org.eclipse.jetty.server.Connector;
