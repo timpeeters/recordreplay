@@ -1,5 +1,6 @@
 package be.xplore.recordreplay.jetty;
 
+import be.xplore.recordreplay.http.HttpServer;
 import be.xplore.recordreplay.servlet.RecordReplayHttpServlet;
 import be.xplore.recordreplay.usecase.StubHandler;
 import org.eclipse.jetty.server.Connector;
@@ -11,7 +12,7 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
-public class RecordReplayJetty {
+public class RecordReplayJetty implements HttpServer {
     private Server server;
     private boolean running;
 
@@ -19,6 +20,7 @@ public class RecordReplayJetty {
         this.server = new Server();
     }
 
+    @Override
     public RecordReplayJetty init(int port, StubHandler stubHandler) {
         stop();
         this.server = new Server();
@@ -28,6 +30,7 @@ public class RecordReplayJetty {
     }
 
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
+    @Override
     public void start() {
         try {
             if (!running) {
@@ -39,6 +42,7 @@ public class RecordReplayJetty {
         running = true;
     }
 
+    @Override
     public void stop() {
         tryStop();
         tryJoinThreads();
@@ -65,14 +69,17 @@ public class RecordReplayJetty {
         }
     }
 
+    @Override
     public boolean isRunning() {
         return running;
     }
 
+    @Override
     public String getHost() {
         return server.getURI().getHost();
     }
 
+    @Override
     public int getPort() {
         return server.getURI().getPort();
     }
