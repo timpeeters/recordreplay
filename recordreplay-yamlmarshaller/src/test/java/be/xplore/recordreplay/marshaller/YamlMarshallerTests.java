@@ -90,4 +90,10 @@ public class YamlMarshallerTests {
         assertThat(m).isExactlyInstanceOf(YamlMarshaller.class);
     }
 
+    @Test
+    public void foundByLoadClass() {
+        Marshaller m = new ClassLocator<>(Marshaller.class).load(YamlMarshaller.class);
+        assertThat(m).isExactlyInstanceOf(YamlMarshaller.class);
+    }
+
 }
