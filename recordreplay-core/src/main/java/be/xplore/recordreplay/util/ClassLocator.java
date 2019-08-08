@@ -34,26 +34,6 @@ public class ClassLocator<T> {
                 .get();
     }
 
-    public T load(Class<? extends T> type, Object... params) {
-        return tryConstruct(loader.stream()
-                        .filter(classProvider -> classProvider.type().equals(type))
-                        .findFirst()
-                        .orElseThrow(noSuchElementException(type)).type(),
-                params);
-    }
-
-    private T tryConstruct(Class<? extends T> type, Object... params) {
-        Class[] types = new Class[params.length];
-        for (int i = 0; i < params.length; i++) {
-            types[i] = params.getClass();
-        }
-        try {
-            return type.getConstructor(types).newInstance(params);
-        } catch (ReflectiveOperationException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
     private Supplier<NoSuchElementException> noSuchElementException(Class<? extends T> type) {
         return () -> new NoSuchElementException(
                 String.format("Class with type '%s' not found on classpath {%s}", type
