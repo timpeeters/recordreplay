@@ -8,7 +8,6 @@ import be.xplore.recordreplay.matcher.RequestMethodMatcher;
 import be.xplore.recordreplay.matcher.RequestParamMatcher;
 import be.xplore.recordreplay.matcher.RequestPathMatcher;
 import be.xplore.recordreplay.repository.Repository;
-import be.xplore.recordreplay.usecase.StubHandler;
 
 import java.net.URL;
 import java.util.List;
@@ -32,10 +31,6 @@ public interface Configuration {
     Repository repository();
 
     HttpClient client();
-
-    StubHandler stubHandler();
-
-    Configuration stubHandler(StubHandler stubHandler);
 
     MatchFinder matchers();
 

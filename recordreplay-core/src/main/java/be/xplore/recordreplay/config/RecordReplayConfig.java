@@ -5,7 +5,6 @@ import be.xplore.recordreplay.matcher.MatchFinder;
 import be.xplore.recordreplay.matcher.RequestMatcher;
 import be.xplore.recordreplay.repository.MemoryRepository;
 import be.xplore.recordreplay.repository.Repository;
-import be.xplore.recordreplay.usecase.StubHandler;
 import be.xplore.recordreplay.util.ClassLocator;
 
 import java.net.MalformedURLException;
@@ -22,7 +21,6 @@ public class RecordReplayConfig implements Configuration {
     private Repository repository;
     private MatchFinder matchFinder;
     private URL target;
-    private StubHandler stubHandler;
 
     public RecordReplayConfig() {
         this.host = DEFAULT_LISTEN_ADDRESS;
@@ -72,17 +70,6 @@ public class RecordReplayConfig implements Configuration {
     @Override
     public HttpClient client() {
         return httpClient;
-    }
-
-    @Override
-    public RecordReplayConfig stubHandler(StubHandler stubHandler) {
-        this.stubHandler = stubHandler;
-        return this;
-    }
-
-    @Override
-    public StubHandler stubHandler() {
-        return this.stubHandler;
     }
 
     public RecordReplayConfig matchers(List<RequestMatcher> matchers) {
