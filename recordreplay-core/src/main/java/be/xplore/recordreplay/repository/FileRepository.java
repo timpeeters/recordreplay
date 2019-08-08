@@ -28,8 +28,8 @@ public class FileRepository implements Repository {
         this(targetDir, new ClassLocator<>(Marshaller.class).load());
     }
 
-    public FileRepository(Path targetDir, Class<? extends Marshaller> type) {
-        this(targetDir, new ClassLocator<>(Marshaller.class).load(type));
+    public FileRepository(Path targetDir, Class<? extends Marshaller>  marshallerType) {
+        this(targetDir, new ClassLocator<>(Marshaller.class).load(marshallerType));
     }
 
     public FileRepository(Path targetDir, Marshaller marshaller) {
