@@ -1,5 +1,6 @@
-package be.xplore.recordreplay.jetty;
+package be.xplore.recordreplay.http;
 
+import be.xplore.recordreplay.config.Configuration;
 import be.xplore.recordreplay.servlet.RecordReplayHttpServlet;
 import be.xplore.recordreplay.usecase.StubHandler;
 import org.eclipse.jetty.server.Connector;
@@ -11,18 +12,23 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
-public class RecordReplayJetty {
+public class RecordReplayJetty implements HttpServer {
     private final Server server;
     private boolean running;
 
-    public RecordReplayJetty(int port, StubHandler stubHandler) {
+    public RecordReplayJetty(){
         this.server = new Server();
-        this.server.addConnector(newConnector(port));
-        this.server.setHandler(getHandlerList(newContextHandler(stubHandler)));
+    }
+
+    @Override
+    public void start(Configuration config, StubHandler stubHandler) {
+        stop();
+        init(config, stubHandler);
+        start();
     }
 
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    public void start() {
+    private void start() {
         try {
             if (!running) {
                 server.start();
@@ -33,6 +39,13 @@ public class RecordReplayJetty {
         running = true;
     }
 
+    private void init(Configuration config, StubHandler stubHandler) {
+        this.server.setConnectors(null);
+        this.server.addConnector(newConnector(config.port()));
+        this.server.setHandler(getHandlerList(newContextHandler(stubHandler)));
+    }
+
+    @Override
     public void stop() {
         tryStop();
         tryJoinThreads();
@@ -59,14 +72,17 @@ public class RecordReplayJetty {
         }
     }
 
+    @Override
     public boolean isRunning() {
         return running;
     }
 
+    @Override
     public String getHost() {
         return server.getURI().getHost();
     }
 
+    @Override
     public int getPort() {
         return server.getURI().getPort();
     }

@@ -1,11 +1,11 @@
 package be.xplore.recordreplay.config;
 
 import be.xplore.recordreplay.http.HttpClient;
-import be.xplore.recordreplay.http.OkHttpClient;
 import be.xplore.recordreplay.matcher.MatchFinder;
 import be.xplore.recordreplay.matcher.RequestMatcher;
 import be.xplore.recordreplay.repository.MemoryRepository;
 import be.xplore.recordreplay.repository.Repository;
+import be.xplore.recordreplay.util.ClassLocator;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -17,6 +17,7 @@ import static be.xplore.recordreplay.util.Assert.notNull;
 public class RecordReplayConfig implements Configuration {
     private String host;
     private int port;
+    private HttpClient httpClient;
     private Repository repository;
     private MatchFinder matchFinder;
     private URL target;
@@ -24,6 +25,7 @@ public class RecordReplayConfig implements Configuration {
     public RecordReplayConfig() {
         this.host = DEFAULT_LISTEN_ADDRESS;
         this.port = DEFAULT_PORT;
+        this.httpClient = new ClassLocator<>(HttpClient.class).load();
         this.matchFinder = DEFAULT_MATCHERS;
         this.repository = new MemoryRepository();
         target("");
@@ -60,9 +62,14 @@ public class RecordReplayConfig implements Configuration {
         return repository;
     }
 
+    public RecordReplayConfig client(HttpClient httpClient) {
+        this.httpClient = httpClient;
+        return this;
+    }
+
     @Override
     public HttpClient client() {
-        return OkHttpClient.noProxy();
+        return httpClient;
     }
 
     public RecordReplayConfig matchers(List<RequestMatcher> matchers) {

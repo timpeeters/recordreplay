@@ -8,7 +8,9 @@ import be.xplore.recordreplay.model.Response;
 import be.xplore.recordreplay.testdemo.DemoRestApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.test.annotation.DirtiesContext;
 
+@DirtiesContext
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes =
         DemoRestApplication.class)
 class ExtensionTestBase {

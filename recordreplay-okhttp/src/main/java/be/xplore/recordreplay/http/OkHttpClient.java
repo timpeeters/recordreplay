@@ -16,18 +16,16 @@ import java.net.URI;
 import java.net.URL;
 
 public class OkHttpClient implements HttpClient {
-    private final okhttp3.OkHttpClient client;
+    private okhttp3.OkHttpClient client;
 
     public OkHttpClient() {
-        client = new okhttp3.OkHttpClient();
+        client = new okhttp3.OkHttpClient.Builder().proxy(Proxy.NO_PROXY).build();
     }
 
-    public OkHttpClient(Proxy proxy) {
+    @Override
+    public OkHttpClient proxy(Proxy proxy) {
         client = new okhttp3.OkHttpClient.Builder().proxy(proxy).build();
-    }
-
-    public static OkHttpClient noProxy() {
-        return new OkHttpClient(Proxy.NO_PROXY);
+        return this;
     }
 
     @Override

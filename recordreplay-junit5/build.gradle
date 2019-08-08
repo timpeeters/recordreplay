@@ -1,7 +1,9 @@
 dependencies {
-    api project(':recordreplay-starter')
+    api project(':recordreplay-core')
     implementation 'org.junit.jupiter:junit-jupiter-engine:5.5.1'
     testImplementation project(':demo-rest')
+    testImplementation project(':recordreplay-jetty')
+    testImplementation project(':recordreplay-okhttp')
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

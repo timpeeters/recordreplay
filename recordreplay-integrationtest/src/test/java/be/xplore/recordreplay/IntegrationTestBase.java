@@ -2,6 +2,7 @@ package be.xplore.recordreplay;
 
 import be.xplore.recordreplay.config.RecordReplayConfig;
 import be.xplore.recordreplay.http.DefaultHttpClient;
+import be.xplore.recordreplay.http.HttpClient;
 import be.xplore.recordreplay.junit4.RecordReplayRule;
 import be.xplore.recordreplay.model.Stub;
 import be.xplore.recordreplay.repository.MemoryRepository;
@@ -22,7 +23,7 @@ public abstract class IntegrationTestBase {
 
     @LocalServerPort
     private int port;
-    private DefaultHttpClient client;
+    private HttpClient client;
 
 
     @Before
