@@ -6,16 +6,20 @@ import be.xplore.recordreplay.model.Request;
 import be.xplore.recordreplay.model.RequestMethod;
 import be.xplore.recordreplay.model.Response;
 import be.xplore.recordreplay.testdemo.DemoRestApplication;
+import be.xplore.recordreplay.util.ClassLocator;
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @RunWith(SpringRunner.class)
+@DirtiesContext
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes =
         DemoRestApplication.class)
 public class OkHttpClientTestRest {
@@ -88,6 +92,18 @@ public class OkHttpClientTestRest {
                 .build();
         Response response = client.execute(getUsersRequest);
         assertThat(response.getStatusCode()).isEqualTo(405);
+    }
+
+    @Test
+    public void foundByLocator() {
+        HttpClient m = new ClassLocator<>(HttpClient.class).load();
+        Assertions.assertThat(m).isExactlyInstanceOf(OkHttpClient.class);
+    }
+
+    @Test
+    public void foundByLoadClass() {
+        HttpClient m = new ClassLocator<>(HttpClient.class).load(OkHttpClient.class);
+        Assertions.assertThat(m).isExactlyInstanceOf(OkHttpClient.class);
     }
 
 }

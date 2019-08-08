@@ -35,4 +35,6 @@ public interface Configuration {
     MatchFinder matchers();
 
     URL target();
+
 }
+

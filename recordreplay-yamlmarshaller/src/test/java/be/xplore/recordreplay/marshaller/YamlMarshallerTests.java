@@ -50,7 +50,7 @@ public class YamlMarshallerTests {
                         .headers(Headers.EMPTY).body("request body").build(),
                 Response.Builder.ok().body("response body").build()
         );
-        marshaller = new YamlMarshaller();
+        marshaller = new ClassLocator<>(Marshaller.class).load();
     }
 
     @Test

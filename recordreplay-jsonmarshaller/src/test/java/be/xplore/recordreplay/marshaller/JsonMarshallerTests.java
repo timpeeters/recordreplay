@@ -45,7 +45,7 @@ public class JsonMarshallerTests {
                         .headers(Headers.EMPTY).body("request body").build(),
                 Response.Builder.ok().body("response body").build()
         );
-        marshaller = new JsonMarshaller();
+        marshaller = new ClassLocator<>(Marshaller.class).load();
     }
 
 

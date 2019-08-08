@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
@@ -22,6 +23,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
+@DirtiesContext
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes =
         DemoRestApplication.class)
 public class RecordReplayForwardOption {
@@ -45,7 +47,7 @@ public class RecordReplayForwardOption {
                         new RequestBodyMatcher(true)
                         )
                 );
-        recordReplay = new RecordReplay(configuration);
+        recordReplay = new RecordReplay(configuration).forward();
     }
 
     @After
@@ -69,11 +71,13 @@ public class RecordReplayForwardOption {
         executeRequest();
     }
 
+    @SuppressWarnings("PMD.SystemPrintln")
     private void executeRequest() {
         var r = client
                 .execute(Request.Builder.get(String.format("http://%s:%d", HOST, configuration.port())).headers(Headers
                         .builder().applicationJson().build()).build());
         assertThat(r.getStatusCode()).isEqualTo(200);
+        System.out.println("ResponseBody: " + r.getBody());
         assertThat(r.getBody()).containsIgnoringCase("john");
     }
 }
