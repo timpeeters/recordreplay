@@ -4,5 +4,6 @@ dependencies {
     testImplementation project(':demo-soap')
     testImplementation project(':recordreplay-jetty')
     testImplementation project(':recordreplay-okhttp')
+    testImplementation project(':recordreplay-jsonmarshaller')
     testImplementation project(':recordreplay-junit4')
 }
