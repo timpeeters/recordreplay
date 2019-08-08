@@ -20,10 +20,15 @@ public class RecordReplayJetty implements HttpServer {
         this.server = new Server();
     }
 
-    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     @Override
     public void start(Configuration config, StubHandler stubHandler) {
+        stop();
         init(config, stubHandler);
+        start();
+    }
+
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
+    private void start() {
         try {
             if (!running) {
                 server.start();
@@ -35,7 +40,6 @@ public class RecordReplayJetty implements HttpServer {
     }
 
     private void init(Configuration config, StubHandler stubHandler) {
-        stop();
         this.server.setConnectors(null);
         this.server.addConnector(newConnector(config.port()));
         this.server.setHandler(getHandlerList(newContextHandler(stubHandler)));
