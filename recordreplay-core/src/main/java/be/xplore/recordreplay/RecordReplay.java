@@ -12,13 +12,13 @@ import be.xplore.recordreplay.util.ClassLocator;
 
 public final class RecordReplay {
     private final Configuration configuration;
+    private  StubHandler stubHandler;
     private HttpServer recordReplayServer;
     private final ProxyManager proxyManager;
 
     public RecordReplay(Configuration configuration) {
         this.configuration = configuration;
-        this.recordReplayServer = new ClassLocator<>(HttpServer.class)
-                .load(HttpServer.class,configuration.port(), new StubHandler(new RecordReplayUseCase(configuration)));
+        this.recordReplayServer = new ClassLocator<>(HttpServer.class).load();
         this.proxyManager = new ProxyManager();
     }
 
@@ -51,7 +51,7 @@ public final class RecordReplay {
         if (!recordReplayServer.isRunning()) {
             configureProxy();
         }
-        this.recordReplayServer.start();
+        this.recordReplayServer.start(configuration, stubHandler);
     }
 
     public void stop() {
@@ -61,8 +61,8 @@ public final class RecordReplay {
 
     private void createRecordReplay(StubHandler stubHandler) {
         stop();
-        this.recordReplayServer = new ClassLocator<>(HttpServer.class)
-                .load(HttpServer.class, configuration.port(), stubHandler);
+        this.stubHandler = stubHandler;
+        this.recordReplayServer = new ClassLocator<>(HttpServer.class).load();
         start();
     }
 

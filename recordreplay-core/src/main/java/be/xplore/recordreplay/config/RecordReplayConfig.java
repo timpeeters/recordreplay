@@ -5,10 +5,10 @@ import be.xplore.recordreplay.matcher.MatchFinder;
 import be.xplore.recordreplay.matcher.RequestMatcher;
 import be.xplore.recordreplay.repository.MemoryRepository;
 import be.xplore.recordreplay.repository.Repository;
+import be.xplore.recordreplay.usecase.StubHandler;
 import be.xplore.recordreplay.util.ClassLocator;
 
 import java.net.MalformedURLException;
-import java.net.Proxy;
 import java.net.URI;
 import java.net.URL;
 import java.util.List;
@@ -18,13 +18,16 @@ import static be.xplore.recordreplay.util.Assert.notNull;
 public class RecordReplayConfig implements Configuration {
     private String host;
     private int port;
+    private HttpClient httpClient;
     private Repository repository;
     private MatchFinder matchFinder;
     private URL target;
+    private StubHandler stubHandler;
 
     public RecordReplayConfig() {
         this.host = DEFAULT_LISTEN_ADDRESS;
         this.port = DEFAULT_PORT;
+        this.httpClient = new ClassLocator<>(HttpClient.class).load();
         this.matchFinder = DEFAULT_MATCHERS;
         this.repository = new MemoryRepository();
         target("");
@@ -61,9 +64,25 @@ public class RecordReplayConfig implements Configuration {
         return repository;
     }
 
+    public RecordReplayConfig client(HttpClient httpClient) {
+        this.httpClient = httpClient;
+        return this;
+    }
+
     @Override
     public HttpClient client() {
-        return new ClassLocator<>(HttpClient.class).load(HttpClient.class, Proxy.NO_PROXY);
+        return httpClient;
+    }
+
+    @Override
+    public RecordReplayConfig stubHandler(StubHandler stubHandler) {
+        this.stubHandler = stubHandler;
+        return this;
+    }
+
+    @Override
+    public StubHandler stubHandler() {
+        return this.stubHandler;
     }
 
     public RecordReplayConfig matchers(List<RequestMatcher> matchers) {

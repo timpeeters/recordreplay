@@ -1,5 +1,6 @@
 package be.xplore.recordreplay.http;
 
+import be.xplore.recordreplay.config.Configuration;
 import be.xplore.recordreplay.servlet.RecordReplayHttpServlet;
 import be.xplore.recordreplay.usecase.StubHandler;
 import org.eclipse.jetty.server.Connector;
@@ -12,25 +13,17 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
 public class RecordReplayJetty implements HttpServer {
-    private Server server;
+    private final Server server;
     private boolean running;
 
     public RecordReplayJetty(){
         this.server = new Server();
     }
 
-    @Override
-    public RecordReplayJetty init(int port, StubHandler stubHandler) {
-        stop();
-        this.server = new Server();
-        this.server.addConnector(newConnector(port));
-        this.server.setHandler(getHandlerList(newContextHandler(stubHandler)));
-        return this;
-    }
-
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
     @Override
-    public void start() {
+    public void start(Configuration config, StubHandler stubHandler) {
+        init(config, stubHandler);
         try {
             if (!running) {
                 server.start();
@@ -39,6 +32,13 @@ public class RecordReplayJetty implements HttpServer {
             throw new IllegalStateException("Jetty-server couldn't start", e);
         }
         running = true;
+    }
+
+    private void init(Configuration config, StubHandler stubHandler) {
+        stop();
+        this.server.setConnectors(null);
+        this.server.addConnector(newConnector(config.port()));
+        this.server.setHandler(getHandlerList(newContextHandler(stubHandler)));
     }
 
     @Override

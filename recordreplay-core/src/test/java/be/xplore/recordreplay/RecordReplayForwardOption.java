@@ -45,7 +45,7 @@ public class RecordReplayForwardOption {
                         new RequestBodyMatcher(true)
                         )
                 );
-        recordReplay = new RecordReplay(configuration);
+        recordReplay = new RecordReplay(configuration).forward();
     }
 
     @After

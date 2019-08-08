@@ -1,12 +1,11 @@
 package be.xplore.recordreplay.http;
 
+import be.xplore.recordreplay.config.Configuration;
 import be.xplore.recordreplay.usecase.StubHandler;
 
 public interface HttpServer {
 
-    HttpServer init(int port, StubHandler stubHandler);
-
-    void start();
+    void start(Configuration config, StubHandler stubHandler);
 
     void stop();
 

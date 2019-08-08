@@ -7,6 +7,7 @@ import be.xplore.recordreplay.model.Response;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -14,7 +15,7 @@ import java.net.http.HttpResponse;
 
 public class DefaultHttpClient implements be.xplore.recordreplay.http.HttpClient {
 
-    private final HttpClient client;
+    private HttpClient client;
 
     public DefaultHttpClient() {
         client = HttpClient.newHttpClient();
@@ -24,6 +25,14 @@ public class DefaultHttpClient implements be.xplore.recordreplay.http.HttpClient
         client = HttpClient.newBuilder()
                 .proxy(ProxySelector.of(InetSocketAddress.createUnresolved(proxyHost, proxyPort)))
                 .build();
+    }
+
+    @Override
+    public be.xplore.recordreplay.http.HttpClient proxy(Proxy proxy) {
+        client = HttpClient.newBuilder()
+                .proxy(ProxySelector.of((InetSocketAddress)proxy.address()))
+                .build();
+        return this;
     }
 
     @Override

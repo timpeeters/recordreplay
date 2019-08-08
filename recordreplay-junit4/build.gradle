@@ -4,4 +4,6 @@ dependencies {
     implementation group: 'junit', name: 'junit'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation project(':demo-rest')
+    testImplementation project(':recordreplay-jetty')
+    testImplementation project(':recordreplay-okhttp')
 }
