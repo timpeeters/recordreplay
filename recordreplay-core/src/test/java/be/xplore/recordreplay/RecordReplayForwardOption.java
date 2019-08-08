@@ -69,11 +69,13 @@ public class RecordReplayForwardOption {
         executeRequest();
     }
 
+    @SuppressWarnings("PMD.SystemPrintln")
     private void executeRequest() {
         var r = client
                 .execute(Request.Builder.get(String.format("http://%s:%d", HOST, configuration.port())).headers(Headers
                         .builder().applicationJson().build()).build());
         assertThat(r.getStatusCode()).isEqualTo(200);
+        System.out.println("ResponseBody: " + r.getBody());
         assertThat(r.getBody()).containsIgnoringCase("john");
     }
 }
