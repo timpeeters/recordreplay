@@ -1,6 +1,6 @@
 dependencies {
     implementation project(':recordreplay-core')
     implementation project(':recordreplay-servlet')
-    implementation platform('org.eclipse.jetty:jetty-bom:9.4.19.v20190610')
+    implementation platform('org.eclipse.jetty:jetty-bom:9.4.20.v20190813')
     implementation 'org.eclipse.jetty.websocket:websocket-server'
 }
