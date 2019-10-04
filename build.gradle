@@ -44,6 +44,7 @@ subprojects {
         ruleSetFiles = files("${rootProject.projectDir}/config/pmd/ruleset.xml")
         ruleSets = []
         toolVersion = '6.17.0'
+        incrementalAnalysis = true
     }
 
     jacoco {
