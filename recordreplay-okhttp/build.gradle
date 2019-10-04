@@ -1,6 +1,6 @@
 dependencies {
     implementation project(':recordreplay-core')
-    implementation 'com.squareup.okhttp3:okhttp:4.0.1'
+    implementation 'com.squareup.okhttp3:okhttp:4.2.1'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation project(':demo-rest')
 }
