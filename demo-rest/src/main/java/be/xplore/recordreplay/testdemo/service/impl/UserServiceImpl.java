@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import static java.util.Objects.requireNonNull;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -36,14 +38,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
-        validateUser(user);
-        return userRepo.save(user);
+        return userRepo.save(requireNonNull(user));
     }
 
     @Override
     public User updateUser(User user) {
-        validateUser(user);
-        return userRepo.save(user);
+        return userRepo.save(requireNonNull(user));
     }
 
     @Override
@@ -53,12 +53,6 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("User not found for given id");
         }
         userRepo.deleteById(id);
-    }
-
-    private void validateUser(User user) {
-        if (user == null) {
-            throw new IllegalArgumentException("User passed can not be null");
-        }
     }
 
 }
