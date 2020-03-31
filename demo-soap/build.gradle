@@ -3,7 +3,7 @@ dependencies {
     implementation 'javax.jws:javax.jws-api:1.1'
     implementation 'org.apache.cxf:cxf-spring-boot-starter-jaxws:3.3.3'
     implementation 'org.apache.cxf:cxf-rt-features-logging:3.3.3'
-    implementation 'org.apache.cxf:cxf-rt-frontend-jaxws:3.3.3'
+    implementation 'org.apache.cxf:cxf-rt-frontend-jaxws:3.3.6'
     implementation 'org.apache.cxf:cxf-rt-transports-http:3.3.3'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-web-services'
