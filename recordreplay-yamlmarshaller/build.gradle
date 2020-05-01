@@ -1,5 +1,5 @@
 dependencies {
     implementation project(':recordreplay-core')
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.0'
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.10.0'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.11.0'
 }
